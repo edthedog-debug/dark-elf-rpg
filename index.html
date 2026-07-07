@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Elf: Castle Conqueror</title>
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --panel-bg: #1a1a1a;
+            --border-color: #3a3a3a;
+            --text-color: #c0c0c0;
+            --accent-color: #8b0000; /* Dark Red */
+            --gold-color: #d4af37;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Cinzel', 'Georgia', serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h2, h3 {
+            color: var(--accent-color);
+            text-shadow: 1px 1px 5px #000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .gold-text { color: var(--gold-color) !important; text-shadow: 0 0 10px rgba(212,175,55,0.5); }
+
+        #game-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .hidden { display: none !important; }
+
+        /* UI Elements */
+        button {
+            background: #2a2a2a;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: #ff0000;
+            box-shadow: 0 0 10px rgba(139,0,0,0.5);
+        }
+
+        input {
+            background: #111;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .panel {
+            flex: 1;
+            background: #111;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        /* Combat Log */
+        #log {
+            height: 150px;
+            background: #050505;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #aaa;
+            margin-top: 15px;
+        }
+
+        .log-player { color: #4af; }
+        .log-enemy { color: #f44; }
+        .log-system { color: #fa0; }
+
+        /* Lang switch */
+        #lang-switch { position: absolute; top: 20px; right: 20px; }
+    </style>
+</head>
+<body>
+
+    <button id="lang-switch" onclick="toggleLang()">EN / ES</button>
+
+    <h1 id="main-title">Dark Elf: Castle Conqueror</h1>
+
+    <div id="game-container">
+        <div id="auth-screen">
+            <h2 id="auth-title">Ingresar al Nexo</h2>
+            <input type="text" id="username" placeholder="Nombre de usuario / Knight Name">
+            <input type="password" id="password" placeholder="Contraseña / Secret Word">
+            <br><br>
+            <button onclick="login()" id="btn-login">Iniciar Sesión</button>
+            <button onclick="register()" id="btn-reg">Registrarse</button>
+        </div>
+
+        <div id="main-menu" class="hidden">
+            <h2 id="welcome-msg">Bienvenido, Elfo Oscuro</h2>
+            <hr style="border-color: var(--border-color)">
+            
+            <div class="flex-container">
+                <div class="panel">
+                    <h3>Stats (Dark Souls Style)</h3>
+                    <p><strong id="lbl-level">Nivel:</strong> <span id="stat-level">1</span></p>
+                    <p><strong id="lbl-medals">Medallas (Castillos):</strong> <span id="stat-medals">0</span></p>
+                    <p><strong id="lbl-score">Puntuación Total:</strong> <span id="stat-score">0</span></p>
+                    <p><strong id="lbl-points">Puntos Disponibles:</strong> <span id="stat-points" style="color:var(--gold-color)">0</span></p>
+                    
+                    <ul>
+                        <li>Vigor (HP): <span id="stat-vig">10</span> <button onclick="levelUpSkill('vig')">+</button></li>
+                        <li>Aprendizaje (Mana): <span id="stat-att">10</span> <button onclick="levelUpSkill('att')">+</button></li>
+                        <li>Agante (Stamina/Vel): <span id="stat-end">10</span> <button onclick="levelUpSkill('end')">+</button></li>
+                        <li>Fuerza (Str): <span id="stat-str">10</span> <button onclick="levelUpSkill('str')">+</button></li>
+                        <li>Destreza (Dex): <span id="stat-dex">10</span> <button onclick="levelUpSkill('dex')">+</button></li>
+                    </ul>
+
+                    <h4>Equipo Actual</h4>
+                    <p>⚔️ <span id="eq-weapon">Daga de Marfil (Básica)</span></p>
+                    <p>🛡️ <span id="eq-armor">Harapos de Sombra (Básica)</span></p>
+                </div>
+
+                <div class="panel">
+                    <button onclick="lookForCastle()" style="width:100%; margin-bottom:15px; font-size:1.2em;" id="btn-scout">Buscar Próximo Castillo</button>
+                    
+                    <h3>Ranking Global</h3>
+                    <ol id="leaderboard-list">
+                        </ol>
+                </div>
+            </div>
+            <br>
+            <button onclick="logout()" id="btn-logout">Salir</button>
+        </div>
+
+        <div id="combat-screen" class="hidden">
+            <h2 id="combat-castle-title">Asalto al Castillo</h2>
+            
+            <div class="flex-container">
+                <div class="panel" style="border-color: #224466;">
+                    <h3 id="combat-player-name">Asesino Oscuro</h3>
+                    <p>HP: <span id="p-hp">100</span> / <span id="p-max-hp">100</span></p>
+                    <p>Stamina: <span id="p-stamina">100</span></p>
+                </div>
+
+                <div style="display:flex; align-items:center; font-weight:bold; color:var(--accent-color)">VS</div>
+
+                <div class="panel" style="border-color: #662222;">
+                    <h3 id="e-name" class="">Dragón Rojo</h3>
+                    <p>HP: <span id="e-hp">100</span> / <span id="e-max-hp">100</span></p>
+                    <p id="lbl-castle-value">Valor de este Castillo: <span id="e-value">0</span> pts</p>
+                </div>
+            </div>
+
+            <div style="margin-top:20px; display:flex; gap:10px; justify-content:center;">
+                <button onclick="playerAttack('light')" id="btn-light">Ataque Rápido</button>
+                <button onclick="playerAttack('heavy')" id="btn-heavy">Ataque Fuerte</button>
+                <button onclick="playerAttack('heal')" id="btn-heal">Curarse (Milagro)</button>
+            </div>
+
+            <div id="log"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- TEXTOS LOCALIZACIÓN ---
+        const i18n = {
+            es: {
+                title: "Asalto al Castillo del Elfo Oscuro", welcome: "Bienvenido, Elfo Oscuro ",
+                level: "Nivel", medals: "Medallas (Castillos)", score: "Puntuación Total", points: "Puntos Disponibles",
+                scout: "Buscar Próximo Castillo", light: "Ataque Rápido", heavy: "Ataque Fuerte", heal: "Curarse",
+                goldDragon: "¡¡DRAGÓN DE ORO (MÍTICO)!!", goldCastle: "Castillo de Diamante"
+            },
+            en: {
+                title: "Dark Elf: Castle Conqueror", welcome: "Welcome, Dark Elf ",
+                level: "Level", medals: "Medals (Castles)", score: "Total Score", points: "Available Points",
+                scout: "Scout Next Castle", light: "Light Attack", heavy: "Heavy Attack", heal: "Heal (Miracle)",
+                goldDragon: "!!GOLDEN DRAGON (MYTHIC)!!", goldCastle: "Diamond Castle"
+            }
+        };
+        let lang = 'es';
+
+        // --- SISTEMA DE BASE DE DATOS (MOCK / LOCALSTORAGE) ---
+        // Al estar en GitHub Pages puro, simulamos el servidor usando el LocalStorage del navegador compartido.
+        function getDB() {
+            return JSON.parse(localStorage.getItem('dark_souls_rpg_db')) || { users: {}, ranking: [] };
+        }
+        function saveDB(db) {
+            localStorage.setItem('dark_souls_rpg_db', JSON.stringify(db));
+            updateLeaderboardVisual();
+        }
+
+        // --- ESTADO DEL JUEGO ---
+        let currentUser = null;
+        let combatState = null;
+
+        const baseStats = { level: 1, medals: 0, score: 0, points: 0, vig: 10, att: 10, end: 10, str: 10, dex: 10, weapon: {name: "Daga Rompe-almas", bonus: 2}, armor: {name: "Harapos de Sombra", bonus: 2} };
+
+        // --- AUTH ---
+        function register() {
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value;
+            if(!u || !p) return alert("Rellena los campos");
+            
+            let db = getDB();
+            if(db.users[u]) return alert("El usuario ya existe");
+
+            db.users[u] = { password: p, stats: {...baseStats} };
+            saveDB(db);
+            alert("Registrado con éxito. ¡Inicia sesión!");
+        }
+
+        function login() {
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value;
+            
+            let db = getDB();
+            if(db.users[u] && db.users[u].password === p) {
+                currentUser = u;
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('main-menu').classList.remove('hidden');
+                loadUserData();
+            } else {
+                alert("Credenciales incorrectas");
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('main-menu').classList.add('hidden');
+        }
+
+        function loadUserData() {
+            let db = getDB();
+            let stats = db.users[currentUser].stats;
+
+            document.getElementById('welcome-msg').innerText = i18n[lang].welcome + currentUser;
+            document.getElementById('stat-level').innerText = stats.level;
+            document.getElementById('stat-medals').innerText = stats.medals;
+            document.getElementById('stat-score').innerText = stats.score;
+            document.getElementById('stat-points').innerText = stats.points;
+            
+            document.getElementById('stat-vig').innerText = stats.vig;
+            document.getElementById('stat-att').innerText = stats.att;
+            document.getElementById('stat-end').innerText = stats.end;
+            document.getElementById('stat-str').innerText = stats.str;
+            document.getElementById('stat-dex').innerText = stats.dex;
+
+            document.getElementById('eq-weapon').innerText = stats.weapon.name + ` (+${stats.weapon.bonus})`;
+            document.getElementById('eq-armor').innerText = stats.armor.name + ` (+${stats.armor.bonus})`;
+            updateLeaderboardVisual();
+        }
+
+        function saveProgress() {
+            let db = getDB();
+            db.users[currentUser].stats = db.users[currentUser].stats; 
+            // Re-calcular ranking
+            let ranking = [];
+            for (let user in db.users) {
+                ranking.push({username: user, score: db.users[user].stats.score, medals: db.users[user].stats.medals});
+            }
+            ranking.sort((a,b) => b.score - a.score);
+            db.ranking = ranking.slice(0, 10); // Top 10
+            saveDB(db);
+        }
+
+        function levelUpSkill(skill) {
+            let db = getDB();
+            let stats = db.users[currentUser].stats;
+            if(stats.points > 0) {
+                stats[skill]++;
+                stats.points--;
+                stats.level++;
+                saveProgress();
+                loadUserData();
+            }
+        }
+
+        // --- SISTEMA DE COMBATE (POR TURNOS) ---
+        function lookForCastle() {
+            let db = getDB();
+            let pStats = db.users[currentUser].stats;
+
+            // Probabilidades: Distribución sesgada hacia puntuaciones bajas (Dark Souls Style)
+            // Usamos Math.random() elevado al cubo para que tienda a dar números muy bajos.
+            let r = Math.random();
+            let isGold = Math.random() < 0.01; // 1% de probabilidad crítica (infima) de dragón de oro
+            
+            let castleScore = isGold ? 500 : Math.floor(Math.pow(r, 3) * 100) + 10;
+            
+            // Atributos del dragón escalan según la recompensa del castillo
+            let difficultyMultiplier = castleScore / 10; 
+
+            combatState = {
+                isGold: isGold,
+                castleValue: castleScore,
+                enemy: {
+                    name: isGold ? i18n[lang].goldDragon : ("Dragón Azabache Nivel " + Math.floor(difficultyMultiplier)),
+                    hp: Math.floor(50 + (difficultyMultiplier * 15)),
+                    maxHp: Math.floor(50 + (difficultyMultiplier * 15)),
+                    str: Math.floor(5 + (difficultyMultiplier * 2)),
+                    speed: Math.floor(5 + (difficultyMultiplier * 1.5))
+                },
+                player: {
+                    hp: pStats.vig * 10,
+                    maxHp: pStats.vig * 10,
+                    stamina: pStats.end * 5,
+                    maxStamina: pStats.end * 5
+                }
+            };
+
+            // Switch UI
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('combat-screen').classList.remove('hidden');
+            document.getElementById('log').innerHTML = "";
+
+            if(isGold) {
+                document.getElementById('e-name').className = "gold-text";
+                logMessage("¡¡UN DESTELLO CEGADOR!! Ha aparecido el legendario Dragón de Oro custodio del Castillo de Diamante.", "log-system");
+            } else {
+                document.getElementById('e-name').className = "";
+            }
+
+            updateCombatVisuals();
+            logMessage(`Has entrado en las tierras del ${combatState.enemy.name}. ¡Prepara tu arma!`, "log-system");
+            
+            // Determinar iniciativa por velocidad (Endurance vs Enemy Speed)
+            if(combatState.enemy.speed > pStats.end) {
+                logMessage("El dragón es más veloz y ataca primero.", "log-enemy");
+                setTimeout(enemyAttack, 1000);
+            }
+        }
+
+        function updateCombatVisuals() {
+            document.getElementById('combat-castle-title').innerText = combatState.isGold ? i18n[lang].goldCastle : `${i18n[lang].title}`;
+            document.getElementById('combat-player-name').innerText = currentUser;
+            document.getElementById('p-hp').innerText = combatState.player.hp;
+            document.getElementById('p-max-hp').innerText = combatState.player.maxHp;
+            document.getElementById('p-stamina').innerText = combatState.player.stamina;
+
+            document.getElementById('e-name').innerText = combatState.enemy.name;
+            document.getElementById('e-hp').innerText = combatState.enemy.hp;
+            document.getElementById('e-max-hp').innerText = combatState.enemy.maxHp;
+            document.getElementById('e-value').innerText = combatState.castleValue;
+        }
+
+        function logMessage(msg, cssClass) {
+            const log = document.getElementById('log');
+            log.innerHTML += `<div class="${cssClass}">${msg}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function playerAttack(type) {
+            let db = getDB();
+            let pStats = db.users[currentUser].stats;
+            let dmg = 0;
+            let staminaCost = 0;
+
+            if(type === 'light') {
+                staminaCost = 15;
+                if(combatState.player.stamina < staminaCost) return logMessage("Sin energía...", "log-system");
+                dmg = Math.floor((pStats.dex * 1.2) + (Math.random() * 4)) + pStats.weapon.bonus;
+            } else if (type === 'heavy') {
+                staminaCost = 30;
+                if(combatState.player.stamina < staminaCost) return logMessage("Sin energía para un ataque pesado!", "log-system");
+                dmg = Math.floor((pStats.str * 2) + (Math.random() * 8)) + pStats.weapon.bonus;
+            } else if (type === 'heal') {
+                staminaCost = 20;
+                if(combatState.player.stamina < staminaCost) return logMessage("Sin energía para milagros.", "log-system");
+                let heal = Math.floor((pStats.att * 1.5));
+                combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal);
+                combatState.player.stamina -= staminaCost;
+                logMessage(`Utilizas Milagro de Sombras y te curas ${heal} HP.`, "log-player");
+                updateCombatVisuals();
+                setTimeout(enemyAttack, 1200);
+                return;
+            }
+
+            combatState.player.stamina -= staminaCost;
+            combatState.enemy.hp = Math.max(0, combatState.enemy.hp - dmg);
+            logMessage(`Atacas con éxito e infliges ${dmg} de daño al dragón.`, "log-player");
+            updateCombatVisuals();
+
+            if(combatState.enemy.hp <= 0) {
+                winCombat();
+            } else {
+                // Recuperar algo de stamina por turno pasivo
+                combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + 10);
+                setTimeout(enemyAttack, 1200);
+            }
+        }
+
+        function enemyAttack() {
+            if(combatState.enemy.hp <= 0) return;
+            
+            let db = getDB();
+            let pStats = db.users[currentUser].stats;
+            
+            // Factor aleatorio mínimo de ataque oscuro
+            let enemyDmg = Math.floor((combatState.enemy.str * 1.1) + (Math.random() * 5)) - pStats.armor.bonus;
+            enemyDmg = Math.max(2, enemyDmg); // Al menos hace 2 de daño
+
+            combatState.player.hp = Math.max(0, combatState.player.hp - enemyDmg);
+            logMessage(`El ${combatState.enemy.name} ruge e inflige ${enemyDmg} puntos de daño cortante/fuego.`, "log-enemy");
+            updateCombatVisuals();
+
+            if(combatState.player.hp <= 0) {
+                loseCombat();
+            }
+        }
+
+        function winCombat() {
+            logMessage("¡EL DRAGÓN HA CAÍDO! Has conquistado el castillo.", "log-system");
+            let db = getDB();
+            let stats = db.users[currentUser].stats;
+
+            stats.medals += 1;
+            stats.score += combatState.castleValue;
+            stats.points += combatState.isGold ? 10 : 1; // 10 puntos de habilidad si es de oro
+
+            // Loot Aleatorio
+            let weaponNames = ["Espadón de Caballero Negro", "Hoja de Caos", "Alabarda de Cristal", "Daga de Sangre"];
+            let armorNames = ["Armadura de Havel", "Túnica de Brujo Negro", "Set de Caballero de Élite"];
+            
+            let lootBonus = combatState.isGold ? Math.floor(Math.random() * 20) + 20 : Math.floor(Math.random() * 5) + 2;
+
+            if(Math.random() > 0.5) {
+                let w = weaponNames[Math.floor(Math.random() * weaponNames.length)];
+                stats.weapon = { name: (combatState.isGold ? "MÍTICO: " : "") + w, bonus: lootBonus };
+                logMessage(`Has despojado al dragón de un arma: ${stats.weapon.name} (+${lootBonus})`, "log-system");
+            } else {
+                let a = armorNames[Math.floor(Math.random() * armorNames.length)];
+                stats.armor = { name: (combatState.isGold ? "MÍTICO: " : "") + a, bonus: lootBonus };
+                logMessage(`Has despojado al dragón de una armadura: ${stats.armor.name} (+${lootBonus})`, "log-system");
+            }
+
+            saveProgress();
+            setTimeout(backToMenu, 3000);
+        }
+
+        function loseCombat() {
+            logMessage("HAS MUERTO. Reapareces en la hoguera sin penalización de ranking, pero sin el castillo.", "log-enemy");
+            setTimeout(backToMenu, 3000);
+        }
+
+        function backToMenu() {
+            document.getElementById('combat-screen').classList.add('hidden');
+            document.getElementById('main-menu').classList.remove('hidden');
+            loadUserData();
+        }
+
+        // --- EXTRAS ---
+        function updateLeaderboardVisual() {
+            let db = getDB();
+            let html = "";
+            db.ranking.forEach((entry, index) => {
+                html += `<li><strong>${entry.username}</strong> - ${entry.score} pts (${entry.medals} Medallas)</li>`;
+            });
+            document.getElementById('leaderboard-list').innerHTML = html;
+        }
+
+        function toggleLang() {
+            lang = lang === 'es' ? 'en' : 'es';
+            document.getElementById('main-title').innerText = i18n[lang].title;
+            document.getElementById('btn-scout').innerText = i18n[lang].scout;
+            document.getElementById('btn-light').innerText = i18n[lang].light;
+            document.getElementById('btn-heavy').innerText = i18n[lang].heavy;
+            document.getElementById('btn-heal').innerText = i18n[lang].heal;
+            
+            document.getElementById('lbl-level').innerText = i18n[lang].level + ":";
+            document.getElementById('lbl-medals').innerText = i18n[lang].medals + ":";
+            document.getElementById('lbl-score').innerText = i18n[lang].score + ":";
+            document.getElementById('lbl-points').innerText = i18n[lang].points + ":";
+        }
+
+        // Inicializar ranking al cargar página
+        updateLeaderboardVisual();
+    </script>
+</body>
+</html>
