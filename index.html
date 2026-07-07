@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Elf: Castle Conqueror - Sheets Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --bg-color: #08080a;
+            --panel-bg: rgba(15, 15, 20, 0.95);
+            --border-color: #2c251e;
+            --text-color: #a4a09b;
+            --accent-color: #660000;
+            --gold-color: #9c824a;
+            --mythic-color: #4a869c;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle, #111116 0%, #050507 100%);
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15em;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif;
+            color: #d1c7bd;
+            text-shadow: 2px 2px 8px #000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        h1 { font-size: 2.2em; color: #eee; margin-bottom: 5px; border: none; }
+        .subtitle { font-family: 'Cinzel', serif; font-size: 0.9em; color: #555; text-align: center; margin-top: 0; margin-bottom: 30px; letter-spacing: 5px; }
+
+        .gold-text { color: var(--gold-color) !important; text-shadow: 0 0 12px rgba(156,130,74,0.6); }
+        .mythic-text { color: var(--mythic-color) !important; text-shadow: 0 0 15px rgba(74,134,156,0.8); font-weight: bold; }
+
+        #game-container {
+            width: 100%;
+            max-width: 950px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 35px rgba(0,0,0,0.95), inset 0 0 20px #000;
+            padding: 30px;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .hidden { display: none !important; }
+
+        button {
+            background: linear-gradient(to bottom, #1c1814, #120f0d);
+            color: #bfae99;
+            border: 1px solid #42382e;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        button:hover {
+            background: #260000;
+            color: #fff;
+            border-color: #8a0000;
+            box-shadow: 0 0 15px rgba(138,0,0,0.6);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        input {
+            background: #09090b;
+            border: 1px solid #332b23;
+            color: #d1c7bd;
+            padding: 12px;
+            margin: 8px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1em;
+            width: 250px;
+            text-align: center;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .panel {
+            flex: 1;
+            background: rgba(8, 8, 10, 0.8);
+            border: 1px solid #221c17;
+            padding: 20px;
+            box-shadow: inset 0 0 15px #000;
+        }
+
+        .display-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border: 1px solid #3a322a;
+            filter: sepia(0.3) contrast(1.2) brightness(0.6);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+            margin-bottom: 15px;
+        }
+
+        #log {
+            height: 180px;
+            background: #030304;
+            border: 1px solid #1c1713;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1em;
+            color: #8c867e;
+            margin-top: 20px;
+            line-height: 1.4;
+        }
+
+        .log-player { color: #8fa9bd; }
+        .log-enemy { color: #b86a6a; font-style: italic; }
+        .log-system { color: var(--gold-color); font-weight: bold; }
+        .log-critical { color: #ff3333; text-shadow: 0 0 8px rgba(255,0,0,0.5); font-weight: bold; }
+
+        .skill-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #1a1512;
+            padding-bottom: 4px;
+        }
+
+        #lang-switch { position: absolute; top: 20px; right: 20px; opacity: 0.6; }
+        #loading-overlay { color: var(--gold-color); text-align: center; font-style: italic; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <button id="lang-switch" onclick="toggleLang()">EN / ES</button>
+
+    <h1>DARK ELF</h1>
+    <div class="subtitle">CASTLE CONQUEROR</div>
+
+    <div id="game-container">
+        
+        <!-- PANTALLA DE AUTENTICACIÓN -->
+        <div id="auth-screen" style="text-align: center; padding: 40px 0;">
+            <h2 id="auth-title">Ingresar al Nexo Oscuro</h2>
+            <p style="color: #666; font-style: italic;">"Las almas enlazadas a Google Sheets perdurarán eternamente..."</p>
+            <input type="text" id="username" placeholder="Nombre del Elfo Oscuro"><br>
+            <input type="password" id="password" placeholder="Palabra Secreta"><br><br>
+            <button onclick="login()" id="btn-login" style="margin-right: 10px;">Iniciar Sesión</button>
+            <button onclick="register()" id="btn-reg">Registrarse</button>
+            <div id="loading-overlay" class="hidden">Conectando con el archivo de almas...</div>
+        </div>
+
+        <!-- MENÚ PRINCIPAL -->
+        <div id="main-menu" class="hidden">
+            <h2 id="welcome-msg">Bienvenido</h2>
+            
+            <div class="flex-container">
+                <!-- Atributos -->
+                <div class="panel">
+                    <h3>Atributos del Alma</h3>
+                    <p><strong id="lbl-level">Nivel:</strong> <span id="stat-level">1</span></p>
+                    <p><strong id="lbl-medals">Medallas (Castillos):</strong> <span id="stat-medals">0</span></p>
+                    <p><strong id="lbl-score">Puntuación de Almas:</strong> <span id="stat-score" class="gold-text">0</span></p>
+                    <p><strong id="lbl-points">Puntos Disponibles:</strong> <span id="stat-points" style="color:#d44040">0</span></p>
+                    
+                    <div class="skill-row"><span>Vigor (HP)</span> <div><span id="stat-vig">10</span> <button onclick="levelUpSkill('vig')" style="padding:2px 8px; margin-left:5px;">+</button></div></div>
+                    <div class="skill-row"><span>Aprendizaje</span> <div><span id="stat-att">10</span> <button onclick="levelUpSkill('att')" style="padding:2px 8px; margin-left:5px;">+</button></div></div>
+                    <div class="skill-row"><span>Aguante</span> <div><span id="stat-end">10</span> <button onclick="levelUpSkill('end')" style="padding:2px 8px; margin-left:5px;">+</button></div></div>
+                    <div class="skill-row"><span>Fuerza</span> <div><span id="stat-str">10</span> <button onclick="levelUpSkill('str')" style="padding:2px 8px; margin-left:5px;">+</button></div></div>
+                    <div class="skill-row"><span>Destreza</span> <div><span id="stat-dex">10</span> <button onclick="levelUpSkill('dex')" style="padding:2px 8px; margin-left:5px;">+</button></div></div>
+
+                    <h4 style="font-size: 1em; margin-top:20px;">Inventario</h4>
+                    <p>⚔️ Weapon: <span id="eq-weapon" style="color: #bbb;">Daga Mellada</span></p>
+                    <p>🛡️ Armor: <span id="eq-armor" style="color: #bbb;">Manto Roto</span></p>
+                </div>
+
+                <!-- Exploración y Clasificaciones -->
+                <div class="panel" style="display:flex; flex-direction:column; justify-content:space-between;">
+                    <div>
+                        <button onclick="lookForCastle()" style="width:100%; margin-bottom:25px; font-size:1.1em; padding:18px;" id="btn-scout">Explorar las Tierras de Dragones</button>
+                        <h3>Altar de Juramentos (Ranking Real)</h3>
+                        <ol id="leaderboard-list" style="padding-left: 20px; line-height: 1.6;">
+                            <li>Sincronizando el altar con la nube...</li>
+                        </ol>
+                    </div>
+                    <button onclick="logout()" id="btn-logout" style="width: 100%;">Abandonar Nexo</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMBAT SCREEN -->
+        <div id="combat-screen" class="hidden">
+            <h2 id="combat-castle-title">Asalto</h2>
+            <div class="flex-container" style="margin-top: 10px;">
+                <div class="panel">
+                    <h3 id="combat-player-name">Elfo Oscuro</h3>
+                    <img id="img-castle" class="display-img" src="" alt="Castillo">
+                    <p>HP: <span id="p-hp" style="color:#d44040; font-weight:bold;">100</span> / <span id="p-max-hp">100</span></p>
+                    <p>Stamina: <span id="p-stamina" style="color:#40a040; font-weight:bold;">100</span></p>
+                </div>
+                <div class="panel">
+                    <h3 id="e-name">Dragón</h3>
+                    <img id="img-dragon" class="display-img" src="" alt="Dragón">
+                    <p>HP: <span id="e-hp" style="color:#d44040; font-weight:bold;">100</span> / <span id="e-max-hp">100</span></p>
+                    <p id="lbl-castle-value">Valor del Castillo: <span id="e-value" class="gold-text">0</span> pts</p>
+                </div>
+            </div>
+            <div style="margin-top:25px; display:flex; gap:15px; justify-content:center;">
+                <button onclick="playerAttack('light')" id="btn-light">Ataque Rápido</button>
+                <button onclick="playerAttack('heavy')" id="btn-heavy">Ataque Fuerte</button>
+                <button onclick="playerAttack('heal')" id="btn-heal">Milagro</button>
+            </div>
+            <div id="log"></div>
+        </div>
+    </div>
+
+    <script>
+        // === CONFIGURACIÓN DE GOOGLE SHEETS ===
+        // PEGA AQUÍ LA URL DE TU WEB APP DE GOOGLE APPS SCRIPT EN EL PASO 4 DE LA GUÍA
+        const WEB_APP_URL = "TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI";
+
+        const i18n = {
+            es: { title: "Dark Elf: Castle Conqueror", welcome: "Guardián de las Sombras: ", level: "Nivel", medals: "Medallas", score: "Puntuación", points: "Puntos Disponibles", scout: "Explorar Tierras de Dragones", light: "Ataque Rápido", heavy: "Ataque Fuerte", heal: "Milagro de Oscuridad", goldDragon: "¡¡DRAGÓN DE ORO (MÍTICO)!!", goldCastle: "Castillo de Diamante Puro" },
+            en: { title: "Dark Elf: Castle Conqueror", welcome: "Shadow Guardian: ", level: "Level", medals: "Medals", score: "Souls Score", points: "Available Points", scout: "Scout Dragon Realms", light: "Light Attack", heavy: "Heavy Attack", heal: "Darkness Miracle", goldDragon: "!!GOLDEN DRAGON (MYTHIC)!!", goldCastle: "Pure Diamond Castle" }
+        };
+        let lang = 'es';
+
+        const castleImages = ["https://images.unsplash.com/photo-1599733589046-10c005739ef9?q=80&w=500", "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=500", "https://images.unsplash.com/photo-1519074069444-1ba4fff16411?q=80&w=500"];
+        const dragonImages = ["https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=500", "https://images.unsplash.com/photo-1560942485-b2a11cc13456?q=80&w=500", "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=500"];
+        const diamondCastleImage = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=500";
+        const goldDragonImage = "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=500";
+
+        let currentUser = null;
+        let userStats = {};
+        let combatState = null;
+
+        // --- CONEXIÓN HTTP CLOUD (GET / POST) ---
+        async function cloudRequest(action, data = {}) {
+            if(WEB_APP_URL.includes("TU_URL_DE_GOOGLE")) {
+                // Fallback a almacenamiento local si no está parametrizado
+                return fallbackLocalDB(action, data);
+            }
+            document.getElementById('loading-overlay').classList.remove('hidden');
+            try {
+                let url = `${WEB_APP_URL}?action=${action}`;
+                let response;
+                if(action === 'getRanking' || action === 'login') {
+                    if(data.username) url += `&username=${encodeURIComponent(data.username)}&password=${encodeURIComponent(data.password)}`;
+                    response = await fetch(url);
+                } else {
+                    response = await fetch(url, {
+                        method: 'POST',
+                        mode: 'no-cors', // Evita problemas de CORS sencillos en Scripts
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    document.getElementById('loading-overlay').classList.add('hidden');
+                    return { success: true };
+                }
+                let resJson = await response.json();
+                document.getElementById('loading-overlay').classList.add('hidden');
+                return resJson;
+            } catch (error) {
+                document.getElementById('loading-overlay').classList.add('hidden');
+                console.error(error);
+                return { success: false, message: "Error de red cósmica." };
+            }
+        }
+
+        // --- SISTEMA AUTH ---
+        async function register() {
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value;
+            if(!u || !p) return alert("Rellena los campos.");
+            
+            let res = await cloudRequest('register', { username: u, password: p, stats: { level: 1, medals: 0, score: 0, points: 0, vig: 10, att: 10, end: 10, str: 10, dex: 10, weapon: "Daga Rompe-almas (+2)", armor: "Harapos de Sombra (+2)" } });
+            if(res.success) alert("Registrado en el pergamino en la nube. Ya puedes iniciar sesión.");
+            else alert(res.message || "El usuario ya existe.");
+        }
+
+        async function login() {
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value;
+            let res = await cloudRequest('login', { username: u, password: p });
+            
+            if(res.success) {
+                currentUser = u;
+                userStats = res.stats;
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('main-menu').classList.remove('hidden');
+                loadUserData();
+                refreshRanking();
+            } else {
+                alert("Las credenciales no coinciden con el archivo de almas.");
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('main-menu').classList.add('hidden');
+        }
+
+        function loadUserData() {
+            document.getElementById('welcome-msg').innerText = i18n[lang].welcome + currentUser;
+            document.getElementById('stat-level').innerText = userStats.level;
+            document.getElementById('stat-medals').innerText = userStats.medals;
+            document.getElementById('stat-score').innerText = userStats.score;
+            document.getElementById('stat-points').innerText = userStats.points;
+            document.getElementById('stat-vig').innerText = userStats.vig;
+            document.getElementById('stat-att').innerText = userStats.att;
+            document.getElementById('stat-end').innerText = userStats.end;
+            document.getElementById('stat-str').innerText = userStats.str;
+            document.getElementById('stat-dex').innerText = userStats.dex;
+            document.getElementById('eq-weapon').innerText = userStats.weapon;
+            document.getElementById('eq-armor').innerText = userStats.armor;
+        }
+
+        async function saveProgress() {
+            await cloudRequest('save', { username: currentUser, stats: userStats });
+            refreshRanking();
+        }
+
+        function levelUpSkill(skill) {
+            if(userStats.points > 0) {
+                userStats[skill]++;
+                userStats.points--;
+                userStats.level++;
+                loadUserData();
+                saveProgress();
+            }
+        }
+
+        async function refreshRanking() {
+            let res = await cloudRequest('getRanking');
+            if(res && res.ranking) {
+                let html = "";
+                res.ranking.forEach(entry => {
+                    html += `<li><strong>${entry.username}</strong> - <span class="gold-text">${entry.score} pts</span> (${entry.medals} Castillos)</li>`;
+                });
+                document.getElementById('leaderboard-list').innerHTML = html;
+            }
+        }
+
+        // --- SISTEMA COMBATE ---
+        function lookForCastle() {
+            let r = Math.random();
+            let isGold = Math.random() < 0.01;
+            let castleScore = isGold ? 666 : Math.floor(Math.pow(r, 3) * 120) + 10;
+            let diffMultiplier = castleScore / 10;
+
+            combatState = {
+                isGold: isGold, castleValue: castleScore,
+                enemy: {
+                    name: isGold ? i18n[lang].goldDragon : ("Dragón de las Cenizas LVL " + Math.floor(diffMultiplier)),
+                    hp: Math.floor(60 + (diffMultiplier * 18)), maxHp: Math.floor(60 + (diffMultiplier * 18)),
+                    str: Math.floor(6 + (diffMultiplier * 2.5)), speed: Math.floor(5 + (diffMultiplier * 1.8))
+                },
+                player: { hp: userStats.vig * 10, maxHp: userStats.vig * 10, stamina: userStats.end * 5, maxStamina: userStats.end * 5 }
+            };
+
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('combat-screen').classList.remove('hidden');
+            document.getElementById('log').innerHTML = "";
+            document.getElementById('img-castle').src = isGold ? diamondCastleImage : castleImages[Math.floor(Math.random() * castleImages.length)];
+            document.getElementById('img-dragon').src = isGold ? goldDragonImage : dragonImages[Math.floor(Math.random() * dragonImages.length)];
+            document.getElementById('e-name').className = isGold ? "mythic-text" : "";
+
+            updateCombatVisuals();
+            logMessage(`⚔️ Has entablado combate con el guardián de la fortaleza.`, "log-system");
+            
+            if(combatState.enemy.speed > userStats.end) {
+                logMessage("⚡ El dragón vuela veloz y toma la iniciativa.", "log-enemy");
+                setTimeout(enemyAttack, 1200);
+            }
+        }
+
+        function updateCombatVisuals() {
+            document.getElementById('combat-castle-title').innerText = combatState.isGold ? i18n[lang].goldCastle : `${i18n[lang].title}`;
+            document.getElementById('combat-player-name').innerText = currentUser;
+            document.getElementById('p-hp').innerText = combatState.player.hp;
+            document.getElementById('p-max-hp').innerText = combatState.player.maxHp;
+            document.getElementById('p-stamina').innerText = combatState.player.stamina;
+            document.getElementById('e-name').innerText = combatState.enemy.name;
+            document.getElementById('e-hp').innerText = combatState.enemy.hp;
+            document.getElementById('e-max-hp').innerText = combatState.enemy.maxHp;
+            document.getElementById('e-value').innerText = combatState.castleValue;
+        }
+
+        function logMessage(msg, cssClass) {
+            const log = document.getElementById('log');
+            log.innerHTML += `<div class="${cssClass}">${msg}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function playerAttack(type) {
+            let dmg = 0, staminaCost = 0;
+            if(type === 'light') {
+                staminaCost = 12;
+                if(combatState.player.stamina < staminaCost) return logMessage("❌ Sin energía...", "log-system");
+                dmg = Math.floor((userStats.dex * 1.3) + (Math.random() * 5)) + 2;
+            } else if (type === 'heavy') {
+                staminaCost = 25;
+                if(combatState.player.stamina < staminaCost) return logMessage("❌ Sin energía para un tajo pesado.", "log-system");
+                dmg = Math.floor((userStats.str * 2.2) + (Math.random() * 10)) + 4;
+            } else if (type === 'heal') {
+                staminaCost = 15;
+                if(combatState.player.stamina < staminaCost) return logMessage("❌ Sin aliento para milagros.", "log-system");
+                let heal = Math.floor((userStats.att * 1.8));
+                combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal);
+                combatState.player.stamina -= staminaCost;
+                logMessage(`✨ Te curas ${heal} HP mediante rezos oscuros.`, "log-player");
+                updateCombatVisuals(); setTimeout(enemyAttack, 1200); return;
+            }
+
+            combatState.player.stamina -= staminaCost;
+            combatState.enemy.hp = Math.max(0, combatState.enemy.hp - dmg);
+            logMessage(`🩸 Infliges ${dmg} puntos de daño al dragón.`, "log-player");
+            updateCombatVisuals();
+
+            if(combatState.enemy.hp <= 0) { winCombat(); } 
+            else {
+                combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + 12);
+                setTimeout(enemyAttack, 1200);
+            }
+        }
+
+        function enemyAttack() {
+            if(combatState.enemy.hp <= 0) return;
+            let enemyDmg = Math.floor((combatState.enemy.str * 1.2) + (Math.random() * 6)) - 2;
+            enemyDmg = Math.max(4, enemyDmg);
+            combatState.player.hp = Math.max(0, combatState.player.hp - enemyDmg);
+            logMessage(`🔥 El dragón exhala fuego e inflige ${enemyDmg} de daño.`, "log-enemy");
+            updateCombatVisuals();
+            if(combatState.player.hp <= 0) { loseCombat(); }
+        }
+
+        function winCombat() {
+            logMessage("⚔️ ¡VICTORIA! El dragón se desintegra.", "log-system");
+            userStats.medals += 1;
+            userStats.score += combatState.castleValue;
+            userStats.points += combatState.isGold ? 10 : 1;
+
+            let wp = ["Hoja de Ceniza", "Espadón Profano", "Arco Oscuro"];
+            let bonus = combatState.isGold ? 40 : 5;
+            if(Math.random() > 0.5) userStats.weapon = (combatState.isGold ? "MÍTICO: " : "") + wp[Math.floor(Math.random()*wp.length)] + ` (+${bonus})`;
+            
+            saveProgress();
+            setTimeout(backToMenu, 3000);
+        }
+
+        function loseCombat() {
+            logMessage("💀 HAS MUERTO 💀 Regresas a la hoguera.", "log-critical");
+            setTimeout(backToMenu, 3000);
+        }
+
+        function backToMenu() {
+            document.getElementById('combat-screen').classList.add('hidden');
+            document.getElementById('main-menu').classList.remove('hidden');
+            loadUserData();
+        }
+
+        function toggleLang() {
+            lang = lang === 'es' ? 'en' : 'es';
+            document.getElementById('btn-scout').innerText = i18n[lang].scout;
+            document.getElementById('btn-light').innerText = i18n[lang].light;
+            document.getElementById('btn-heavy').innerText = i18n[lang].heavy;
+            document.getElementById('btn-heal').innerText = i18n[lang].heal;
+        }
+
+        // Fallback local por si el usuario no configura Sheets inmediatamente
+        function fallbackLocalDB(action, data) {
+            let ldb = JSON.parse(localStorage.getItem('dark_souls_rpg_db')) || { users: {}, ranking: [] };
+            if(action === 'register') {
+                if(ldb.users[data.username]) return { success: false };
+                ldb.users[data.username] = { password: data.password, stats: data.stats };
+            } else if (action === 'login') {
+                if(ldb.users[data.username] && ldb.users[data.username].password === data.password) {
+                    return { success: true, stats: ldb.users[data.username].stats };
+                }
+                return { success: false };
+            } else if (action === 'save') {
+                ldb.users[data.username].stats = data.stats;
+                let r = Object.keys(ldb.users).map(u => ({ username: u, score: ldb.users[u].stats.score, medals: ldb.users[u].stats.medals }));
+                ldb.ranking = r.sort((a,b)=>b.score-a.score).slice(0,10);
+            }
+            localStorage.setItem('dark_souls_rpg_db', JSON.stringify(ldb));
+            return { success: true, ranking: ldb.ranking || [] };
+        }
+
+        if(WEB_APP_URL.includes("TU_URL_DE_GOOGLE")) {
+            refreshRanking();
+        }
+    </script>
+</body>
+</html>
