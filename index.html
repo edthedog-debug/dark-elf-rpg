@@ -156,6 +156,7 @@
 
     <div id="game-container">
         
+        <!-- SECCIÓN AUTENTICACIÓN -->
         <div id="auth-screen" style="text-align: center; padding: 40px 0;">
             <h2 id="auth-title">Ingresar al Nexo Oscuro</h2>
             <p style="color: #555; font-style: italic;">"Vuestras hazañas quedan registradas de forma segura en el Altar de Google Sheets..."</p>
@@ -166,6 +167,7 @@
             <div id="loading-overlay" class="hidden">🔮 INVOCANDO CONEXIÓN CON EL ALTAR DE ALMAS...</div>
         </div>
 
+        <!-- SECCIÓN MENÚ PRINCIPAL -->
         <div id="main-menu" class="hidden">
             <h2 id="welcome-msg">Bienvenido</h2>
             
@@ -201,9 +203,11 @@
             </div>
         </div>
 
+        <!-- SECCIÓN COMBATE -->
         <div id="combat-screen" class="hidden">
             <h2 id="combat-castle-title">Asalto</h2>
             <div class="flex-container" style="margin-top: 10px;">
+                <!-- Panel Jugador -->
                 <div class="panel">
                     <h3 id="combat-player-name">Elfo Oscuro</h3>
                     <img id="img-castle" class="display-img" src="" alt="Castillo">
@@ -212,6 +216,7 @@
                     <div>STAMINA: <span id="p-stamina" style="font-weight:bold;">50</span> / <span id="p-max-stamina">50</span></div>
                     <div class="bar-container stamina"><div id="bar-p-stamina" class="bar-fill-stamina"></div></div>
                 </div>
+                <!-- Panel Enemigo -->
                 <div class="panel">
                     <h3 id="e-name">Dragón Guardián</h3>
                     <img id="img-dragon" class="display-img" src="" alt="Dragón">
@@ -221,6 +226,7 @@
                 </div>
             </div>
             
+            <!-- Acciones de Combate -->
             <div style="margin-top:25px; display:flex; gap:15px; justify-content:center;">
                 <button onclick="playerAttack('light')" id="btn-light">Ataque Rápido [12 ST]</button>
                 <button onclick="playerAttack('heavy')" id="btn-heavy">Ataque Fuerte [25 ST]</button>
@@ -258,19 +264,21 @@
         let userStats = {};
         let combatState = null;
 
-        // --- SISTEMA CONEXIÓN CLOUD ---
+        // --- SISTEMA CONEXIÓN CLOUD UNIFICADO Y INMUNE A CORS ---
         async function cloudRequest(action, data = {}) {
             document.getElementById('loading-overlay').classList.remove('hidden');
             try {
-                let url = `${WEB_APP_URL}?action=${action}`;
                 if (action === 'getRanking' || action === 'login') {
+                    let url = `${WEB_APP_URL}?action=${action}`;
                     if (data.username) url += `&username=${encodeURIComponent(data.username)}&password=${encodeURIComponent(data.password)}`;
                     let response = await fetch(url);
                     let resJson = await response.json();
                     document.getElementById('loading-overlay').classList.add('hidden');
                     return resJson;
                 } else {
-                    await fetch(url, {
+                    // Los POST (save y register) ahora integran 'action' de forma segura en el body JSON
+                    data.action = action; 
+                    await fetch(WEB_APP_URL, {
                         method: 'POST',
                         mode: 'no-cors',
                         headers: { 'Content-Type': 'application/json' },
@@ -291,8 +299,12 @@
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
             if(!u || !p) return alert("Escribe credenciales válidas.");
-            let res = await cloudRequest('register', { username: u, password: p, stats: { level: 1, medals: 0, score: 0, points: 0, vig: 10, att: 10, end: 10, str: 10, dex: 10, weapon: "Espada Mellada Cinder (+2)", armor: "Túnica de Penitente (+2)" } });
-            alert("Petición enviada al pergamino. Prueba a iniciar sesión.");
+            await cloudRequest('register', { 
+                username: u, 
+                password: p, 
+                stats: { level: 1, medals: 0, score: 0, points: 0, vig: 10, att: 10, end: 10, str: 10, dex: 10, weapon: "Espada Mellada Cinder (+2)", armor: "Túnica de Penitente (+2)" } 
+            });
+            alert("Petición de registro enviada. Intenta iniciar sesión ahora.");
         }
 
         async function login() {
@@ -307,7 +319,7 @@
                 loadUserData();
                 refreshRanking();
             } else {
-                alert("Tu alma o contraseña no se encuentran en la base de datos.");
+                alert("Tu alma o contraseña no se encuentran en el Altar.");
             }
         }
 
@@ -361,11 +373,10 @@
         // --- SISTEMA DE LUCHA MEJORADO ---
         function lookForCastle() {
             let r = Math.random();
-            let isGold = Math.random() < 0.05; // 5% Probabilidad de evento Legendario
+            let isGold = Math.random() < 0.05; 
             let castleScore = isGold ? 500 : Math.floor(Math.pow(r, 2) * 150) + 15;
             let diffMultiplier = castleScore / 12;
 
-            // Extrae bonificadores de daño de las armas de texto
             let weaponBonus = parseInt(userStats.weapon.match(/\d+/)) || 2;
             let armorBonus = parseInt(userStats.armor.match(/\d+/)) || 2;
 
@@ -393,7 +404,6 @@
             updateCombatVisuals();
             logMessage(`⚔️ Has cruzado los muros. La criatura desciende de los cielos oscuros.`, "log-system");
             
-            // Verificación de velocidad/iniciativa automática
             if(combatState.enemy.speed > (userStats.end + userStats.dex)) {
                 logMessage("⚡ La bestia es extremadamente ágil y ejecuta una emboscada inicial.", "log-enemy");
                 setTimeout(enemyAttack, 1000);
@@ -412,7 +422,6 @@
             document.getElementById('e-max-hp').innerText = combatState.enemy.maxHp;
             document.getElementById('e-value').innerText = combatState.castleValue;
 
-            // Renderizado porcentual de las barras de vida y fatiga estilo RPG
             document.getElementById('bar-p-hp').style.width = (combatState.player.hp / combatState.player.maxHp * 100) + "%";
             document.getElementById('bar-p-stamina').style.width = (combatState.player.stamina / combatState.player.maxStamina * 100) + "%";
             document.getElementById('bar-e-hp').style.width = (combatState.enemy.hp / combatState.enemy.maxHp * 100) + "%";
@@ -430,3 +439,104 @@
             if(type === 'light') {
                 staminaCost = 12;
                 if(combatState.player.stamina < staminaCost) return logMessage("❌ Tu barra de Stamina está vacía. Recupera el aliento.", "log-system");
+                dmg = Math.floor((userStats.dex * 1.5) + (Math.random() * 6)) + combatState.weaponBonus;
+            } else if (type === 'heavy') {
+                staminaCost = 25;
+                if(combatState.player.stamina < staminaCost) return logMessage("❌ No tienes la energía suficiente para alzar un tajo fuerte.", "log-system");
+                dmg = Math.floor((userStats.str * 2.6) + (Math.random() * 12)) + (combatState.weaponBonus * 2);
+            } else if (type === 'heal') {
+                staminaCost = 15;
+                if(combatState.player.stamina < staminaCost) return logMessage("❌ Exhausto para invocar rezos.", "log-system");
+                let heal = Math.floor((userStats.att * 2.2));
+                combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal);
+                combatState.player.stamina -= staminaCost;
+                logMessage(`✨ Usas tus milagros de Fe Oscura recuperando +${heal} HP.`, "log-player");
+                updateCombatVisuals(); 
+                setTimeout(enemyAttack, 1000); 
+                return;
+            }
+
+            let isCrit = Math.random() < (userStats.dex * 0.02);
+            if(isCrit) { dmg = Math.floor(dmg * 1.8); }
+
+            combatState.player.stamina -= staminaCost;
+            combatState.enemy.hp = Math.max(0, combatState.enemy.hp - dmg);
+            
+            if(isCrit) logMessage(`💥 ¡IMPACTO CRÍTICO! Tu hoja halla un punto débil y corta por ${dmg} de daño.`, "log-critical");
+            else logMessage(`🩸 Ejecutas un corte limpio. Infliges ${dmg} de daño.`, "log-player");
+            
+            updateCombatVisuals();
+
+            if(combatState.enemy.hp <= 0) { winCombat(); } 
+            else {
+                combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(userStats.end * 0.8));
+                setTimeout(enemyAttack, 1000);
+            }
+        }
+
+        function enemyAttack() {
+            if(combatState.enemy.hp <= 0) return;
+            
+            let dodgeChance = (userStats.dex + userStats.end) * 0.015;
+            if(Math.random() < dodgeChance) {
+                logMessage(`🛡️ ¡Esquivas el zarpazo con un movimiento de sombras rápido!`, "log-player");
+                updateCombatVisuals();
+                return;
+            }
+
+            let enemyDmg = Math.floor((combatState.enemy.str * 1.4) + (Math.random() * 8)) - combatState.armorBonus;
+            enemyDmg = Math.max(5, enemyDmg); 
+
+            combatState.player.hp = Math.max(0, combatState.player.hp - enemyDmg);
+            logMessage(`🔥 La bestia te muerde con furia infligiendo ${enemyDmg} de daño directo.`, "log-enemy");
+            updateCombatVisuals();
+
+            if(combatState.player.hp <= 0) { loseCombat(); }
+        }
+
+        function winCombat() {
+            logMessage("🏆 ¡VICTORIA! El gran dragón cae derrotado y devoras su alma.", "log-system");
+            userStats.medals += 1;
+            userStats.score += combatState.castleValue;
+            userStats.points += combatState.isGold ? 12 : 2;
+
+            let wpPool = ["Guadaña de la Luna Eclipse", "Gran Espadón de Caballero Destronado", "Daga de Sangre Corrupta"];
+            let arPool = ["Armadura de Hierro Negro de Catarina", "Manto Siniestro de la Orden de las Sombras"];
+            let tierBonus = combatState.isGold ? Math.floor(Math.random() * 30) + 40 : Math.floor(Math.random() * 10) + 5;
+
+            if(Math.random() > 0.5) {
+                userStats.weapon = (combatState.isGold ? "⭐ RELIQUIA: " : "") + wpPool[Math.floor(Math.random()*wpPool.length)] + ` (+${tierBonus})`;
+                logMessage(`🎁 RECOMPENSA: Has tomado su arma: ${userStats.weapon}`, "log-critical");
+            } else {
+                userStats.armor = (combatState.isGold ? "⭐ RELIQUIA: " : "") + arPool[Math.floor(Math.random()*arPool.length)] + ` (+${tierBonus})`;
+                logMessage(`🎁 RECOMPENSA: Reclamas su armadura: ${userStats.armor}`, "log-critical");
+            }
+            
+            saveProgress();
+            setTimeout(backToMenu, 3500);
+        }
+
+        function loseCombat() {
+            logMessage("💀 HAS MUERTO 💀 Tus cenizas vuelven al santuario. Pierdes 10 almas.", "log-critical");
+            userStats.score = Math.max(0, userStats.score - 10);
+            saveProgress();
+            setTimeout(backToMenu, 3500);
+        }
+
+        function backToMenu() {
+            document.getElementById('combat-screen').classList.add('hidden');
+            document.getElementById('main-menu').classList.remove('hidden');
+            loadUserData();
+        }
+
+        function toggleLang() {
+            lang = lang === 'es' ? 'en' : 'es';
+            document.getElementById('btn-scout').innerText = i18n[lang].scout;
+            document.getElementById('lbl-level').innerText = i18n[lang].level + ":";
+            document.getElementById('lbl-medals').innerText = i18n[lang].medals + ":";
+            document.getElementById('lbl-score').innerText = i18n[lang].score + ":";
+            document.getElementById('lbl-points').innerText = i18n[lang].points + ":";
+        }
+    </script>
+</body>
+</html>
