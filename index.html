@@ -3,268 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Elf: Castle Conqueror - Eternal Souls Edition</title>
+    <title>Void Elf: Monarch of Ruins</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Creepster&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap');
 
         :root {
-            --bg-color: #060608;
-            --panel-bg: rgba(12, 12, 16, 0.98);
-            --border-color: #3a3126; /* Bronce templado */
-            --text-color: #b0aba4; /* Ceniza clara */
-            --accent-color: #800000; /* Sangre */
-            --gold-color: #a38953; /* Oro viejo */
-            --mythic-color: #538fa3; /* Azul espectral */
+            --bg-void: #020204;
+            --panel-abyss: rgba(4, 4, 6, 0.96);
+            --blood-raw: #5a0000;
+            --blood-neon: #990000;
+            --corrupted-gold: #615133;
+            --spectral-green: #1c3d27;
+            --lightning-purple: #3b1d54;
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: radial-gradient(circle, #121218 0%, #030305 100%);
-            color: var(--text-color);
+            background-color: var(--bg-void);
+            background-image: 
+                radial-gradient(circle at 50% 30%, #110303 0%, #020204 80%),
+                repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px,transparent 1px, transparent 2px);
+            color: #8c857b;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2em;
+            font-size: 1.25em;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Cinzel', serif;
-            color: #dcd1c4;
-            text-shadow: 0px 4px 10px #000;
+        /* Títulos Pesadillescos y Abstractos */
+        h1 {
+            font-family: 'Creepster', cursive;
+            font-size: 3.5em;
+            color: #fff;
+            text-shadow: 0 0 20px var(--blood-raw), 0 0 40px #000;
+            letter-spacing: 5px;
+            margin-bottom: 0;
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+
+        .subtitle {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 0.85em;
+            color: var(--corrupted-gold);
+            letter-spacing: 8px;
+            margin-top: 5px;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 4px #000;
+        }
+
+        h2, h3, h4 {
+            font-family: 'Cinzel Decorative', serif;
+            color: #c4b9a9;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            border-bottom: 1px solid #1f1a14;
+            padding-bottom: 8px;
+            letter-spacing: 2px;
         }
-
-        h1 { font-size: 2.5em; color: #fff; margin-bottom: 2px; border: none; }
-        .subtitle { font-family: 'Cinzel', serif; font-size: 0.95em; color: #444; text-align: center; margin-top: 0; margin-bottom: 35px; letter-spacing: 6px; }
-
-        .gold-text { color: var(--gold-color) !important; text-shadow: 0 0 15px rgba(163,137,83,0.5); }
-        .mythic-text { color: var(--mythic-color) !important; text-shadow: 0 0 20px rgba(83,143,163,0.7); font-weight: bold; }
 
         #game-container {
             width: 100%;
-            max-width: 980px;
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 30px #000;
-            padding: 35px;
-            border-radius: 4px;
+            max-width: 1050px;
+            background: var(--panel-abyss);
+            border: 2px solid #1a1410;
+            box-shadow: 0 0 70px rgba(0,0,0,1), inset 0 0 40px #000;
+            padding: 40px;
             position: relative;
         }
 
         .hidden { display: none !important; }
 
-        /* Botones Estilo Almas Oscuras */
+        /* Botones Góticos */
         button {
-            background: linear-gradient(to bottom, #211c17, #14110e);
-            color: #c7b6a1;
-            border: 1px solid #4a3f33;
-            padding: 14px 28px;
+            background: linear-gradient(to bottom, #120d0a, #080504);
+            color: #9c8e7c;
+            border: 1px solid #33271f;
+            padding: 12px 24px;
             cursor: pointer;
-            font-family: 'Cinzel', serif;
-            font-size: 0.85em;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 0.75em;
             letter-spacing: 2px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 3px 6px rgba(0,0,0,0.6);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         button:hover:not(:disabled) {
-            background: #3a0000;
+            background: var(--blood-raw);
             color: #fff;
-            border-color: #a80000;
-            box-shadow: 0 0 20px rgba(168,0,0,0.5);
+            border-color: var(--blood-neon);
+            box-shadow: 0 0 25px var(--blood-raw);
+            text-shadow: 0 0 5px #fff;
         }
 
-        button:disabled { opacity: 0.3; cursor: not-allowed; }
+        button:disabled { opacity: 0.15; cursor: not-allowed; filter: grayscale(1); }
 
         input {
-            background: #050507;
-            border: 1px solid #42372c;
-            color: #e3dec3;
-            padding: 14px;
-            margin: 10px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.15em;
-            width: 280px;
-            text-align: center;
-            box-shadow: inset 0 0 8px #000;
-        }
-
-        input:focus { outline: none; border-color: var(--gold-color); }
-
-        .flex-container { display: flex; justify-content: space-between; gap: 30px; margin-top: 25px; }
-        .panel { flex: 1; background: rgba(5, 5, 7, 0.85); border: 1px solid #29221b; padding: 25px; box-shadow: inset 0 0 20px #000; }
-
-        /* Renderizado de Imágenes Dark Fantasy Avanzado */
-        .display-img {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            border: 1px solid #473c30;
-            filter: grayscale(0.4) sepia(0.3) contrast(1.3) brightness(0.5);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.9);
-            margin-bottom: 20px;
-            transition: filter 0.5s ease;
-        }
-        .display-img:hover { filter: grayscale(0.1) sepia(0.1) contrast(1.2) brightness(0.6); }
-
-        /* Barras de Combate Visuales */
-        .bar-container { background: #1a0000; width: 100%; height: 12px; border: 1px solid #3a0000; margin: 5px 0 15px 0; border-radius: 2px; overflow: hidden; }
-        .bar-fill-hp { background: linear-gradient(to right, #8a0000, #ff3333); height: 100%; width: 100%; transition: width 0.4s ease; }
-        .bar-container.stamina { background: #001a00; border-color: #003a00; }
-        .bar-fill-stamina { background: linear-gradient(to right, #006600, #33cc33); height: 100%; width: 100%; transition: width 0.3s ease; }
-
-        /* Bitácora Gótica de Combate */
-        #log {
-            height: 200px;
-            background: #020203;
-            border: 1px solid #241e18;
-            padding: 20px;
-            overflow-y: auto;
+            background: #000;
+            border: 1px solid #241c16;
+            color: #cbd4c5;
+            padding: 12px;
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.1em;
-            color: #948e86;
-            margin-top: 25px;
-            line-height: 1.5;
+            width: 260px;
+            text-align: center;
             box-shadow: inset 0 0 15px #000;
         }
+        input:focus { outline: none; border-color: var(--blood-raw); }
 
-        .log-player { color: #8cb1cc; font-weight: bold; }
-        .log-enemy { color: #cc7676; font-style: italic; }
-        .log-system { color: var(--gold-color); font-weight: bold; letter-spacing: 1px; }
-        .log-critical { color: #ff2222; text-shadow: 0 0 10px rgba(255,0,0,0.6); font-weight: bold; }
+        .flex-container { display: flex; justify-content: space-between; gap: 25px; margin-top: 20px; }
+        .panel { flex: 1; background: rgba(2, 2, 3, 0.95); border: 1px solid #14110e; padding: 20px; box-shadow: inset 0 0 25px #000; }
 
-        .skill-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px dashed #241d17; padding-bottom: 6px; }
-        #lang-switch { position: absolute; top: 25px; right: 25px; opacity: 0.5; }
-        #lang-switch:hover { opacity: 1; }
-        #loading-overlay { color: var(--gold-color); text-align: center; font-style: italic; font-family: 'Cinzel', serif; margin-top: 15px; font-size: 0.9em; letter-spacing: 2px; }
+        /* Renderizado de Monstruos Abstractos de Miedo */
+        .display-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border: 1px solid #211914;
+            /* Filtros avanzados: Alto contraste, sepia mórbido, distorsión térmica e inversión parcial */
+            filter: grayscale(0.2) sepia(0.6) contrast(1.8) brightness(0.4) hue-rotate(340deg);
+            box-shadow: 0 15px 35px #000;
+            margin-bottom: 15px;
+            transition: filter 0.5s ease;
+        }
+        .display-img:hover {
+            filter: grayscale(0) sepia(0.4) contrast(2.2) brightness(0.5) hue-rotate(330deg);
+        }
+
+        /* Barras de Recursos Macabras */
+        .bar-container { background: #0d0404; width: 100%; height: 8px; border: 1px solid #240909; margin: 4px 0 12px 0; overflow: hidden; }
+        .bar-fill-hp { background: linear-gradient(to right, #4a0000, #b30000); height: 100%; width: 100%; transition: width 0.3s ease; }
+        .bar-container.stamina { background: #030a05; border-color: #0c2413; }
+        .bar-fill-stamina { background: linear-gradient(to right, #0a2612, #217337); height: 100%; width: 100%; transition: width 0.2s ease; }
+
+        /* Bitácora de Agonía (Combate) */
+        #log {
+            height: 220px;
+            background: #000;
+            border: 1px solid #14100d;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05em;
+            color: #706a61;
+            margin-top: 20px;
+            line-height: 1.4;
+            box-shadow: inset 0 0 20px #000;
+        }
+
+        .log-player { color: #5a7fa3; }
+        .log-enemy { color: #b84f4f; }
+        .log-system { color: var(--corrupted-gold); font-style: italic; }
+        .log-crit { color: #ff0000; font-family: 'Cinzel Decorative', serif; font-size: 0.9em; animation: flash 0.5s infinite alternate; }
+        .log-effect { color: #d1ad45; }
+
+        .skill-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.95em; }
+        #loading-overlay { color: #731010; font-family: 'Creepster', cursive; text-align: center; margin-top: 20px; font-size: 1.5em; letter-spacing: 3px; }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(153,0,0,0.4)); }
+            50% { transform: scale(1.02); filter: drop-shadow(0 0 25px rgba(153,0,0,0.8)); }
+        }
+        @keyframes flash { 0% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <button id="lang-switch" onclick="toggleLang()">EN / ES</button>
-
     <h1>DARK ELF</h1>
-    <div class="subtitle">CASTLE CONQUEROR</div>
+    <div class="subtitle">VOID CONQUEROR</div>
 
     <div id="game-container">
         
-        <!-- SECCIÓN AUTENTICACIÓN -->
-        <div id="auth-screen" style="text-align: center; padding: 40px 0;">
-            <h2 id="auth-title">Ingresar al Nexo Oscuro</h2>
-            <p style="color: #555; font-style: italic;">"Vuestras hazañas quedan registradas de forma segura en el Altar de Google Sheets..."</p>
-            <input type="text" id="username" placeholder="Nombre del Elfo Oscuro"><br>
-            <input type="password" id="password" placeholder="Palabra Secreta"><br><br>
-            <button onclick="login()" id="btn-login" style="margin-right: 12px;">Iniciar Sesión</button>
-            <button onclick="register()" id="btn-reg">Registrarse</button>
-            <div id="loading-overlay" class="hidden">🔮 INVOCANDO CONEXIÓN CON EL ALTAR DE ALMAS...</div>
+        <!-- PANTALLA INICIAL (AUTENTICACIÓN) -->
+        <div id="auth-screen" style="text-align: center; padding: 30px 0;">
+            <h2 style="font-family: 'Creepster'; font-size: 2em; color: #52473c;">Ofrendar el Alma al Altar</h2>
+            <p style="color: #4a4137; font-style: italic;">"Tus deformaciones y reliquias quedarán talladas perpetuamente en el plano de Google Sheets..."</p>
+            <input type="text" id="username" placeholder="Nombre profano"><br>
+            <input type="password" id="password" placeholder="Llave oculta"><br><br>
+            <button onclick="login()" style="margin-right: 10px;">Despertar</button>
+            <button onclick="register()">Engendrar Nuevo</button>
+            <div id="loading-overlay" class="hidden">💀 ARRANCANDO CONSCIENCIA DEL VACÍO...</div>
         </div>
 
-        <!-- SECCIÓN MENÚ PRINCIPAL -->
+        <!-- MENÚ PRINCIPAL -->
         <div id="main-menu" class="hidden">
-            <h2 id="welcome-msg">Bienvenido</h2>
+            <h2 id="welcome-msg" style="font-size: 1.1em;">Presencia detectada: </h2>
             
             <div class="flex-container">
+                <!-- Estadísticas -->
                 <div class="panel">
-                    <h3>Atributos del Alma</h3>
-                    <p><strong id="lbl-level">Nivel:</strong> <span id="stat-level" style="font-weight: bold; color: #fff;">1</span></p>
-                    <p><strong id="lbl-medals">Medallas:</strong> <span id="stat-medals">0</span></p>
-                    <p><strong id="lbl-score">Puntuación:</strong> <span id="stat-score" class="gold-text">0</span></p>
-                    <p><strong id="lbl-points">Puntos Disponibles:</strong> <span id="stat-points" style="color:#e64a4a; font-weight: bold;">0</span></p>
+                    <h3>Atributos del Vacío</h3>
+                    <p><strong>Nivel de Corrupción:</strong> <span id="stat-level" style="color: #fff; font-weight: bold;">1</span></p>
+                    <p><strong>Bastiones Arrasados:</strong> <span id="stat-medals">0</span></p>
+                    <p><strong>Cosecha de Almas:</strong> <span id="stat-score" style="color: var(--corrupted-gold);">0</span></p>
+                    <p><strong>Fragmentos de Atributo:</strong> <span id="stat-points" style="color: var(--blood-neon);">0</span></p>
                     
-                    <div class="skill-row"><span>Vigor (Sube tu HP Máximo)</span> <div><span id="stat-vig">10</span> <button onclick="levelUpSkill('vig')" style="padding:2px 8px; margin-left:6px;">+</button></div></div>
-                    <div class="skill-row"><span>Aprendizaje (Potencia Milagros)</span> <div><span id="stat-att">10</span> <button onclick="levelUpSkill('att')" style="padding:2px 8px; margin-left:6px;">+</button></div></div>
-                    <div class="skill-row"><span>Aguante (Sube Stamina Máxima)</span> <div><span id="stat-end">10</span> <button onclick="levelUpSkill('end')" style="padding:2px 8px; margin-left:6px;">+</button></div></div>
-                    <div class="skill-row"><span>Fuerza (Sube Daño Fuerte)</span> <div><span id="stat-str">10</span> <button onclick="levelUpSkill('str')" style="padding:2px 8px; margin-left:6px;">+</button></div></div>
-                    <div class="skill-row"><span>Destreza (Sube Daño Rápido)</span> <div><span id="stat-dex">10</span> <button onclick="levelUpSkill('dex')" style="padding:2px 8px; margin-left:6px;">+</button></div></div>
+                    <div class="skill-row"><span>Miseria (HP Máximo)</span> <div><span id="stat-vig">10</span> <button onclick="levelUpSkill('vig')" style="padding:2px 6px;">+</button></div></div>
+                    <div class="skill-row"><span>Oscuridad (Hechizos/Daño Mágico)</span> <div><span id="stat-att">10</span> <button onclick="levelUpSkill('att')" style="padding:2px 6px;">+</button></div></div>
+                    <div class="skill-row"><span>Sofoco (Stamina Máxima)</span> <div><span id="stat-end">10</span> <button onclick="levelUpSkill('end')" style="padding:2px 6px;">+</button></div></div>
+                    <div class="skill-row"><span>Brutalidad (Daño Físico Brutal)</span> <div><span id="stat-str">10</span> <button onclick="levelUpSkill('str')" style="padding:2px 6px;">+</button></div></div>
+                    <div class="skill-row"><span>Agilidad (Flechas/Esquiva/Rapidez)</span> <div><span id="stat-dex">10</span> <button onclick="levelUpSkill('dex')" style="padding:2px 6px;">+</button></div></div>
 
-                    <h4 style="font-size: 1em; margin-top:25px;">Equipamiento Hallado</h4>
-                    <p>⚔️ Arma: <span id="eq-weapon" style="color: #bbb; font-style: italic;">Ninguna</span></p>
-                    <p>🛡️ Armadura: <span id="eq-armor" style="color: #bbb; font-style: italic;">Ninguna</span></p>
+                    <h4 style="font-size: 0.9em; margin-top:20px;">Armamento Maldito</h4>
+                    <p>⚔️ Principal: <span id="eq-weapon" style="color: #786f61;">Ninguna</span></p>
+                    <p>🏹 Secundaria: <span id="eq-armor" style="color: #786f61;">Ninguna</span></p>
                 </div>
 
+                <!-- Exploración -->
                 <div class="panel" style="display:flex; flex-direction:column; justify-content:space-between;">
                     <div>
-                        <button onclick="lookForCastle()" style="width:100%; margin-bottom:25px; font-size:1.1em; padding:20px;" id="btn-scout">Explorar Tierras de Dragones</button>
-                        <h3>Altar de Juramentos (Ranking Real)</h3>
-                        <ol id="leaderboard-list" style="padding-left: 20px; line-height: 1.8;">
-                            <li>Sincronizando con la nube...</li>
+                        <button onclick="lookForCastle()" style="width:100%; margin-bottom:20px; font-size:1.1em; padding:18px;">Profanar un Nuevo Bastión</button>
+                        <h3>Pacto de Condenados (Ranking Mundial)</h3>
+                        <ol id="leaderboard-list" style="padding-left: 15px; font-size: 0.95em; line-height: 1.7; color: #6e6456;">
+                            <li>Oteando el abismo celestial...</li>
                         </ol>
                     </div>
-                    <button onclick="logout()" id="btn-logout" style="width: 100%; margin-top: 15px;">Abandonar Nexo</button>
+                    <button onclick="logout()" style="width: 100%;">Volver al Letargo</button>
                 </div>
             </div>
         </div>
 
-        <!-- SECCIÓN COMBATE -->
+        <!-- ESCENARIO DE COMBATE AVANZADO -->
         <div id="combat-screen" class="hidden">
-            <h2 id="combat-castle-title">Asalto</h2>
-            <div class="flex-container" style="margin-top: 10px;">
-                <!-- Panel Jugador -->
+            <h2 id="combat-castle-title" style="font-family: 'Creepster'; letter-spacing: 4px;">Asedio de Ruinas</h2>
+            
+            <div class="flex-container">
+                <!-- El Jugador -->
                 <div class="panel">
-                    <h3 id="combat-player-name">Elfo Oscuro</h3>
-                    <img id="img-castle" class="display-img" src="" alt="Castillo">
-                    <div>HP: <span id="p-hp" style="font-weight:bold;">100</span> / <span id="p-max-hp">100</span></div>
+                    <h3 id="combat-player-name">Espectro</h3>
+                    <img id="img-castle" class="display-img" src="" alt="Estructura Maldita">
+                    <div>Esencia Corporal: <span id="p-hp">100</span>/<span id="p-max-hp">100</span></div>
                     <div class="bar-container"><div id="bar-p-hp" class="bar-fill-hp"></div></div>
-                    <div>STAMINA: <span id="p-stamina" style="font-weight:bold;">50</span> / <span id="p-max-stamina">50</span></div>
+                    <div>Estamina Mental: <span id="p-stamina">60</span>/<span id="p-max-stamina">60</span></div>
                     <div class="bar-container stamina"><div id="bar-p-stamina" class="bar-fill-stamina"></div></div>
                 </div>
-                <!-- Panel Enemigo -->
+
+                <!-- El Dragón -->
                 <div class="panel">
-                    <h3 id="e-name">Dragón Guardián</h3>
-                    <img id="img-dragon" class="display-img" src="" alt="Dragón">
-                    <div>HP: <span id="e-hp" style="font-weight:bold;">100</span> / <span id="e-max-hp">100</span></div>
+                    <h3 id="e-name" style="color: #942b2b;">Deformidad Reptiliana</h3>
+                    <img id="img-dragon" class="display-img" src="" alt="Abominación Alada">
+                    <div>Núcleo Vital: <span id="e-hp">100</span>/<span id="e-max-hp">100</span></div>
                     <div class="bar-container"><div id="bar-e-hp" class="bar-fill-hp"></div></div>
-                    <p id="lbl-castle-value" style="font-size: 0.9em; margin-top: 20px;">Valor del Bastión: <span id="e-value" class="gold-text">0</span> almas</p>
+                    <p style="font-size: 0.85em; margin-top: 15px;">Almas atrapadas en su interior: <span id="e-value" style="color: var(--corrupted-gold);">0</span></p>
                 </div>
             </div>
             
-            <!-- Acciones de Combate -->
-            <div style="margin-top:25px; display:flex; gap:15px; justify-content:center;">
-                <button onclick="playerAttack('light')" id="btn-light">Ataque Rápido [12 ST]</button>
-                <button onclick="playerAttack('heavy')" id="btn-heavy">Ataque Fuerte [25 ST]</button>
-                <button onclick="playerAttack('heal')" id="btn-heal">Milagro de Oscuridad [15 ST]</button>
+            <!-- ACCIONES DE COMBATE TOTALMENTE COMPLEJAS -->
+            <div style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+                <button onclick="playerAction('melee')" id="btn-melee">Tajo de Acero [12 ST]</button>
+                <button onclick="playerAction('ranged')" id="btn-ranged">Disparar Flecha (Arco) [15 ST]</button>
+                <button onclick="playerAction('spell_fire')" id="btn-spell1" style="color:#b54c24;">Hecizo: Pira de Vacío [20 ST]</button>
+                <button onclick="playerAction('spell_bolt')" id="btn-spell2" style="color:#7851a1;">Hecizo: Rayo Espectral [20 ST]</button>
+                <button onclick="playerAction('agility_buff')" id="btn-buff" style="color:#347047;">Concentrar Agilidad [10 ST]</button>
             </div>
             <div id="log"></div>
         </div>
     </div>
 
     <script>
-        // === VINCULACIÓN DIRECTA A TU GOOGLE SHEETS ===
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYlHbPacdrNWQS5rVSxX72UJy71tGwMq-NDJftIVn4rChGv8VPoE8MkI6RYpFrzDsgFQ/exec";
 
-        const i18n = {
-            es: { title: "Dark Elf: Castle Conqueror", welcome: "Guardián de las Sombras: ", level: "Nivel", medals: "Medallas", score: "Puntuación de Almas", points: "Puntos Disponibles", scout: "Explorar Tierras de Dragones", goldDragon: "¡¡DRAGÓN IMPERIAL DE ORO (LEYENDA)!!", goldCastle: "Fortaleza Celestial de Diamante" },
-            en: { title: "Dark Elf: Castle Conqueror", welcome: "Shadow Guardian: ", level: "Level", medals: "Medals", score: "Souls Score", points: "Available Points", scout: "Scout Dragon Realms", goldDragon: "!!LEGENDARY GOLDEN DRAGON!!", goldCastle: "Celestial Diamond Fortress" }
-        };
-        let lang = 'es';
-
-        // Muestrario de imágenes de fantasía oscura filtradas de alta fidelidad
+        // Imágenes de Castillos Siniestros y Dragones Pesadillescos Abstractos (Dark Fantasy Extremo)
         const castleImages = [
-            "https://images.unsplash.com/photo-1599733589046-10c005739ef9?q=80&w=600",
+            "https://images.unsplash.com/photo-1519074069444-1ba4fff16411?q=80&w=600",
             "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600",
-            "https://images.unsplash.com/photo-1519074069444-1ba4fff16411?q=80&w=600"
+            "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=600"
         ];
         const dragonImages = [
+            "https://images.unsplash.com/photo-1560942485-b2a11cc13456?q=80&w=600", 
             "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=600",
-            "https://images.unsplash.com/photo-1560942485-b2a11cc13456?q=80&w=600",
-            "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=600"
+            "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600" 
         ];
-        const diamondCastleImage = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600";
-        const goldDragonImage = "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=600";
 
         let currentUser = null;
         let userStats = {};
         let combatState = null;
 
-        // --- SISTEMA CONEXIÓN CLOUD UNIFICADO Y INMUNE A CORS ---
+        // --- SISTEMA CLOUD NETWORK ---
         async function cloudRequest(action, data = {}) {
             document.getElementById('loading-overlay').classList.remove('hidden');
             try {
@@ -276,35 +292,27 @@
                     document.getElementById('loading-overlay').classList.add('hidden');
                     return resJson;
                 } else {
-                    // Los POST (save y register) ahora integran 'action' de forma segura en el body JSON
                     data.action = action; 
-                    await fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    });
+                    await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
                     document.getElementById('loading-overlay').classList.add('hidden');
                     return { success: true };
                 }
             } catch (error) {
                 document.getElementById('loading-overlay').classList.add('hidden');
-                console.error("Error conectando con el Altar:", error);
-                return { success: false, message: "La niebla interrumpe la conexión celestial." };
+                return { success: false };
             }
         }
 
-        // --- AUTENTICACIÓN ---
+        // --- ENTRADA Y REGISTRO ---
         async function register() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
-            if(!u || !p) return alert("Escribe credenciales válidas.");
+            if(!u || !p) return alert("Completa los campos sagrados.");
             await cloudRequest('register', { 
-                username: u, 
-                password: p, 
-                stats: { level: 1, medals: 0, score: 0, points: 0, vig: 10, att: 10, end: 10, str: 10, dex: 10, weapon: "Espada Mellada Cinder (+2)", armor: "Túnica de Penitente (+2)" } 
+                username: u, password: p, 
+                stats: { level: 1, medals: 0, score: 0, points: 0, vig: 10, att: 10, end: 10, str: 10, dex: 10, weapon: "Daga Sanguinolenta Infectada", armor: "Arco Largo de Hueso de Dragón" } 
             });
-            alert("Petición de registro enviada. Intenta iniciar sesión ahora.");
+            alert("Tu linaje fue tallado. Inicia sesión.");
         }
 
         async function login() {
@@ -312,25 +320,17 @@
             const p = document.getElementById('password').value;
             let res = await cloudRequest('login', { username: u, password: p });
             if(res && res.success) {
-                currentUser = u;
-                userStats = res.stats;
+                currentUser = u; userStats = res.stats;
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('main-menu').classList.remove('hidden');
-                loadUserData();
-                refreshRanking();
-            } else {
-                alert("Tu alma o contraseña no se encuentran en el Altar.");
-            }
+                loadUserData(); refreshRanking();
+            } else { alert("El altar rechazó tus ofrendas."); }
         }
 
-        function logout() {
-            currentUser = null;
-            document.getElementById('auth-screen').classList.remove('hidden');
-            document.getElementById('main-menu').classList.add('hidden');
-        }
+        function logout() { currentUser = null; location.reload(); }
 
         function loadUserData() {
-            document.getElementById('welcome-msg').innerText = i18n[lang].welcome + currentUser;
+            document.getElementById('welcome-msg').innerText = "Presencia Maldita: " + currentUser;
             document.getElementById('stat-level').innerText = userStats.level;
             document.getElementById('stat-medals').innerText = userStats.medals;
             document.getElementById('stat-score').innerText = userStats.score;
@@ -340,79 +340,57 @@
             document.getElementById('stat-end').innerText = userStats.end;
             document.getElementById('stat-str').innerText = userStats.str;
             document.getElementById('stat-dex').innerText = userStats.dex;
-            document.getElementById('eq-weapon').innerText = userStats.weapon;
-            document.getElementById('eq-armor').innerText = userStats.armor;
-        }
-
-        async function saveProgress() {
-            await cloudRequest('save', { username: currentUser, stats: userStats });
-            refreshRanking();
+            document.getElementById('eq-weapon').innerText = userStats.weapon || "Daga Oxidada";
+            document.getElementById('eq-armor').innerText = userStats.armor || "Arco Corto Rompible";
         }
 
         function levelUpSkill(skill) {
-            if(userStats.points > 0) {
-                userStats[skill]++;
-                userStats.points--;
-                userStats.level++;
-                loadUserData();
-                saveProgress();
-            }
+            if(userStats.points > 0) { userStats[skill]++; userStats.points--; userStats.level++; loadUserData(); cloudRequest('save', { username: currentUser, stats: userStats }); }
         }
 
         async function refreshRanking() {
             let res = await cloudRequest('getRanking');
             if(res && res.ranking) {
                 let html = "";
-                res.ranking.forEach(entry => {
-                    html += `<li><strong>${entry.username}</strong> - <span class="gold-text">${entry.score} almas</span> (${entry.medals} Bastiones)</li>`;
-                });
-                document.getElementById('leaderboard-list').innerHTML = html || "<li>El trono está desierto...</li>";
+                res.ranking.forEach(e => { html += `<li><strong>${e.username}</strong> - <span>${e.score} almas</span></li>`; });
+                document.getElementById('leaderboard-list').innerHTML = html || "<li>Solo cenizas en el ranking...</li>";
             }
         }
 
-        // --- SISTEMA DE LUCHA MEJORADO ---
+        // --- SISTEMA DE COMBATE SUPREMO Y COMPLEJO ---
         function lookForCastle() {
             let r = Math.random();
-            let isGold = Math.random() < 0.05; 
-            let castleScore = isGold ? 500 : Math.floor(Math.pow(r, 2) * 150) + 15;
-            let diffMultiplier = castleScore / 12;
-
-            let weaponBonus = parseInt(userStats.weapon.match(/\d+/)) || 2;
-            let armorBonus = parseInt(userStats.armor.match(/\d+/)) || 2;
+            let castleVal = Math.floor(Math.pow(r, 2) * 200) + 20;
+            let levelCalc = Math.floor(castleVal / 10);
 
             combatState = {
-                isGold: isGold, castleValue: castleScore,
-                weaponBonus: weaponBonus, armorBonus: armorBonus,
+                castleValue: castleVal,
+                agilityBuffTurnos: 0,
+                weaponEffect: userStats.weapon.includes("Infectada") ? "Veneno" : "Fuego",
+                armorEffect: userStats.armor.includes("Hueso") ? "Electricidad" : "Curacion",
                 enemy: {
-                    name: isGold ? i18n[lang].goldDragon : ("Fiera de Ceniza Nivel " + Math.floor(diffMultiplier)),
-                    hp: Math.floor(70 + (diffMultiplier * 20)), maxHp: Math.floor(70 + (diffMultiplier * 20)),
-                    str: Math.floor(8 + (diffMultiplier * 3)), speed: Math.floor(6 + (diffMultiplier * 2))
+                    name: "Abominación Dracónica Vetusta Nivel " + levelCalc,
+                    hp: 90 + (levelCalc * 18), maxHp: 90 + (levelCalc * 18),
+                    str: 10 + (levelCalc * 2), speed: 8 + levelCalc, poisonActive: 0
                 },
-                player: { 
-                    hp: userStats.vig * 10, maxHp: userStats.vig * 10, 
-                    stamina: userStats.end * 6, maxStamina: userStats.end * 6 
+                player: {
+                    hp: userStats.vig * 10, maxHp: userStats.vig * 10,
+                    stamina: userStats.end * 6, maxStamina: userStats.end * 6,
+                    currentAgility: userStats.dex
                 }
             };
 
             document.getElementById('main-menu').classList.add('hidden');
             document.getElementById('combat-screen').classList.remove('hidden');
             document.getElementById('log').innerHTML = "";
-            document.getElementById('img-castle').src = isGold ? diamondCastleImage : castleImages[Math.floor(Math.random() * castleImages.length)];
-            document.getElementById('img-dragon').src = isGold ? goldDragonImage : dragonImages[Math.floor(Math.random() * dragonImages.length)];
-            document.getElementById('e-name').className = isGold ? "mythic-text" : "";
+            document.getElementById('img-castle').src = castleImages[Math.floor(Math.random() * castleImages.length)];
+            document.getElementById('img-dragon').src = dragonImages[Math.floor(Math.random() * dragonImages.length)];
 
             updateCombatVisuals();
-            logMessage(`⚔️ Has cruzado los muros. La criatura desciende de los cielos oscuros.`, "log-system");
-            
-            if(combatState.enemy.speed > (userStats.end + userStats.dex)) {
-                logMessage("⚡ La bestia es extremadamente ágil y ejecuta una emboscada inicial.", "log-enemy");
-                setTimeout(enemyAttack, 1000);
-            }
+            logMessage(`☠️ Te adentras en las ruinas deformes. Una silueta monstruosa abre sus fauces...`, "log-system");
         }
 
         function updateCombatVisuals() {
-            document.getElementById('combat-castle-title').innerText = combatState.isGold ? i18n[lang].goldCastle : `Asedio del Bastión`;
-            document.getElementById('combat-player-name').innerText = currentUser;
             document.getElementById('p-hp').innerText = combatState.player.hp;
             document.getElementById('p-max-hp').innerText = combatState.player.maxHp;
             document.getElementById('p-stamina').innerText = combatState.player.stamina;
@@ -427,115 +405,105 @@
             document.getElementById('bar-e-hp').style.width = (combatState.enemy.hp / combatState.enemy.maxHp * 100) + "%";
         }
 
-        function logMessage(msg, cssClass) {
-            const log = document.getElementById('log');
-            log.innerHTML += `<div class="${cssClass}">${msg}</div>`;
-            log.scrollTop = log.scrollHeight;
+        function logMessage(msg, cls) {
+            const l = document.getElementById('log');
+            l.innerHTML += `<div class="${cls}">${msg}</div>`; l.scrollTop = l.scrollHeight;
         }
 
-        function playerAttack(type) {
-            let dmg = 0, staminaCost = 0;
-            
-            if(type === 'light') {
-                staminaCost = 12;
-                if(combatState.player.stamina < staminaCost) return logMessage("❌ Tu barra de Stamina está vacía. Recupera el aliento.", "log-system");
-                dmg = Math.floor((userStats.dex * 1.5) + (Math.random() * 6)) + combatState.weaponBonus;
-            } else if (type === 'heavy') {
-                staminaCost = 25;
-                if(combatState.player.stamina < staminaCost) return logMessage("❌ No tienes la energía suficiente para alzar un tajo fuerte.", "log-system");
-                dmg = Math.floor((userStats.str * 2.6) + (Math.random() * 12)) + (combatState.weaponBonus * 2);
-            } else if (type === 'heal') {
-                staminaCost = 15;
-                if(combatState.player.stamina < staminaCost) return logMessage("❌ Exhausto para invocar rezos.", "log-system");
-                let heal = Math.floor((userStats.att * 2.2));
-                combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal);
-                combatState.player.stamina -= staminaCost;
-                logMessage(`✨ Usas tus milagros de Fe Oscura recuperando +${heal} HP.`, "log-player");
-                updateCombatVisuals(); 
-                setTimeout(enemyAttack, 1000); 
-                return;
+        function playerAction(type) {
+            let cost = 0; let dmg = 0;
+            if (type === 'melee') {
+                cost = 12; if(combatState.player.stamina < cost) return alert("Fatiga absoluta.");
+                dmg = Math.floor(userStats.str * 1.8) + Math.floor(Math.random()*8);
+                logMessage(`⚔️ Asestas un golpe bajo con tu arma principal (${userStats.weapon}). Daño: ${dmg}`, "log-player");
+                aplicarEfectoSecundario(combatState.weaponEffect);
+            } 
+            else if (type === 'ranged') {
+                cost = 15; if(combatState.player.stamina < cost) return alert("No puedes tensar el arco.");
+                // Escala puramente con Agilidad
+                dmg = Math.floor(combatState.player.currentAgility * 2.2) + Math.floor(Math.random()*5);
+                logMessage(`🏹 Sueltas una flecha maldita desde la lejanía con tu ${userStats.armor}. Daño: ${dmg}`, "log-player");
+                aplicarEfectoSecundario(combatState.armorEffect);
+            }
+            else if (type === 'spell_fire') {
+                cost = 20; if(combatState.player.stamina < cost) return alert("Sin energía espiritual.");
+                dmg = Math.floor(userStats.att * 2.5);
+                logMessage(`🔥 Invocas una Pira de Vacío envolviendo el ala del dragón por ${dmg} de daño mágico.`, "log-player");
+                if(Math.random() < 0.6) { combatState.enemy.hp = Math.max(0, combatState.enemy.hp - 15); logMessage("🔥 ¡El monstruo se retuerce envuelto en llamas residuales! (-15 HP)", "log-effect"); }
+            }
+            else if (type === 'spell_bolt') {
+                cost = 20; if(combatState.player.stamina < cost) return alert("Sin concentración mental.");
+                dmg = Math.floor(userStats.att * 2.1);
+                logMessage(`🔮 Un Relámpago Espectral de color púrpura rasga el cielo e impacta al objetivo por ${dmg}.`, "log-player");
+                // Efecto parálisis / robo de stamina
+                combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + 10);
+                logMessage("⚡ El relámpago drena fuerza vital: recuperas +10 de estamina.", "log-effect");
+            }
+            else if (type === 'agility_buff') {
+                cost = 10; if(combatState.player.stamina < cost) return alert("Demasiado exhausto para alterarte.");
+                combatState.player.currentAgility += 15;
+                combatState.agilityBuffTurnos = 3;
+                combatState.player.stamina -= cost;
+                logMessage("🟢 Tus ojos mutan y tu cuerpo se vuelve incorpóreo. ¡Aumentas tu agilidad drásticamente por 3 turnos!", "log-effect");
+                updateCombatVisuals(); setTimeout(enemyAttack, 900); return;
             }
 
-            let isCrit = Math.random() < (userStats.dex * 0.02);
-            if(isCrit) { dmg = Math.floor(dmg * 1.8); }
-
-            combatState.player.stamina -= staminaCost;
+            combatState.player.stamina -= cost;
             combatState.enemy.hp = Math.max(0, combatState.enemy.hp - dmg);
-            
-            if(isCrit) logMessage(`💥 ¡IMPACTO CRÍTICO! Tu hoja halla un punto débil y corta por ${dmg} de daño.`, "log-critical");
-            else logMessage(`🩸 Ejecutas un corte limpio. Infliges ${dmg} de daño.`, "log-player");
-            
             updateCombatVisuals();
 
-            if(combatState.enemy.hp <= 0) { winCombat(); } 
-            else {
-                combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(userStats.end * 0.8));
-                setTimeout(enemyAttack, 1000);
+            if (combatState.enemy.hp <= 0) { winCombat(); } 
+            else { 
+                if(combatState.enemy.poisonActive > 0) { combatState.enemy.hp = Math.max(0, combatState.enemy.hp - 10); logMessage("🤢 El veneno avanza en la sangre del dragón (-10 HP)", "log-effect"); combatState.enemy.poisonActive--; }
+                if(combatState.agilityBuffTurnos > 0) { combatState.agilityBuffTurnos--; if(combatState.agilityBuffTurnos === 0) { combatState.player.currentAgility = userStats.dex; logMessage("⚪ El subidón de agilidad ha terminado.", "log-system"); } }
+                combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(userStats.end * 0.7));
+                setTimeout(enemyAttack, 900); 
             }
+        }
+
+        function aplicarEfectoSecundario(efecto) {
+            if(efecto === "Veneno") { combatState.enemy.poisonActive = 3; logMessage("🤢 El filo impregnó toxinas venenosas en las escamas.", "log-effect"); }
+            if(efecto === "Fuego") { combatState.enemy.hp = Math.max(0, combatState.enemy.hp - 12); logMessage("🔥 Desprendes fuego corrupto en el impacto (-12 HP extra).", "log-effect"); }
+            if(efecto === "Electricidad") { combatState.enemy.hp = Math.max(0, combatState.enemy.hp - 8); logMessage("⚡ Electricidad estática sacude el cuerpo del reptil.", "log-effect"); }
+            if(efecto === "Curacion") { combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + 12); logMessage("🩸 Tu arma secundaria te extrae sangre enemiga y te cura (+12 HP).", "log-effect"); }
         }
 
         function enemyAttack() {
             if(combatState.enemy.hp <= 0) return;
             
-            let dodgeChance = (userStats.dex + userStats.end) * 0.015;
-            if(Math.random() < dodgeChance) {
-                logMessage(`🛡️ ¡Esquivas el zarpazo con un movimiento de sombras rápido!`, "log-player");
-                updateCombatVisuals();
-                return;
-            }
+            // Fórmula de evasión compleja utilizando la agilidad modificada
+            let evas_chance = combatState.player.currentAgility * 0.02;
+            if (Math.random() < evas_chance) { logMessage("🛡️ ¡Tu agilidad te permite disolverte en las sombras esquivando el ataque!", "log-player"); return; }
 
-            let enemyDmg = Math.floor((combatState.enemy.str * 1.4) + (Math.random() * 8)) - combatState.armorBonus;
-            enemyDmg = Math.max(5, enemyDmg); 
-
-            combatState.player.hp = Math.max(0, combatState.player.hp - enemyDmg);
-            logMessage(`🔥 La bestia te muerde con furia infligiendo ${enemyDmg} de daño directo.`, "log-enemy");
+            let edmg = Math.floor(combatState.enemy.str * 1.5) - Math.floor(userStats.end * 0.2);
+            edmg = Math.max(6, edmg);
+            combatState.player.hp = Math.max(0, combatState.player.hp - edmg);
+            logMessage(`💥 La abominación te azota salvajemente infligiendo ${edmg} de daño destructivo.`, "log-enemy");
             updateCombatVisuals();
 
-            if(combatState.player.hp <= 0) { loseCombat(); }
+            if(combatState.player.hp <= 0) loseCombat();
         }
 
         function winCombat() {
-            logMessage("🏆 ¡VICTORIA! El gran dragón cae derrotado y devoras su alma.", "log-system");
-            userStats.medals += 1;
-            userStats.score += combatState.castleValue;
-            userStats.points += combatState.isGold ? 12 : 2;
-
-            let wpPool = ["Guadaña de la Luna Eclipse", "Gran Espadón de Caballero Destronado", "Daga de Sangre Corrupta"];
-            let arPool = ["Armadura de Hierro Negro de Catarina", "Manto Siniestro de la Orden de las Sombras"];
-            let tierBonus = combatState.isGold ? Math.floor(Math.random() * 30) + 40 : Math.floor(Math.random() * 10) + 5;
-
-            if(Math.random() > 0.5) {
-                userStats.weapon = (combatState.isGold ? "⭐ RELIQUIA: " : "") + wpPool[Math.floor(Math.random()*wpPool.length)] + ` (+${tierBonus})`;
-                logMessage(`🎁 RECOMPENSA: Has tomado su arma: ${userStats.weapon}`, "log-critical");
-            } else {
-                userStats.armor = (combatState.isGold ? "⭐ RELIQUIA: " : "") + arPool[Math.floor(Math.random()*arPool.length)] + ` (+${tierBonus})`;
-                logMessage(`🎁 RECOMPENSA: Reclamas su armadura: ${userStats.armor}`, "log-critical");
-            }
+            logMessage("💀 El coloso cae despedazado. Te arrodillas y succionas sus fluidos espirituales.", "log-crit");
+            userStats.medals++; userStats.score += combatState.castleValue; userStats.points += 3;
             
-            saveProgress();
-            setTimeout(backToMenu, 3500);
+            // Botín dinámico con armas complejas
+            let armasPrincipales = ["Daga Sanguinolenta Infectada", "Gran Espadón Desgarrador", "Hacha de Verdugo Quemada"];
+            let armasSecundarias = ["Arco Largo de Hueso de Dragón", "Arco de Cazador Eléctrico", "Ballesta Vampírica Ligera"];
+            
+            if(Math.random() > 0.5) { userStats.weapon = armasPrincipales[Math.floor(Math.random()*armasPrincipales.length)]; } 
+            else { userStats.armor = armasSecundarias[Math.floor(Math.random()*armasSecundarias.length)]; }
+
+            cloudRequest('save', { username: currentUser, stats: userStats });
+            setTimeout(() => { document.getElementById('combat-screen').classList.add('hidden'); document.getElementById('main-menu').classList.remove('hidden'); loadUserData(); refreshRanking(); }, 3000);
         }
 
         function loseCombat() {
-            logMessage("💀 HAS MUERTO 💀 Tus cenizas vuelven al santuario. Pierdes 10 almas.", "log-critical");
-            userStats.score = Math.max(0, userStats.score - 10);
-            saveProgress();
-            setTimeout(backToMenu, 3500);
-        }
-
-        function backToMenu() {
-            document.getElementById('combat-screen').classList.add('hidden');
-            document.getElementById('main-menu').classList.remove('hidden');
-            loadUserData();
-        }
-
-        function toggleLang() {
-            lang = lang === 'es' ? 'en' : 'es';
-            document.getElementById('btn-scout').innerText = i18n[lang].scout;
-            document.getElementById('lbl-level').innerText = i18n[lang].level + ":";
-            document.getElementById('lbl-medals').innerText = i18n[lang].medals + ":";
-            document.getElementById('lbl-score').innerText = i18n[lang].score + ":";
-            document.getElementById('lbl-points').innerText = i18n[lang].points + ":";
+            logMessage("💀 TU ALMA SE HA DESINTEGRADO 💀 Despiertas mutilado. El nexo devora 15 almas.", "log-crit");
+            userStats.score = Math.max(0, userStats.score - 15);
+            cloudRequest('save', { username: currentUser, stats: userStats });
+            setTimeout(() => { document.getElementById('combat-screen').classList.add('hidden'); document.getElementById('main-menu').classList.remove('hidden'); loadUserData(); refreshRanking(); }, 3000);
         }
     </script>
 </body>
