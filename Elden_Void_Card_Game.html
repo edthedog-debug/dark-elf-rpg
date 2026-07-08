@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elden Void: Card Battles</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=VT323&family=Cinzel:wght@700&display=swap');
+
+        :root {
+            --bg-dark: #050507;
+            --panel-bg: #131114;
+            --blood: #8c0c17;
+            --gold: #b89047;
+            --mythic: #ff0055;
+            --legendary: #ff8000;
+            --epic: #a335ee;
+            --rare: #0070dd;
+            --common: #a0a0a0;
+            --pixel-font: 'VT323', monospace;
+            --med-font: 'MedievalSharp', serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, rgba(30,20,30,0.9) 0%, #000 100%);
+            color: #cbc3b7;
+            font-family: var(--pixel-font);
+            font-size: 1.2rem;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            text-shadow: 2px 2px 0px #000;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .lang-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #222;
+            border: 2px solid var(--gold);
+            color: #fff;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: var(--pixel-font);
+            font-size: 1.2rem;
+            z-index: 100;
+            text-transform: uppercase;
+        }
+        
+        .lang-toggle:hover { background: var(--blood); }
+
+        #game-container {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--panel-bg);
+            border: 4px solid #3a312a;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.9);
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        button {
+            background: #222;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: var(--pixel-font);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0px #000;
+            transition: transform 0.1s;
+        }
+
+        button:hover { background: var(--blood); color: #fff; transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #000; }
+        button:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px #000; }
+        button:disabled { background: #111; color: #555; border-color: #555; cursor: not-allowed; box-shadow: none; }
+
+        input {
+            background: #000;
+            border: 2px solid var(--gold);
+            color: #fff;
+            padding: 10px;
+            font-family: var(--pixel-font);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .hidden { display: none !important; }
+        .flex-row { display: flex; gap: 20px; justify-content: space-between; flex-wrap: wrap; }
+        .flex-col { display: flex; flex-direction: column; gap: 10px; }
+        .panel { flex: 1; background: #0a0a0a; border: 2px solid #2d282e; padding: 15px; }
+
+        /* Pixel Art Rendering */
+        .pixel-art {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        .enemy-sprite {
+            width: 250px;
+            height: 250px;
+            filter: drop-shadow(0 0 10px #000) grayscale(0.2) sepia(0.4) hue-rotate(-20deg) contrast(1.5);
+            animation: breathe 3s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.02) translateY(-5px); }
+        }
+
+        /* Hearthstone-like Card System */
+        .hand-container {
+            display: flex;
+            justify-content: center;
+            gap: -20px;
+            margin-top: 20px;
+            min-height: 180px;
+            position: relative;
+        }
+
+        .card {
+            width: 130px;
+            height: 180px;
+            background: #111;
+            border: 3px solid #444;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.8);
+            margin-left: -30px;
+        }
+        
+        .card:first-child { margin-left: 0; }
+        
+        .card:hover {
+            transform: translateY(-30px) scale(1.1);
+            z-index: 10;
+            border-color: var(--gold);
+        }
+
+        .card.enemy-card {
+            background: repeating-linear-gradient(45deg, #111, #111 10px, #222 10px, #222 20px);
+            border-color: #333;
+            cursor: default;
+        }
+        .card.enemy-card:hover { transform: none; }
+
+        .card-cost {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background: #1a5e82;
+            color: white;
+            border: 2px solid #000;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            z-index: 2;
+        }
+
+        .card-img-container {
+            height: 80px;
+            background: #000;
+            border-bottom: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-size: 3rem;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            text-align: center;
+            background: #222;
+            padding: 2px;
+            border-bottom: 1px solid #000;
+            font-family: var(--pixel-font);
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            padding: 5px;
+            text-align: center;
+            flex-grow: 1;
+            color: #aaa;
+            line-height: 1.1;
+        }
+
+        /* Rarities */
+        .rarity-comun { border-color: var(--common); }
+        .rarity-rara { border-color: var(--rare); }
+        .rarity-epica { border-color: var(--epic); }
+        .rarity-legendaria { border-color: var(--legendary); box-shadow: 0 0 10px var(--legendary); }
+        .rarity-mitica { border-color: var(--mythic); box-shadow: 0 0 15px var(--mythic); animation: pulse-mythic 2s infinite; }
+
+        @keyframes pulse-mythic { 0% { box-shadow: 0 0 5px var(--mythic); } 50% { box-shadow: 0 0 25px var(--mythic); } 100% { box-shadow: 0 0 5px var(--mythic); } }
+
+        /* Bars & Mana */
+        .bar-bg { width: 100%; height: 20px; background: #222; border: 2px solid #000; position: relative; margin-top: 5px; }
+        .hp-fill { height: 100%; background: var(--blood); transition: width 0.3s; }
+        .block-fill { height: 100%; background: #556677; position: absolute; top:0; left:0; opacity: 0.8; transition: width 0.3s; }
+        .bar-text { position: absolute; width: 100%; text-align: center; top: 0; left: 0; font-size: 1rem; color: #fff; line-height: 20px; text-shadow: 1px 1px 0 #000; }
+        
+        .mana-container { display: flex; gap: 5px; margin: 10px 0; }
+        .mana-crystal { width: 15px; height: 15px; background: #1a5e82; border: 1px solid #0df; transform: rotate(45deg); opacity: 0.3; }
+        .mana-crystal.active { opacity: 1; box-shadow: 0 0 5px #0df; }
+
+        /* Combat Layout */
+        .combat-area { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
+        .combat-row { display: flex; justify-content: space-between; align-items: center; border: 2px dashed #333; padding: 20px; position: relative; }
+        .character-zone { text-align: center; width: 280px; }
+        
+        .stance-icon {
+            font-size: 2rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #000;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        #log {
+            height: 150px; background: #050505; border: 2px solid #222;
+            padding: 10px; overflow-y: auto; font-size: 1.1rem; color: #aaa;
+            font-family: var(--pixel-font);
+        }
+        .log-turn { color: var(--gold); font-weight: bold; margin-top: 10px; border-bottom: 1px solid #333;}
+        .log-dmg { color: #ff4444; }
+        .log-heal { color: #44ff44; }
+        .log-block { color: #44aaff; }
+
+        /* Deck Builder */
+        .deck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; max-height: 400px; overflow-y: auto; padding: 10px; }
+        .deck-card { transform: scale(0.9); margin: 0; }
+        .deck-card:hover { transform: scale(0.95); z-index: 1; margin: 0; }
+        .in-deck-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: var(--gold); padding: 5px; font-size: 1.5rem; border: 2px solid var(--gold); z-index: 5; pointer-events: none;}
+
+        .floating-dmg {
+            position: absolute;
+            color: red;
+            font-size: 3rem;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #000;
+            animation: floatUp 1s forwards;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-50px); } }
+    </style>
+</head>
+<body>
+
+    <button class="lang-toggle" onclick="toggleLang()" id="lang-btn">ES / EN</button>
+
+    <div id="game-container">
+        <h1 data-i18n="game_title">ELDEN VOID</h1>
+        <h3 data-i18n="game_subtitle">Pixel Card Battles</h3>
+
+        <!-- AUTH SCREEN -->
+        <div id="auth-screen" style="text-align: center; padding: 40px 0;">
+            <h2 data-i18n="auth_title">Entra al Nexo</h2>
+            <input type="text" id="username" placeholder="Nombre / Name"><br>
+            <button onclick="login()" data-i18n="btn_play">Despertar</button>
+            <button onclick="clearData()" data-i18n="btn_reset" style="background:#511; border-color:#f00;">Borrar Datos</button>
+        </div>
+
+        <!-- MAIN MENU -->
+        <div id="main-menu" class="hidden">
+            <h2 id="welcome-msg"></h2>
+            
+            <div class="flex-row">
+                <div class="panel">
+                    <h3 data-i18n="stats_title">Stats</h3>
+                    <p>Nivel: <strong id="stat-level">1</strong></p>
+                    <div class="flex-col">
+                        <div>Fuerza (STR) [<span data-i18n="boosts_melee">Melee</span>]: <span id="stat-str">10</span> <button onclick="lvlUp('str')">+</button></div>
+                        <div>Agilidad (DEX) [<span data-i18n="boosts_ranged">Ranged</span>]: <span id="stat-dex">10</span> <button onclick="lvlUp('dex')">+</button></div>
+                        <div>Magia (ATT) [<span data-i18n="boosts_spell">Spell</span>]: <span id="stat-att">10</span> <button onclick="lvlUp('att')">+</button></div>
+                        <div>Entereza (END) [<span data-i18n="boosts_block">Block</span>]: <span id="stat-end">10</span> <button onclick="lvlUp('end')">+</button></div>
+                        <div>Vitalidad (VIG) [HP]: <span id="stat-vig">10</span> <button onclick="lvlUp('vig')">+</button></div>
+                        <p style="color:#ff5555" data-i18n="pts_avail">Puntos: <span id="stat-pts">0</span></p>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3 data-i18n="equip_title">Armamento</h3>
+                    <p style="font-size: 0.9rem; color:#aaa;" data-i18n="equip_desc">Las armas potencian las cartas de su tipo.</p>
+                    <p>⚔️ <span data-i18n="eq_w">Arma (Melee)</span>: <span id="eq-w"></span></p>
+                    <p>🏹 <span data-i18n="eq_r">Arco (Ranged)</span>: <span id="eq-r"></span></p>
+                    <p>🛡️ <span data-i18n="eq_s">Escudo (Block)</span>: <span id="eq-s"></span></p>
+                    <br>
+                    <button onclick="openDeckBuilder()" data-i18n="btn_deck">Construir Mazo</button>
+                    <button onclick="startCombat()" data-i18n="btn_combat" style="background:#510; border-color:#f80;">Buscar Combate</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DECK BUILDER -->
+        <div id="deck-builder" class="hidden">
+            <h2 data-i18n="deck_title">Tu Colección de Cartas</h2>
+            <p style="text-align:center;"><span id="deck-count">0</span>/15 <span data-i18n="deck_limit">en el mazo</span></p>
+            <div class="deck-grid" id="collection-grid"></div>
+            <br>
+            <div style="text-align: center;">
+                <button onclick="closeDeckBuilder()" data-i18n="btn_back">Volver</button>
+            </div>
+        </div>
+
+        <!-- COMBAT SCREEN -->
+        <div id="combat-screen" class="hidden">
+            <div class="combat-area">
+                
+                <!-- ENEMY -->
+                <div class="combat-row" style="background: rgba(50,0,0,0.2);">
+                    <div class="character-zone" style="position:relative;" id="enemy-zone">
+                        <div id="enemy-stance" class="stance-icon" title="Stance">🐉</div>
+                        <h3 id="enemy-name" style="color:var(--mythic); margin:0;">Dragon</h3>
+                        <div id="enemy-img-container"><img id="enemy-img" class="enemy-sprite pixel-art" src=""></div>
+                        
+                        <div class="bar-bg">
+                            <div id="e-hp-fill" class="hp-fill"></div>
+                            <div id="e-block-fill" class="block-fill" style="width:0%"></div>
+                            <div class="bar-text"><span id="e-hp">0</span> / <span id="e-max">0</span></div>
+                        </div>
+                        <div class="mana-container" id="e-mana-crystals"></div>
+                    </div>
+                    
+                    <div style="flex-grow:1; display:flex; flex-direction:column; align-items:center;">
+                        <h4 data-i18n="e_hand" style="margin:0;">Mano del Enemigo</h4>
+                        <div class="hand-container" id="enemy-hand" style="min-height:100px;"></div>
+                    </div>
+                </div>
+
+                <!-- PLAYER -->
+                <div class="combat-row" style="background: rgba(0,20,50,0.2);">
+                    <div class="character-zone" id="player-zone">
+                        <h3 id="p-name" style="color:var(--gold); margin:0;">Player</h3>
+                        <div style="font-size: 3rem; margin:10px 0;">🧙‍♂️</div>
+                        <div class="bar-bg">
+                            <div id="p-hp-fill" class="hp-fill"></div>
+                            <div id="p-block-fill" class="block-fill" style="width:0%"></div>
+                            <div class="bar-text"><span id="p-hp">0</span> / <span id="p-max">0</span> <span id="p-block-txt" style="color:#aaf;"></span></div>
+                        </div>
+                        <div class="mana-container" id="p-mana-crystals"></div>
+                    </div>
+
+                    <div style="flex-grow:1; display:flex; flex-direction:column; align-items:center;">
+                        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+                            <h4 data-i18n="p_hand" style="margin:0;">Tu Mano</h4>
+                            <button onclick="endTurn()" id="btn-end-turn" data-i18n="btn_end">Fin de Turno</button>
+                        </div>
+                        <div class="hand-container" id="player-hand"></div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div id="log"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- TRANSLATIONS ---
+        let currentLang = 'es';
+        const i18n = {
+            es: {
+                game_title: "ELDEN VOID", game_subtitle: "Batallas de Cartas Pixeladas",
+                auth_title: "Entra al Nexo", btn_play: "Despertar", btn_reset: "Borrar Datos",
+                stats_title: "Atributos", boosts_melee: "Melee", boosts_ranged: "Ranged", boosts_spell: "Magia", boosts_block: "Defensa", pts_avail: "Puntos Disponibles:",
+                equip_title: "Armamento", equip_desc: "Las armas suman daño base a las cartas de su tipo.", eq_w: "Arma (Melee)", eq_r: "Arco (Ranged)", eq_s: "Escudo (Block)",
+                btn_deck: "Colección de Cartas", btn_combat: "Asediar Dragón",
+                deck_title: "Tu Grimoire (Colección)", deck_limit: "en el mazo activo", btn_back: "Volver al Nexo",
+                e_hand: "Mano Enemiga", p_hand: "Tu Mano", btn_end: "Terminar Turno",
+                stance_ground: "Suelo", stance_fly: "Volando", stance_armor: "Acorazado",
+                type_melee: "Melee", type_ranged: "Ranged", type_spell: "Hechizo", type_block: "Bloqueo",
+                log_combat_start: "¡Inicia el combate contra ",
+                log_p_turn: "=== TU TURNO ===", log_e_turn: "=== TURNO ENEMIGO ===",
+                log_stance: " cambia su postura a: ",
+                log_play: " juega ", log_dmg: " causando ", log_block: " ganando ", log_heal: " curando ",
+                log_win: "¡VICTORIA! Has derrotado a la bestia.", log_loot: "¡Has obtenido una carta!", log_mythic: "¡INCREÍBLE! ¡Has conseguido una CARTA MÍTICA!",
+                log_lose: "Has sido reducido a cenizas...",
+                err_mana: "Energía insuficiente.", err_deck: "Necesitas al menos 5 cartas en tu mazo."
+            },
+            en: {
+                game_title: "ELDEN VOID", game_subtitle: "Pixel Card Battles",
+                auth_title: "Enter the Nexus", btn_play: "Awaken", btn_reset: "Wipe Data",
+                stats_title: "Attributes", boosts_melee: "Melee", boosts_ranged: "Ranged", boosts_spell: "Spell", boosts_block: "Block", pts_avail: "Stat Points:",
+                equip_title: "Equipment", equip_desc: "Weapons add flat damage to cards of their type.", eq_w: "Weapon (Melee)", eq_r: "Bow (Ranged)", eq_s: "Shield (Block)",
+                btn_deck: "Card Collection", btn_combat: "Siege Dragon",
+                deck_title: "Your Grimoire (Collection)", deck_limit: "in active deck", btn_back: "Return to Nexus",
+                e_hand: "Enemy Hand", p_hand: "Your Hand", btn_end: "End Turn",
+                stance_ground: "Grounded", stance_fly: "Flying", stance_armor: "Armored",
+                type_melee: "Melee", type_ranged: "Ranged", type_spell: "Spell", type_block: "Block",
+                log_combat_start: "Combat initiated against ",
+                log_p_turn: "=== YOUR TURN ===", log_e_turn: "=== ENEMY TURN ===",
+                log_stance: " changes stance to: ",
+                log_play: " plays ", log_dmg: " dealing ", log_block: " gaining ", log_heal: " healing ",
+                log_win: "VICTORY! The beast is slain.", log_loot: "You acquired a new card!", log_mythic: "UNBELIEVABLE! You found a MYTHIC CARD!",
+                log_lose: "You have been reduced to ashes...",
+                err_mana: "Not enough energy.", err_deck: "You need at least 5 cards in your deck."
+            }
+        };
+
+        function toggleLang() {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                el.innerText = i18n[currentLang][el.getAttribute('data-i18n')];
+            });
+            renderStats(); // Re-render for dynamic text
+        }
+
+        function t(key) { return i18n[currentLang][key] || key; }
+
+        // --- DATABASE ---
+        const ITEMS = {
+            w1: { id: 'w1', name_es: "Espada Rota", name_en: "Broken Sword", bonus: 2 },
+            w2: { id: 'w2', name_es: "Mandoble Real", name_en: "Royal Greatsword", bonus: 8 },
+            r1: { id: 'r1', name_es: "Arco Corto", name_en: "Shortbow", bonus: 2 },
+            r2: { id: 'r2', name_es: "Arco Élfico", name_en: "Elven Bow", bonus: 8 },
+            s1: { id: 's1', name_es: "Escudo de Madera", name_en: "Wood Shield", bonus: 2 },
+            s2: { id: 's2', name_es: "Pavesa de Hierro", name_en: "Iron Greatshield", bonus: 8 },
+        };
+
+        const CARDS = [
+            { id: "c1", name_es: "Tajo Básico", name_en: "Basic Slash", type: "melee", cost: 1, mult: 1.0, rarity: "comun", icon: "⚔️" },
+            { id: "c2", name_es: "Tiro Certero", name_en: "Aimed Shot", type: "ranged", cost: 2, mult: 1.5, rarity: "comun", icon: "🏹" },
+            { id: "c3", name_es: "Bloqueo Firme", name_en: "Firm Block", type: "block", cost: 1, mult: 1.2, rarity: "comun", icon: "🛡️" },
+            { id: "c4", name_es: "Chispa Arcana", name_en: "Arcane Spark", type: "spell", cost: 1, mult: 1.0, rarity: "comun", icon: "🔮" },
+            
+            { id: "c5", name_es: "Corte Furioso", name_en: "Furious Rend", type: "melee", cost: 3, mult: 2.2, rarity: "rara", icon: "⚔️" },
+            { id: "c6", name_es: "Lluvia de Flechas", name_en: "Arrow Rain", type: "ranged", cost: 3, mult: 2.0, rarity: "rara", icon: "🏹" },
+            { id: "c7", name_es: "Muro de Piedra", name_en: "Stone Wall", type: "block", cost: 2, mult: 2.5, rarity: "rara", icon: "🛡️" },
+            { id: "c8", name_es: "Bola de Fuego", name_en: "Fireball", type: "spell", cost: 3, mult: 2.5, rarity: "rara", icon: "🔥" },
+            
+            { id: "c9", name_es: "Ejecución", name_en: "Execution", type: "melee", cost: 5, mult: 4.0, rarity: "epica", icon: "💀" },
+            { id: "c10", name_es: "Meteoro Oscuro", name_en: "Dark Meteor", type: "spell", cost: 6, mult: 4.5, rarity: "epica", icon: "☄️" },
+            
+            { id: "c11", name_es: "Golpe del Dragón", name_en: "Dragon Strike", type: "melee", cost: 7, mult: 6.0, rarity: "legendaria", icon: "🐉" },
+            { id: "c12", name_es: "Égida Divina", name_en: "Divine Aegis", type: "block", cost: 4, mult: 6.0, rarity: "legendaria", icon: "✨" },
+
+            // MITICAS
+            { id: "m1", name_es: "ANULAR LA REALIDAD", name_en: "VOID THE REALITY", type: "spell", cost: 10, mult: 12.0, rarity: "mitica", icon: "🌌" },
+            { id: "m2", name_es: "FLECHA DEL FIN", name_en: "END ARROW", type: "ranged", cost: 8, mult: 10.0, rarity: "mitica", icon: "👁️" }
+        ];
+
+        // --- STATE ---
+        let userStats = null;
+        let combat = null;
+
+        // --- CORE FUNCTIONS ---
+        function clearData() {
+            localStorage.removeItem('eldenVoidSave');
+            location.reload();
+        }
+
+        function login() {
+            let u = document.getElementById('username').value.trim();
+            if(!u) u = "Nameless";
+            let saved = localStorage.getItem('eldenVoidSave_' + u);
+            if(saved) {
+                userStats = JSON.parse(saved);
+            } else {
+                userStats = {
+                    name: u, level: 1, pts: 5, str: 10, dex: 10, att: 10, end: 10, vig: 10,
+                    equip: { w: 'w1', r: 'r1', s: 's1' },
+                    collection: ['c1','c1','c2','c3','c3','c4'],
+                    deck: ['c1','c1','c2','c3','c3','c4']
+                };
+            }
+            saveGame();
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('main-menu').classList.remove('hidden');
+            renderStats();
+            toggleLang(); // trigger initial translate
+            toggleLang(); // swap back
+        }
+
+        function saveGame() {
+            localStorage.setItem('eldenVoidSave_' + userStats.name, JSON.stringify(userStats));
+        }
+
+        function renderStats() {
+            if(!userStats) return;
+            document.getElementById('welcome-msg').innerText = `${userStats.name} - Lvl ${userStats.level}`;
+            document.getElementById('stat-level').innerText = userStats.level;
+            document.getElementById('stat-pts').innerText = userStats.pts;
+            document.getElementById('stat-str').innerText = userStats.str;
+            document.getElementById('stat-dex').innerText = userStats.dex;
+            document.getElementById('stat-att').innerText = userStats.att;
+            document.getElementById('stat-end').innerText = userStats.end;
+            document.getElementById('stat-vig').innerText = userStats.vig;
+
+            let w = ITEMS[userStats.equip.w];
+            let r = ITEMS[userStats.equip.r];
+            let s = ITEMS[userStats.equip.s];
+
+            document.getElementById('eq-w').innerText = (currentLang==='es'?w.name_es:w.name_en) + ` (+${w.bonus})`;
+            document.getElementById('eq-r').innerText = (currentLang==='es'?r.name_es:r.name_en) + ` (+${r.bonus})`;
+            document.getElementById('eq-s').innerText = (currentLang==='es'?s.name_es:s.name_en) + ` (+${s.bonus})`;
+        }
+
+        function lvlUp(stat) {
+            if(userStats.pts > 0) {
+                userStats[stat]++;
+                userStats.pts--;
+                userStats.level++;
+                saveGame();
+                renderStats();
+            }
+        }
+
+        // --- DECK BUILDER ---
+        function openDeckBuilder() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('deck-builder').classList.remove('hidden');
+            renderDeckBuilder();
+        }
+        function closeDeckBuilder() {
+            document.getElementById('deck-builder').classList.add('hidden');
+            document.getElementById('main-menu').classList.remove('hidden');
+            saveGame();
+        }
+
+        function renderDeckBuilder() {
+            let grid = document.getElementById('collection-grid');
+            grid.innerHTML = "";
+            document.getElementById('deck-count').innerText = userStats.deck.length;
+
+            // Sort collection
+            let sortedColl = [...userStats.collection].sort();
+            
+            // To track deck counts cleanly
+            let deckTemp = [...userStats.deck];
+
+            sortedColl.forEach((cardId, index) => {
+                let c = CARDS.find(x => x.id === cardId);
+                let inDeckIdx = deckTemp.indexOf(cardId);
+                let inDeck = inDeckIdx > -1;
+                if(inDeck) deckTemp.splice(inDeckIdx, 1); // remove one instance
+
+                let cHTML = createCardHTML(c);
+                let wrap = document.createElement('div');
+                wrap.style.position = 'relative';
+                wrap.innerHTML = cHTML;
+                wrap.firstElementChild.classList.add('deck-card');
+                
+                if(inDeck) {
+                    wrap.innerHTML += `<div class="in-deck-badge">IN DECK</div>`;
+                }
+
+                wrap.onclick = () => toggleDeckCard(cardId, inDeck, index);
+                grid.appendChild(wrap);
+            });
+        }
+
+        function toggleDeckCard(cardId, currentlyInDeck, idx) {
+            if(currentlyInDeck) {
+                let dIdx = userStats.deck.indexOf(cardId);
+                if(dIdx > -1) userStats.deck.splice(dIdx, 1);
+            } else {
+                if(userStats.deck.length < 15) {
+                    userStats.deck.push(cardId);
+                }
+            }
+            renderDeckBuilder();
+        }
+
+        function createCardHTML(cardData, hide = false) {
+            if(hide) {
+                return `<div class="card enemy-card">
+                    <div class="card-img-container" style="color:#555;">?</div>
+                    <div class="card-title">Elden Void</div>
+                </div>`;
+            }
+
+            let name = currentLang === 'es' ? cardData.name_es : cardData.name_en;
+            let typeName = t('type_' + cardData.type);
+            
+            return `
+                <div class="card rarity-${cardData.rarity}" data-id="${cardData.id}">
+                    <div class="card-cost">${cardData.cost}</div>
+                    <div class="card-img-container">${cardData.icon}</div>
+                    <div class="card-title">${name}</div>
+                    <div class="card-desc">[${typeName}]<br>x${cardData.mult} Multiplier</div>
+                </div>
+            `;
+        }
+
+
+        // --- COMBAT SYSTEM ---
+        function startCombat() {
+            if(userStats.deck.length < 5) return alert(t('err_deck'));
+
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('combat-screen').classList.remove('hidden');
+            document.getElementById('log').innerHTML = "";
+
+            let seed = Math.floor(Math.random() * 99999);
+            document.getElementById('enemy-img').src = `https://robohash.org/dragon${seed}?set=set2&size=300x300`;
+            
+            let eLevel = Math.max(1, userStats.level + Math.floor(Math.random()*4 - 1));
+            
+            combat = {
+                turnCount: 0,
+                turn: 'player',
+                p: {
+                    hp: userStats.vig * 10, max: userStats.vig * 10, block: 0, mana: 1, maxMana: 1,
+                    deck: shuffle([...userStats.deck]), hand: [], discard: []
+                },
+                e: {
+                    name: `Gargantua Lvl ${eLevel}`, hp: 50 + (eLevel*15), max: 50 + (eLevel*15), block: 0, mana: 1, maxMana: 1,
+                    stance: 'ground',
+                    deck: generateEnemyDeck(eLevel), hand: []
+                }
+            };
+
+            document.getElementById('enemy-name').innerText = combat.e.name;
+            document.getElementById('p-name').innerText = userStats.name;
+
+            log(t('log_combat_start') + combat.e.name, 'log-turn');
+
+            // Initial draw
+            drawCard('p', 4);
+            drawCard('e', 4);
+            updateCombatUI();
+        }
+
+        function generateEnemyDeck(level) {
+            let d = [];
+            for(let i=0; i<10; i++) {
+                let r = Math.random();
+                let tier = r > 0.9 ? 'legendaria' : r > 0.6 ? 'epica' : r > 0.3 ? 'rara' : 'comun';
+                let pool = CARDS.filter(c => c.rarity === tier && c.rarity !== 'mitica');
+                if(pool.length > 0) d.push(pool[Math.floor(Math.random()*pool.length)].id);
+                else d.push('c1');
+            }
+            return shuffle(d);
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function drawCard(who, amount = 1) {
+            for(let i=0; i<amount; i++) {
+                let c = combat[who];
+                if(c.deck.length === 0) {
+                    if(c.discard.length === 0) break; // Fatigue!
+                    c.deck = shuffle([...c.discard]);
+                    c.discard = [];
+                }
+                if(c.hand.length < 10) {
+                    c.hand.push(c.deck.pop());
+                }
+            }
+        }
+
+        function updateCombatUI() {
+            // Bars Player
+            document.getElementById('p-hp').innerText = combat.p.hp;
+            document.getElementById('p-max').innerText = combat.p.max;
+            document.getElementById('p-hp-fill').style.width = (combat.p.hp / combat.p.max * 100) + "%";
+            document.getElementById('p-block-fill').style.width = Math.min(100, (combat.p.block / combat.p.max * 100)) + "%";
+            document.getElementById('p-block-txt').innerText = combat.p.block > 0 ? `[+${combat.p.block} 🛡️]` : "";
+
+            // Bars Enemy
+            document.getElementById('e-hp').innerText = combat.e.hp;
+            document.getElementById('e-max').innerText = combat.e.max;
+            document.getElementById('e-hp-fill').style.width = (combat.e.hp / combat.e.max * 100) + "%";
+            document.getElementById('e-block-fill').style.width = Math.min(100, (combat.e.block / combat.e.max * 100)) + "%";
+
+            // Mana Player
+            let pMC = document.getElementById('p-mana-crystals');
+            pMC.innerHTML = "";
+            for(let i=0; i<combat.p.maxMana; i++) {
+                pMC.innerHTML += `<div class="mana-crystal ${i < combat.p.mana ? 'active' : ''}"></div>`;
+            }
+
+            // Mana Enemy
+            let eMC = document.getElementById('e-mana-crystals');
+            eMC.innerHTML = "";
+            for(let i=0; i<combat.e.maxMana; i++) {
+                eMC.innerHTML += `<div class="mana-crystal ${i < combat.e.mana ? 'active' : ''}"></div>`;
+            }
+
+            // Hands
+            let ph = document.getElementById('player-hand');
+            ph.innerHTML = "";
+            combat.p.hand.forEach((cId, i) => {
+                let c = CARDS.find(x => x.id === cId);
+                let el = document.createElement('div');
+                el.innerHTML = createCardHTML(c);
+                let cardDOM = el.firstElementChild;
+                if(c.cost > combat.p.mana || combat.turn !== 'player') cardDOM.style.opacity = "0.5";
+                
+                cardDOM.onclick = () => playCard('player', i);
+                ph.appendChild(cardDOM);
+            });
+
+            let eh = document.getElementById('enemy-hand');
+            eh.innerHTML = "";
+            combat.e.hand.forEach(c => {
+                eh.innerHTML += createCardHTML(null, true);
+            });
+
+            // Stance
+            let sIcon = combat.e.stance === 'fly' ? '🦅' : combat.e.stance === 'armor' ? '🛡️' : '🐉';
+            document.getElementById('enemy-stance').innerText = sIcon;
+            
+            let sTitle = combat.e.stance === 'fly' ? t('stance_fly') : combat.e.stance === 'armor' ? t('stance_armor') : t('stance_ground');
+            document.getElementById('enemy-stance').title = sTitle;
+        }
+
+        function playCard(who, handIndex) {
+            let isPlayer = who === 'player';
+            let active = isPlayer ? combat.p : combat.e;
+            let target = isPlayer ? combat.e : combat.p;
+            
+            if(combat.turn !== who) return;
+            
+            let cardId = active.hand[handIndex];
+            let card = CARDS.find(c => c.id === cardId);
+
+            if(active.mana < card.cost) {
+                if(isPlayer) log(t('err_mana'), 'log-dmg');
+                return false; // For AI
+            }
+
+            // Pay cost
+            active.mana -= card.cost;
+            active.hand.splice(handIndex, 1);
+            active.discard.push(cardId);
+
+            // Log play
+            let cName = currentLang === 'es' ? card.name_es : card.name_en;
+            log((isPlayer ? userStats.name : combat.e.name) + t('log_play') + `[${cName}]`, '');
+
+            // Calculate Base Value based on Stats & Equip
+            let baseVal = 0;
+            if(card.type === 'melee') {
+                let eqW = ITEMS[isPlayer ? userStats.equip.w : 'w1'];
+                baseVal = (isPlayer ? userStats.str : 10 + combat.e.max/20) + (isPlayer?eqW.bonus:0);
+            } else if(card.type === 'ranged') {
+                let eqR = ITEMS[isPlayer ? userStats.equip.r : 'r1'];
+                baseVal = (isPlayer ? userStats.dex : 10 + combat.e.max/20) + (isPlayer?eqR.bonus:0);
+            } else if(card.type === 'spell') {
+                baseVal = isPlayer ? userStats.att : 10 + combat.e.max/20;
+            } else if(card.type === 'block') {
+                let eqS = ITEMS[isPlayer ? userStats.equip.s : 's1'];
+                baseVal = (isPlayer ? userStats.end : 10 + combat.e.max/20) + (isPlayer?eqS.bonus:0);
+            }
+
+            let finalVal = Math.floor(baseVal * card.mult);
+
+            // Apply Stance Multipliers (STRATEGY MECHANIC!)
+            if(card.type !== 'block') {
+                if(!isPlayer) {
+                    // Dragon attacking player (No stance reduction for player yet, pure dmg)
+                    applyDamage(target, finalVal, 'player-zone');
+                } else {
+                    // Player attacking Dragon (Check Stances!)
+                    let dmg = finalVal;
+                    if(combat.e.stance === 'fly') {
+                        if(card.type === 'ranged') { dmg *= 2.0; log("🎯 ¡CRÍTICO! El dragón es vulnerable a flechas volando.", "log-dmg"); }
+                        else if(card.type === 'melee') { dmg *= 0.5; log("💨 El dragón esquiva parte del tajo en el aire.", ""); }
+                    } else if(combat.e.stance === 'armor') {
+                        if(card.type === 'spell') { dmg *= 2.0; log("✨ ¡Magia perfora la coraza!", "log-dmg"); }
+                        else if(card.type === 'melee' || card.type === 'ranged') { dmg *= 0.5; log("🛡️ La armadura del dragón absorbe el impacto físico.", ""); }
+                    }
+                    dmg = Math.floor(dmg);
+                    applyDamage(target, dmg, 'enemy-zone');
+                }
+            } else {
+                // Block
+                active.block += finalVal;
+                log(`+${finalVal} ` + t('type_block'), 'log-block');
+            }
+
+            updateCombatUI();
+            checkWin();
+            return true;
+        }
+
+        function applyDamage(target, amount, zoneId) {
+            let dmgToBlock = Math.min(target.block, amount);
+            target.block -= dmgToBlock;
+            let dmgToHp = amount - dmgToBlock;
+            target.hp -= dmgToHp;
+
+            log(t('log_dmg') + amount + " DMG", 'log-dmg');
+
+            // visual float
+            let zone = document.getElementById(zoneId);
+            let fl = document.createElement('div');
+            fl.className = 'floating-dmg';
+            fl.innerText = "-" + amount;
+            fl.style.top = (Math.random()*40 + 30) + "%";
+            fl.style.left = (Math.random()*40 + 30) + "%";
+            zone.appendChild(fl);
+            setTimeout(()=>fl.remove(), 1000);
+        }
+
+        function endTurn() {
+            if(combat.turn !== 'player') return;
+            combat.turn = 'enemy';
+            updateCombatUI();
+            log(t('log_e_turn'), 'log-turn');
+            document.getElementById('btn-end-turn').disabled = true;
+            
+            setTimeout(enemyTurn, 1000);
+        }
+
+        async function enemyTurn() {
+            if(combat.p.hp <= 0 || combat.e.hp <= 0) return;
+
+            combat.e.maxMana = Math.min(10, combat.e.maxMana + 1);
+            combat.e.mana = combat.e.maxMana;
+            drawCard('e', 1);
+
+            // Change Stance randomly every few turns
+            if(Math.random() > 0.6) {
+                let stances = ['ground', 'fly', 'armor'];
+                combat.e.stance = stances[Math.floor(Math.random() * stances.length)];
+                log("🐉 " + combat.e.name + t('log_stance') + t('stance_' + combat.e.stance), 'log-turn');
+                updateCombatUI();
+            }
+
+            // AI Loop
+            let canPlay = true;
+            while(canPlay && combat.e.hp > 0 && combat.p.hp > 0) {
+                await sleep(800);
+                // Find playable card
+                let playableIdx = combat.e.hand.findIndex(cId => {
+                    return CARDS.find(c => c.id === cId).cost <= combat.e.mana;
+                });
+                
+                if(playableIdx > -1) {
+                    playCard('enemy', playableIdx);
+                } else {
+                    canPlay = false;
+                }
+            }
+
+            if(combat.p.hp > 0) {
+                await sleep(500);
+                combat.turn = 'player';
+                combat.p.maxMana = Math.min(10, combat.p.maxMana + 1);
+                combat.p.mana = combat.p.maxMana;
+                drawCard('p', 1);
+                log(t('log_p_turn'), 'log-turn');
+                document.getElementById('btn-end-turn').disabled = false;
+                updateCombatUI();
+            }
+        }
+
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+        function checkWin() {
+            if(combat.e.hp <= 0) {
+                combat.e.hp = 0;
+                log(t('log_win'), 'log-heal');
+                document.getElementById('btn-end-turn').disabled = true;
+                rewardLoot();
+                setTimeout(()=> {
+                    document.getElementById('combat-screen').classList.add('hidden');
+                    document.getElementById('main-menu').classList.remove('hidden');
+                    userStats.pts += 2;
+                    saveGame();
+                    renderStats();
+                }, 3000);
+            } else if(combat.p.hp <= 0) {
+                combat.p.hp = 0;
+                log(t('log_lose'), 'log-dmg');
+                document.getElementById('btn-end-turn').disabled = true;
+                setTimeout(()=> {
+                    document.getElementById('combat-screen').classList.add('hidden');
+                    document.getElementById('main-menu').classList.remove('hidden');
+                }, 3000);
+            }
+        }
+
+        function rewardLoot() {
+            let r = Math.random();
+            let tier = 'comun';
+            if(r > 0.99) tier = 'mitica'; // 1% Mythic
+            else if(r > 0.95) tier = 'legendaria'; // 4% Leg
+            else if(r > 0.80) tier = 'epica'; // 15% Epic
+            else if(r > 0.50) tier = 'rara'; // 30% Rare
+
+            let pool = CARDS.filter(c => c.rarity === tier);
+            let drop = pool[Math.floor(Math.random() * pool.length)];
+            
+            if(tier === 'mitica') log(t('log_mythic') + " " + (currentLang==='es'?drop.name_es:drop.name_en), 'log-turn');
+            else log(t('log_loot') + " " + (currentLang==='es'?drop.name_es:drop.name_en), 'log-heal');
+
+            userStats.collection.push(drop.id);
+        }
+
+        function log(msg, className) {
+            let l = document.getElementById('log');
+            l.innerHTML += `<div class="${className}">${msg}</div>`;
+            l.scrollTop = l.scrollHeight;
+        }
+
+        // Init Translations on Load
+        toggleLang();
+        toggleLang();
+    </script>
+</body>
+</html>
