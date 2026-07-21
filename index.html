@@ -119,14 +119,6 @@
             cursor: not-allowed;
             filter: grayscale(0.7);
         }
-        button.special-action {
-            background: linear-gradient(180deg, #2d1a3a 0%, #150a20 100%);
-            border-color: #7b2d8e;
-        }
-        button.special-action:hover:not(:disabled) {
-            background: #4a1d5e;
-            box-shadow: 0 0 25px rgba(150, 40, 200, 0.7);
-        }
 
         input, select {
             background: #0a0a0f;
@@ -138,6 +130,8 @@
             font-size: 1.1em;
             border-radius: 3px;
             transition: all 0.3s;
+            width: 100%;
+            max-width: 350px;
         }
         input:focus { border-color: var(--gold-neon); box-shadow: 0 0 15px rgba(180,140,40,0.3); outline: none; }
 
@@ -315,11 +309,16 @@
         <!-- LOGIN SCREEN -->
         <div id="auth-screen" style="text-align: center; padding: 20px 0;">
             <h2>🜁 Engrave Your Name in the Nexus 🜁</h2>
-            <input type="text" id="username" placeholder="Dark Elf Name"><br><br>
-            <input type="password" id="password" placeholder="Access Rune"><br><br>
-            <button onclick="login()">Awaken the Elf</button>
-            <button onclick="register()">Forge New Lineage</button>
-            <div id="loading-overlay" class="hidden"><br>⚔️ CHANNELING VOID ESSENCE...</div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                <input type="text" id="username" placeholder="Dark Elf Name">
+                <input type="password" id="password" placeholder="Access Rune">
+                <div style="display: flex; gap: 12px; margin-top: 8px;">
+                    <button onclick="login()">Awaken the Elf</button>
+                    <button onclick="register()">Forge New Lineage</button>
+                </div>
+            </div>
+            <p id="auth-message" style="margin-top: 15px; color: #ffaa00; font-style: italic; min-height: 24px;"></p>
+            <div id="loading-overlay" class="hidden" style="margin-top: 10px;">⚔️ CHANNELING VOID ESSENCE...</div>
         </div>
 
         <!-- MAIN MENU -->
@@ -358,9 +357,9 @@
             <h3>🏅 Hall of Blazons & Medals</h3>
             <div class="medal-shelf" id="medal-shelf-container"></div>
 
-            <div style="margin-top: 25px; text-align: center;">
-                <button onclick="lookForCastle()" style="font-size: 1.4em; width: 55%; letter-spacing:1px;">⚔️ Siege Draconic Fortress ⚔️</button>
-                <button onclick="logout()" style="margin-left: 10px;">Leave Nexus</button>
+            <div style="margin-top: 25px; text-align: center; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="lookForCastle()" style="font-size: 1.4em; letter-spacing:1px;">⚔️ Siege Draconic Fortress ⚔️</button>
+                <button onclick="logout()">Leave Nexus</button>
             </div>
         </div>
 
@@ -416,14 +415,72 @@
                 </div>
             </div>
             <div id="log"></div>
+            <div style="text-align: center; margin-top: 15px;">
+                <button onclick="fleeCombat()" style="background: #1a1a1a; border-color: #555;">🏃 Flee Combat (Lose Rewards)</button>
+            </div>
         </div>
 
     </div>
 
     <script>
+        // ============================================
+        // GOOGLE SHEETS CONNECTION
+        // ============================================
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYlHbPacdrNWQS5rVSxX72UJy71tGwMq-NDJftIVn4rChGv8VPoE8MkI6RYpFrzDsgFQ/exec";
 
-        // EXPANDED WEAPON POOL WITH UNIQUE EFFECTS
+        async function cloudRequest(action, data = {}) {
+            const loadingEl = document.getElementById('loading-overlay');
+            if (loadingEl) loadingEl.classList.remove('hidden');
+            
+            try {
+                let response;
+                
+                if (action === 'getRanking') {
+                    // GET request for ranking
+                    let url = `${WEB_APP_URL}?action=getRanking`;
+                    response = await fetch(url);
+                } else if (action === 'login') {
+                    // GET request for login
+                    let url = `${WEB_APP_URL}?action=login&username=${encodeURIComponent(data.username)}&password=${encodeURIComponent(data.password)}`;
+                    response = await fetch(url);
+                } else {
+                    // POST request for other actions (register, save)
+                    data.action = action;
+                    response = await fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (loadingEl) loadingEl.classList.add('hidden');
+
+                // For no-cors requests, we can't read the response
+                if (response.type === 'opaque') {
+                    return { success: true };
+                }
+
+                // For regular requests, parse JSON
+                const text = await response.text();
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.log("Response text:", text);
+                    return { success: false, error: "Invalid response format" };
+                }
+            } catch (e) {
+                if (loadingEl) loadingEl.classList.add('hidden');
+                console.error("Cloud request error:", e);
+                return { success: false, error: e.message };
+            }
+        }
+
+        // ============================================
+        // ITEM POOL WITH UNIQUE EFFECTS
+        // ============================================
         const itemPool = [
             { id: "w1", name: "Forged Iron Dagger", type: "weapon", effects: ["bleeding"], bonus: 6, rarity: "common", desc: "Causes light bleeding (3 dmg/turn, 2 turns)" },
             { id: "w2", name: "Fallen King's Greatsword", type: "weapon", effects: ["fire"], bonus: 16, rarity: "epic", desc: "Applies burn (8 dmg/turn, 3 turns)" },
@@ -439,139 +496,159 @@
             { id: "s3", name: "👑 IMMORTAL BULWARK", type: "shield", effects: ["healing", "divine_shield"], bonus: 40, rarity: "relic", desc: "Heals 8 HP/turn. Blocks next attack every 3 turns." }
         ];
 
-        let currentUser = null, userStats = {}, combatState = null;
+        let currentUser = null;
+        let userStats = {};
+        let combatState = null;
         let consumeUsed = false;
         let divineShieldActive = false;
         let divineShieldCooldown = 0;
-        let enemyStatusEffects = {};
-        let playerStatusEffects = {};
 
-        async function cloudRequest(action, data = {}) {
-            document.getElementById('loading-overlay')?.classList.remove('hidden');
-            try {
-                if (action === 'getRanking' || action === 'login') {
-                    let url = `${WEB_APP_URL}?action=${action}`;
-                    if (data.username) url += `&username=${encodeURIComponent(data.username)}&password=${encodeURIComponent(data.password)}`;
-                    let response = await fetch(url);
-                    let resJson = await response.json();
-                    document.getElementById('loading-overlay')?.classList.add('hidden');
-                    return resJson;
-                } else {
-                    data.action = action;
-                    await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-                    document.getElementById('loading-overlay')?.classList.add('hidden');
-                    return { success: true };
-                }
-            } catch (e) {
-                document.getElementById('loading-overlay')?.classList.add('hidden');
-                return { success: false };
+        function getDefaultStats() {
+            return {
+                level: 1,
+                score: 0,
+                points: 8,
+                str: 12,
+                dex: 12,
+                att: 10,
+                vig: 10,
+                end: 10,
+                weapon: "w1",
+                armor: "a1",
+                shield: "s1",
+                ownedItems: ["w1", "a1", "s1"],
+                medalsList: []
+            };
+        }
+
+        // ============================================
+        // AUTH FUNCTIONS
+        // ============================================
+        function showAuthMessage(msg, isError = false) {
+            const el = document.getElementById('auth-message');
+            if (el) {
+                el.textContent = msg;
+                el.style.color = isError ? '#ff5555' : '#ffaa00';
             }
         }
 
         async function register() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
-            if(!u || !p) return alert("Fill in all fields of the codex.");
-            let defaultStats = {
-                level: 1, score: 0, points: 8, str: 12, dex: 12, att: 10, vig: 10, end: 10,
-                weapon: "w1", armor: "a1", shield: "s1", ownedItems: ["w1", "a1", "s1"], medalsList: []
-            };
-            await cloudRequest('register', { username: u, password: p, stats: defaultStats });
-            alert("Dark Elf forged in the Nexus. Awaken!");
+
+            if (!u || !p) {
+                showAuthMessage("Fill in all fields of the codex.", true);
+                return;
+            }
+
+            if (u.length < 3) {
+                showAuthMessage("Name must be at least 3 characters.", true);
+                return;
+            }
+
+            if (p.length < 3) {
+                showAuthMessage("Rune must be at least 3 characters.", true);
+                return;
+            }
+
+            showAuthMessage("Forging new lineage in the Nexus...", false);
+
+            const defaultStats = getDefaultStats();
+            const result = await cloudRequest('register', {
+                username: u,
+                password: p,
+                stats: defaultStats
+            });
+
+            if (result && result.success) {
+                showAuthMessage("Dark Elf forged in the Nexus! You may now awaken.", false);
+                document.getElementById('password').value = '';
+            } else {
+                showAuthMessage("The Nexus rejected the forging. Try again.", true);
+            }
         }
 
         async function login() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
-            let res = await cloudRequest('login', { username: u, password: p });
-            if(res && res.success) {
-                currentUser = u; userStats = res.stats;
-                if(!userStats.ownedItems) userStats.ownedItems = ["w1", "a1", "s1"];
-                if(!userStats.medalsList) userStats.medalsList = [];
-                if(!userStats.weapon) userStats.weapon = "w1";
-                if(!userStats.armor) userStats.armor = "a1";
-                if(!userStats.shield) userStats.shield = "s1";
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('main-menu').classList.remove('hidden');
-                renderUserData();
-            } else { alert("Access denied. Verify your runes."); }
-        }
 
-        function logout() { location.reload(); }
+            if (!u || !p) {
+                showAuthMessage("Enter your name and rune.", true);
+                return;
+            }
 
-        function renderUserData() {
-            document.getElementById('welcome-msg').innerText = "⚔️ Lineage: " + currentUser;
-            document.getElementById('stat-level').innerText = userStats.level;
-            document.getElementById('stat-points').innerText = userStats.points;
-            document.getElementById('stat-str').innerText = userStats.str;
-            document.getElementById('stat-dex').innerText = userStats.dex;
-            document.getElementById('stat-att').innerText = userStats.att;
-            document.getElementById('stat-vig').innerText = userStats.vig;
-            document.getElementById('stat-end').innerText = userStats.end;
+            showAuthMessage("Channeling void essence...", false);
 
-            let w = itemPool.find(i => i.id === userStats.weapon) || itemPool[0];
-            let a = itemPool.find(i => i.id === userStats.armor) || itemPool[4];
-            let s = itemPool.find(i => i.id === userStats.shield) || itemPool[8];
-
-            document.getElementById('eq-weapon').innerHTML = `<span class="rare-${w.rarity}">${w.name} (+${w.bonus})</span>`;
-            document.getElementById('eq-armor').innerHTML = `<span class="rare-${a.rarity}">${a.name} (+${a.bonus})</span>`;
-            document.getElementById('eq-shield').innerHTML = `<span class="rare-${s.rarity}">${s.name} (+${s.bonus})</span>`;
-
-            const container = document.getElementById('inventory-container');
-            container.innerHTML = "";
-            userStats.ownedItems.forEach(id => {
-                let item = itemPool.find(i => i.id === id);
-                if(!item) return;
-                let eq = (userStats.weapon===id || userStats.armor===id || userStats.shield===id);
-                container.innerHTML += `
-                    <div class="inv-item rare-${item.rarity} ${eq?'equipped':''}" title="${item.desc || ''}">
-                        <strong>${item.name}</strong>
-                        <span style="font-size:0.7em;">Power: +${item.bonus}</span>
-                        <small style="font-size:0.65em; color:#aaa;">${item.rarity.toUpperCase()}</small>
-                        <button style="padding:3px; font-size:0.75em; margin-top:3px;" ${eq?'disabled':''} onclick="equipItem('${item.id}')">Equip</button>
-                    </div>
-                `;
+            const result = await cloudRequest('login', {
+                username: u,
+                password: p
             });
 
-            const shelf = document.getElementById('medal-shelf-container');
-            shelf.innerHTML = "";
-            if(!userStats.medalsList || userStats.medalsList.length === 0) {
-                shelf.innerHTML = `<p style="color:#5a5040; font-style:italic; padding:12px;">The shelf is empty. Conquer fortresses to forge medals...</p>`;
+            console.log("Login result:", result);
+
+            if (result && result.success) {
+                currentUser = u;
+                
+                // Parse stats if they come as string
+                if (typeof result.stats === 'string') {
+                    try {
+                        userStats = JSON.parse(result.stats);
+                    } catch (e) {
+                        userStats = getDefaultStats();
+                    }
+                } else if (result.stats) {
+                    userStats = result.stats;
+                } else {
+                    userStats = getDefaultStats();
+                }
+
+                // Ensure all required fields exist
+                if (!userStats.ownedItems) userStats.ownedItems = ["w1", "a1", "s1"];
+                if (!userStats.medalsList) userStats.medalsList = [];
+                if (!userStats.weapon) userStats.weapon = "w1";
+                if (!userStats.armor) userStats.armor = "a1";
+                if (!userStats.shield) userStats.shield = "s1";
+                if (!userStats.level) userStats.level = 1;
+                if (!userStats.score) userStats.score = 0;
+                if (!userStats.points && userStats.points !== 0) userStats.points = 8;
+                if (!userStats.str) userStats.str = 12;
+                if (!userStats.dex) userStats.dex = 12;
+                if (!userStats.att) userStats.att = 10;
+                if (!userStats.vig) userStats.vig = 10;
+                if (!userStats.end) userStats.end = 10;
+
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('main-menu').classList.remove('hidden');
+                document.getElementById('auth-message').textContent = '';
+                document.getElementById('password').value = '';
+                renderUserData();
             } else {
-                userStats.medalsList.forEach(m => {
-                    shelf.innerHTML += `
-                        <div class="medal-badge rare-${m.rarity}" title="${m.rarity.toUpperCase()}">
-                            <span class="medal-icon">${m.icon}</span>
-                            <strong style="font-size:0.85em;">${m.name}</strong>
-                            <span style="font-size:0.7em; opacity:0.8;">${m.rarity.toUpperCase()}</span>
-                        </div>
-                    `;
-                });
+                const errorMsg = result?.error || "Access denied. Verify your runes.";
+                showAuthMessage(errorMsg, true);
             }
         }
 
-        function equipItem(id) {
-            let item = itemPool.find(i => i.id === id);
-            if(item.type === "weapon") userStats.weapon = id;
-            if(item.type === "armor") userStats.armor = id;
-            if(item.type === "shield") userStats.shield = id;
-            renderUserData(); 
-            cloudRequest('save', { username: currentUser, stats: userStats });
-        }
-
-        function levelUpSkill(skill) {
-            if(userStats.points > 0) { 
-                userStats[skill]++; 
-                userStats.points--; 
-                userStats.level++; 
-                renderUserData(); 
-                cloudRequest('save', { username: currentUser, stats: userStats }); 
+        async function logout() {
+            // Save current state before logout
+            if (currentUser) {
+                await cloudRequest('save', { username: currentUser, stats: userStats });
             }
+            currentUser = null;
+            userStats = {};
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('combat-screen').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('auth-message').textContent = '';
         }
 
-        function lookForCastle() {
-            let seed1 = Math.floor(Math.random() * 1000);
-            let seed2 = Math.floor(Math.random() * 1000);
+        // ============================================
+        // UI RENDERING
+        // ============================================
+        function renderUserData() {
+            if (!currentUser || !userStats) return;
 
-            let namesDragons = ["Tiamat the Deformed", "Ancalagon of the Void", "Glaurung the Putrid", "Smaug Blood-Rune", "Vermithrax Ancestral", "Nidhogg the Corrupted", "Fafnir the Greedy"];
-            let chosenName = namesDragons[
+            document.getElementById('welcome-msg').innerText = "⚔️ Lineage: " + currentUser;
+            document.getElementById('stat-level').innerText = userStats.level || 1;
+            document.getElementById('stat-points').innerText = userStats.points || 0;
