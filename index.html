@@ -246,21 +246,21 @@
   <h1>ELDEN VOID</h1>
   <div class="subtitle">⚔️ DARK ELF DYNASTY · INFINITE BLASONS ⚔️</div>
 
-  <!-- AUTH -->
+  <!-- AUTH (original system) -->
   <div id="auth-screen" class="panel" style="text-align: center;">
     <h2>Carve Name into the Nexus Stone</h2>
     <input type="text" id="username" placeholder="Dark Elf Name" autocomplete="off"><br><br>
     <input type="password" id="password" placeholder="Elder Rune"><br><br>
-    <button id="login-btn">⚡ Awaken Elf</button>
-    <button id="register-btn">🌑 New Lineage</button>
-    <div id="loading-msg" class="hidden" style="margin-top:15px; color:#b49450;">🩸 Channeling skills from the Abyss...</div>
+    <button onclick="login()">⚡ Awaken Elf</button>
+    <button onclick="register()">🌑 New Lineage</button>
+    <div id="loading-overlay" class="hidden" style="margin-top:15px; color:#b49450;">⚔️ CANALIZANDO SKILLS DESDE EL ABISMO...</div>
   </div>
 
   <!-- MAIN MENU -->
   <div id="main-menu" class="hidden">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <h2 id="welcome-msg" style="color:#dbb45c;"></h2>
-      <button id="logout-btn">Leave</button>
+      <button onclick="logout()">Leave</button>
     </div>
     <div class="flex-row">
       <div class="flex-col panel">
@@ -281,7 +281,7 @@
     <h3 style="margin-top:15px;">🏅 Royal Medal Shelf</h3>
     <div class="medal-shelf" id="medal-shelf-container"></div>
     <div style="text-align: center; margin-top: 28px;">
-      <button id="seek-castle-btn" style="font-size:1.4rem; width:65%;">🐉 Siege Draconic Fortress</button>
+      <button onclick="lookForCastle()" style="font-size:1.4rem; width:65%;">🐉 Siege Draconic Fortress</button>
     </div>
   </div>
 
@@ -310,10 +310,10 @@
           <div id="dice-modifier" style="font-size:0.8rem;">Choose your maneuver...</div>
         </div>
         <div style="display:flex; flex-direction: column; gap:8px;">
-          <button id="action-melee">⚔️ Melee Strike [12⚡]</button>
-          <button id="action-ranged">🏹 Arcane Arrow [15⚡]</button>
-          <button id="action-spell">🔮 Void Spell [20⚡]</button>
-          <button id="action-defend">🛡️ Tactical Cover [8⚡]</button>
+          <button onclick="executeAction('melee')">⚔️ Melee Strike [12⚡]</button>
+          <button onclick="executeAction('ranged')">🏹 Arcane Arrow [15⚡]</button>
+          <button onclick="executeAction('spell')">🔮 Void Spell [20⚡]</button>
+          <button onclick="executeAction('defend')">🛡️ Tactical Cover [8⚡]</button>
         </div>
       </div>
     </div>
@@ -322,398 +322,373 @@
 </div>
 
 <script>
-  (function() {
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYlHbPacdrNWQS5rVSxX72UJy71tGwMq-NDJftIVn4rChGv8VPoE8MkI6RYpFrzDsgFQ/exec";
+  // ========== ORIGINAL LOGIN SYSTEM (RESTAURADO) ==========
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYlHbPacdrNWQS5rVSxX72UJy71tGwMq-NDJftIVn4rChGv8VPoE8MkI6RYpFrzDsgFQ/exec";
 
-    // Expanded item pool with strategic depth
-    const itemPool = [
-      { id:"w1", name:"Steel Dagger", type:"weapon", effect:"None", bonus:6, rarity:"comun", scaling:"str" },
-      { id:"w2", name:"Fallen King Greatsword", type:"weapon", effect:"Fire", bonus:15, rarity:"epica", scaling:"str" },
-      { id:"w3", name:"⚡ Void Stormbreaker", type:"weapon", effect:"Lightning", bonus:27, rarity:"legendaria", scaling:"dex" },
-      { id:"w4", name:"🌌 CTHULHU MYTHIC EDGE", type:"weapon", effect:"Poison", bonus:54, rarity:"reliquia", scaling:"att" },
-      { id:"w5", name:"Elven Obsidian Blade", type:"weapon", effect:"Bleed", bonus:19, rarity:"rara", scaling:"dex" },
-      { id:"a1", name:"Forest Shortbow", type:"armor", effect:"None", bonus:7, rarity:"comun", scaling:"dex" },
-      { id:"a2", name:"Sinister Bone Bow", type:"armor", effect:"Heal", bonus:17, rarity:"epica", scaling:"dex" },
-      { id:"a3", name:"🏹 ARTEMIS DIVINE BOW", type:"armor", effect:"Heal", bonus:46, rarity:"reliquia", scaling:"dex" },
-      { id:"a4", name:"Shadow Recurve", type:"armor", effect:"Poison", bonus:21, rarity:"rara", scaling:"att" },
-      { id:"s1", name:"Corrupted Wood Shield", type:"shield", effect:"None", bonus:5, rarity:"comun", scaling:"end" },
-      { id:"s2", name:"Forged Obsidian Pavise", type:"shield", effect:"None", bonus:16, rarity:"epica", scaling:"end" },
-      { id:"s3", name:"👑 IMMORTAL ANCESTRAL BULWARK", type:"shield", effect:"Heal", bonus:40, rarity:"reliquia", scaling:"end" },
-      { id:"s4", name:"Dragonbone Guard", type:"shield", effect:"Fire", bonus:22, rarity:"rara", scaling:"vig" }
-    ];
+  const itemPool = [
+    { id:"w1", name:"Steel Dagger", type:"weapon", effect:"None", bonus:6, rarity:"comun", scaling:"str" },
+    { id:"w2", name:"Fallen King Greatsword", type:"weapon", effect:"Fire", bonus:15, rarity:"epica", scaling:"str" },
+    { id:"w3", name:"⚡ Void Stormbreaker", type:"weapon", effect:"Lightning", bonus:27, rarity:"legendaria", scaling:"dex" },
+    { id:"w4", name:"🌌 CTHULHU MYTHIC EDGE", type:"weapon", effect:"Poison", bonus:54, rarity:"reliquia", scaling:"att" },
+    { id:"w5", name:"Elven Obsidian Blade", type:"weapon", effect:"Bleed", bonus:19, rarity:"rara", scaling:"dex" },
+    { id:"a1", name:"Forest Shortbow", type:"armor", effect:"None", bonus:7, rarity:"comun", scaling:"dex" },
+    { id:"a2", name:"Sinister Bone Bow", type:"armor", effect:"Heal", bonus:17, rarity:"epica", scaling:"dex" },
+    { id:"a3", name:"🏹 ARTEMIS DIVINE BOW", type:"armor", effect:"Heal", bonus:46, rarity:"reliquia", scaling:"dex" },
+    { id:"a4", name:"Shadow Recurve", type:"armor", effect:"Poison", bonus:21, rarity:"rara", scaling:"att" },
+    { id:"s1", name:"Corrupted Wood Shield", type:"shield", effect:"None", bonus:5, rarity:"comun", scaling:"end" },
+    { id:"s2", name:"Forged Obsidian Pavise", type:"shield", effect:"None", bonus:16, rarity:"epica", scaling:"end" },
+    { id:"s3", name:"👑 IMMORTAL ANCESTRAL BULWARK", type:"shield", effect:"Heal", bonus:40, rarity:"reliquia", scaling:"end" },
+    { id:"s4", name:"Dragonbone Guard", type:"shield", effect:"Fire", bonus:22, rarity:"rara", scaling:"vig" }
+  ];
 
-    let currentUser = null;
-    let userStats = {
-      level:1, score:0, points:5,
-      str:10, dex:10, att:10, vig:10, end:10,
-      weapon:"w1", armor:"a1", shield:"s1",
-      ownedItems:["w1","a1","s1"],
-      medalsList:[]
+  let currentUser = null;
+  let userStats = {
+    level:1, score:0, points:5,
+    str:10, dex:10, att:10, vig:10, end:10,
+    weapon:"w1", armor:"a1", shield:"s1",
+    ownedItems:["w1","a1","s1"],
+    medalsList:[]
+  };
+  let combatState = null;
+
+  // ========== CLOUD FUNCTIONS (ORIGINAL) ==========
+  async function cloudRequest(action, data = {}) {
+    document.getElementById('loading-overlay').classList.remove('hidden');
+    try {
+      if (action === 'getRanking' || action === 'login') {
+        let url = `${WEB_APP_URL}?action=${action}`;
+        if (data.username) url += `&username=${encodeURIComponent(data.username)}&password=${encodeURIComponent(data.password)}`;
+        let response = await fetch(url);
+        let resJson = await response.json();
+        document.getElementById('loading-overlay').classList.add('hidden');
+        return resJson;
+      } else {
+        data.action = action;
+        await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        document.getElementById('loading-overlay').classList.add('hidden');
+        return { success: true };
+      }
+    } catch (e) {
+      document.getElementById('loading-overlay').classList.add('hidden');
+      return { success: false };
+    }
+  }
+
+  async function register() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    if(!u || !p) return alert("Rellena el códice.");
+    let defaultStats = {
+      level:1, score:0, points:5, str:10, dex:10, att:10, vig:10, end:10,
+      weapon:"w1", armor:"a1", shield:"s1", ownedItems:["w1","a1","s1"], medalsList:[]
     };
-    let combatState = null;
+    await cloudRequest('register', { username: u, password: p, stats: defaultStats });
+    alert("Dark Elf lineage created.");
+  }
 
-    const authScreen = document.getElementById('auth-screen');
-    const mainMenu = document.getElementById('main-menu');
-    const combatScreen = document.getElementById('combat-screen');
-    const loadingMsg = document.getElementById('loading-msg');
-
-    async function cloudRequest(action, data = {}) {
-      loadingMsg.classList.remove('hidden');
-      try {
-        if (action === 'getRanking' || action === 'login') {
-          let url = `${WEB_APP_URL}?action=${action}`;
-          if (data.username) url += `&username=${encodeURIComponent(data.username)}&password=${encodeURIComponent(data.password)}`;
-          let resp = await fetch(url);
-          let json = await resp.json();
-          loadingMsg.classList.add('hidden');
-          return json;
-        } else {
-          data.action = action;
-          await fetch(WEB_APP_URL, {
-            method: 'POST', mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-          loadingMsg.classList.add('hidden');
-          return { success: true };
-        }
-      } catch (e) {
-        loadingMsg.classList.add('hidden');
-        return { success: false };
-      }
+  async function login() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    let res = await cloudRequest('login', { username: u, password: p });
+    if(res && res.success) {
+      currentUser = u;
+      userStats = res.stats;
+      if(!userStats.ownedItems) userStats.ownedItems = ["w1","a1","s1"];
+      if(!userStats.medalsList) userStats.medalsList = [];
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('main-menu').classList.remove('hidden');
+      renderUserData();
+    } else {
+      alert("Access denied by the Nexus.");
     }
+  }
 
-    async function saveToCloud() {
-      await cloudRequest('save', { username: currentUser, stats: userStats });
-    }
+  function logout() { location.reload(); }
 
-    document.getElementById('register-btn').addEventListener('click', async ()=>{
-      const u = document.getElementById('username').value.trim();
-      const p = document.getElementById('password').value;
-      if(!u || !p) return alert("Fill the codex.");
-      let defaultStats = {
-        level:1, score:0, points:5, str:10, dex:10, att:10, vig:10, end:10,
-        weapon:"w1", armor:"a1", shield:"s1", ownedItems:["w1","a1","s1"], medalsList:[]
-      };
-      await cloudRequest('register', { username: u, password: p, stats: defaultStats });
-      alert("Dark Elf lineage created.");
-    });
+  async function saveToCloud() {
+    await cloudRequest('save', { username: currentUser, stats: userStats });
+  }
 
-    document.getElementById('login-btn').addEventListener('click', async ()=>{
-      const u = document.getElementById('username').value.trim();
-      const p = document.getElementById('password').value;
-      let res = await cloudRequest('login', { username: u, password: p });
-      if(res && res.success) {
-        currentUser = u;
-        userStats = res.stats;
-        if(!userStats.ownedItems) userStats.ownedItems = ["w1","a1","s1"];
-        if(!userStats.medalsList) userStats.medalsList = [];
-        switchToMainMenu();
-      } else {
-        alert("Access denied by the Nexus.");
-      }
-    });
+  // ========== RENDER MAIN MENU ==========
+  function renderUserData() {
+    document.getElementById('welcome-msg').innerText = `⚔️ Elf Lineage: ${currentUser}`;
+    document.getElementById('stat-level').innerText = userStats.level;
+    document.getElementById('stat-points').innerText = userStats.points;
 
-    document.getElementById('logout-btn').addEventListener('click', ()=> location.reload());
+    const skillsContainer = document.getElementById('skills-container');
+    skillsContainer.innerHTML = `
+      <div>💪 Brutality (Str): ${userStats.str} <button onclick="levelUpSkill('str')">+</button></div>
+      <div>⚡ Reflexes (Dex): ${userStats.dex} <button onclick="levelUpSkill('dex')">+</button></div>
+      <div>🔮 Ancestral Void (Att): ${userStats.att} <button onclick="levelUpSkill('att')">+</button></div>
+      <div>❤️ Endurance (Vig): ${userStats.vig} <button onclick="levelUpSkill('vig')">+</button></div>
+      <div>🔋 Tenacity (End): ${userStats.end} <button onclick="levelUpSkill('end')">+</button></div>
+    `;
 
-    function switchToMainMenu() {
-      authScreen.classList.add('hidden');
-      combatScreen.classList.add('hidden');
-      mainMenu.classList.remove('hidden');
-      renderAllMainUI();
-    }
+    const weaponItem = itemPool.find(i=>i.id===userStats.weapon) || itemPool[0];
+    const armorItem = itemPool.find(i=>i.id===userStats.armor) || itemPool[4];
+    const shieldItem = itemPool.find(i=>i.id===userStats.shield) || itemPool[7];
+    document.getElementById('eq-weapon').innerText = `${weaponItem.name} (+${weaponItem.bonus})`;
+    document.getElementById('eq-armor').innerText = `${armorItem.name} (+${armorItem.bonus})`;
+    document.getElementById('eq-shield').innerText = `${shieldItem.name} (+${shieldItem.bonus})`;
 
-    function renderAllMainUI() {
-      document.getElementById('welcome-msg').innerText = `⚔️ Elf Lineage: ${currentUser}`;
-      document.getElementById('stat-level').innerText = userStats.level;
-      document.getElementById('stat-points').innerText = userStats.points;
-      const skillsContainer = document.getElementById('skills-container');
-      skillsContainer.innerHTML = `
-        <div>💪 Brutality (Str): ${userStats.str} <button class="skill-up" data-skill="str">+</button></div>
-        <div>⚡ Reflexes (Dex): ${userStats.dex} <button class="skill-up" data-skill="dex">+</button></div>
-        <div>🔮 Ancestral Void (Att): ${userStats.att} <button class="skill-up" data-skill="att">+</button></div>
-        <div>❤️ Endurance (Vig): ${userStats.vig} <button class="skill-up" data-skill="vig">+</button></div>
-        <div>🔋 Tenacity (End): ${userStats.end} <button class="skill-up" data-skill="end">+</button></div>
+    const invContainer = document.getElementById('inventory-container');
+    invContainer.innerHTML = '';
+    userStats.ownedItems.forEach(id => {
+      const item = itemPool.find(i=>i.id===id);
+      if(!item) return;
+      const equipped = (userStats.weapon===id || userStats.armor===id || userStats.shield===id);
+      invContainer.innerHTML += `
+        <div class="item-card rare-${item.rarity} ${equipped?'equipped-item':''}">
+          <strong>${item.name}</strong>
+          <span>+${item.bonus} (${item.scaling})</span>
+          <button ${equipped?'disabled':''} onclick="equipItem('${item.id}')">Equip</button>
+        </div>
       `;
-      document.querySelectorAll('.skill-up').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const skill = e.target.dataset.skill;
-          if(userStats.points > 0) {
-            userStats[skill]++;
-            userStats.points--;
-            userStats.level++;
-            renderAllMainUI();
-            saveToCloud();
-          }
-        });
+    });
+
+    const shelf = document.getElementById('medal-shelf-container');
+    shelf.innerHTML = '';
+    if(!userStats.medalsList.length) {
+      shelf.innerHTML = '<p style="color:#7a6a5c;">Conquer fortresses to forge medals...</p>';
+    } else {
+      userStats.medalsList.forEach(m => {
+        shelf.innerHTML += `<div class="medal-badge rare-${m.rarity}"><span style="font-size:1.8rem;">${m.icon}</span>${m.name}<br><small>${m.rarity}</small></div>`;
       });
-
-      const weaponItem = itemPool.find(i=>i.id===userStats.weapon) || itemPool[0];
-      const armorItem = itemPool.find(i=>i.id===userStats.armor) || itemPool[4];
-      const shieldItem = itemPool.find(i=>i.id===userStats.shield) || itemPool[7];
-      document.getElementById('eq-weapon').innerText = `${weaponItem.name} (+${weaponItem.bonus})`;
-      document.getElementById('eq-armor').innerText = `${armorItem.name} (+${armorItem.bonus})`;
-      document.getElementById('eq-shield').innerText = `${shieldItem.name} (+${shieldItem.bonus})`;
-
-      const invContainer = document.getElementById('inventory-container');
-      invContainer.innerHTML = '';
-      userStats.ownedItems.forEach(id => {
-        const item = itemPool.find(i=>i.id===id);
-        if(!item) return;
-        const equipped = (userStats.weapon===id || userStats.armor===id || userStats.shield===id);
-        invContainer.innerHTML += `
-          <div class="item-card rare-${item.rarity} ${equipped?'equipped-item':''}">
-            <strong>${item.name}</strong>
-            <span>+${item.bonus} (${item.scaling})</span>
-            <button ${equipped?'disabled':''} class="equip-btn" data-id="${item.id}">Equip</button>
-          </div>
-        `;
-      });
-      document.querySelectorAll('.equip-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = e.target.dataset.id;
-          const item = itemPool.find(i=>i.id===id);
-          if(item.type==='weapon') userStats.weapon = id;
-          if(item.type==='armor') userStats.armor = id;
-          if(item.type==='shield') userStats.shield = id;
-          renderAllMainUI();
-          saveToCloud();
-        });
-      });
-
-      const shelf = document.getElementById('medal-shelf-container');
-      shelf.innerHTML = '';
-      if(!userStats.medalsList.length) {
-        shelf.innerHTML = '<p style="color:#7a6a5c;">Conquer fortresses to forge medals...</p>';
-      } else {
-        userStats.medalsList.forEach(m => {
-          shelf.innerHTML += `<div class="medal-badge rare-${m.rarity}"><span style="font-size:1.8rem;">${m.icon}</span>${m.name}<br><small>${m.rarity}</small></div>`;
-        });
-      }
     }
+  }
 
-    // ---------- DYNAMIC COMBAT WITH MATHEMATICAL DEPTH ----------
-    document.getElementById('seek-castle-btn').addEventListener('click', startCombat);
-
-    function startCombat() {
-      const dragonNames = ["Tiamat the Twisted", "Ancalagon Void", "Glaurung Rot", "Smaug Rune-Blood", "Vermithrax Prime"];
-      const chosenName = dragonNames[Math.floor(Math.random()*dragonNames.length)] + " Lv."+(userStats.level+3);
-      const weapon = itemPool.find(i=>i.id===userStats.weapon) || itemPool[0];
-      const armor = itemPool.find(i=>i.id===userStats.armor) || itemPool[4];
-      const shield = itemPool.find(i=>i.id===userStats.shield) || itemPool[7];
-
-      combatState = {
-        enemy: {
-          name: chosenName,
-          hp: 100 + (userStats.level * 18),
-          maxHp: 100 + (userStats.level * 18),
-          power: 14 + userStats.level,
-          defense: 8 + Math.floor(userStats.level/2),
-          stance: 'neutral',
-          stanceTimer: 0
-        },
-        player: {
-          hp: userStats.vig * 12,
-          maxHp: userStats.vig * 12,
-          stamina: userStats.end * 7,
-          maxStamina: userStats.end * 7
-        },
-        equipment: { weapon, armor, shield },
-        turn: 0
-      };
-
-      mainMenu.classList.add('hidden');
-      combatScreen.classList.remove('hidden');
-      document.getElementById('combat-log').innerHTML = '';
-      document.getElementById('enemy-name').innerText = combatState.enemy.name;
-      updateCombatUI();
-      logCombat(`🐉 ${chosenName} emerges! Analyze its stance and strike wisely.`);
-    }
-
-    function updateCombatUI() {
-      document.getElementById('p-hp').innerText = combatState.player.hp;
-      document.getElementById('p-maxhp').innerText = combatState.player.maxHp;
-      document.getElementById('p-stamina').innerText = combatState.player.stamina;
-      document.getElementById('p-maxstamina').innerText = combatState.player.maxStamina;
-      document.getElementById('e-hp').innerText = combatState.enemy.hp;
-      document.getElementById('e-maxhp').innerText = combatState.enemy.maxHp;
-      document.getElementById('e-power').innerText = combatState.enemy.power;
-      document.getElementById('e-defense').innerText = combatState.enemy.defense;
-      document.getElementById('p-hp-bar').style.width = (combatState.player.hp/combatState.player.maxHp*100)+'%';
-      document.getElementById('p-stamina-bar').style.width = (combatState.player.stamina/combatState.player.maxStamina*100)+'%';
-      document.getElementById('e-hp-bar').style.width = (combatState.enemy.hp/combatState.enemy.maxHp*100)+'%';
-      const stanceEl = document.getElementById('enemy-stance');
-      stanceEl.innerText = `🌀 Stance: ${combatState.enemy.stance.toUpperCase()}`;
-    }
-
-    function logCombat(msg) {
-      const log = document.getElementById('combat-log');
-      log.innerHTML += `<div>${msg}</div>`;
-      log.scrollTop = log.scrollHeight;
-    }
-
-    function getScalingValue(item) {
-      if(!item) return 10;
-      switch(item.scaling) {
-        case 'str': return userStats.str;
-        case 'dex': return userStats.dex;
-        case 'att': return userStats.att;
-        case 'vig': return userStats.vig;
-        case 'end': return userStats.end;
-        default: return 10;
-      }
-    }
-
-    function executeAction(type) {
-      if(!combatState || combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
-      const cost = {melee:12, ranged:15, spell:20, defend:8}[type];
-      if(combatState.player.stamina < cost) {
-        alert("Not enough stamina!");
-        return;
-      }
-      combatState.player.stamina -= cost;
-      combatState.turn++;
-
-      const roll = Math.floor(Math.random()*20)+1;
-      document.getElementById('dice-result').innerText = roll;
-      let factor = 0.5 + (roll/15);
-      let damage = 0;
-      let message = "";
-
-      if(roll === 1) {
-        document.getElementById('dice-modifier').innerText = "Fumble!";
-        logCombat("🎲 Critical failure...");
-      } else if(roll === 20) {
-        document.getElementById('dice-modifier').innerText = "ANCESTRAL CRIT!";
-        factor *= 2.5;
-        logCombat("🎲 Perfect strike!");
-      } else {
-        document.getElementById('dice-modifier').innerText = `Success x${factor.toFixed(1)}`;
-      }
-
-      if(roll > 1) {
-        if(type === 'melee') {
-          const base = getScalingValue(combatState.equipment.weapon) + combatState.equipment.weapon.bonus;
-          damage = Math.floor(base * factor * (1 - combatState.enemy.defense/40));
-          message = `⚔️ Melee slash deals ${damage} damage.`;
-          applyEffect(combatState.equipment.weapon.effect);
-        } else if(type === 'ranged') {
-          const base = getScalingValue(combatState.equipment.armor) + combatState.equipment.armor.bonus;
-          damage = Math.floor(base * factor * 0.9);
-          message = `🏹 Arrow pierces for ${damage}.`;
-          applyEffect(combatState.equipment.armor.effect);
-        } else if(type === 'spell') {
-          const base = userStats.att * 2.8;
-          damage = Math.floor(base * factor);
-          message = `🔮 Void magic erupts: ${damage} damage.`;
-        } else if(type === 'defend') {
-          const shieldBase = getScalingValue(combatState.equipment.shield) + combatState.equipment.shield.bonus;
-          const heal = Math.floor(shieldBase * factor * 0.5);
-          combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal);
-          combatState.enemy.defense = Math.max(4, combatState.enemy.defense - 2);
-          message = `🛡️ Shield wall restores ${heal} life, lowers enemy defense.`;
-        }
-        combatState.enemy.hp = Math.max(0, combatState.enemy.hp - damage);
-        logCombat(message);
-      }
-
-      updateEnemyStance();
-      updateCombatUI();
-
-      if(combatState.enemy.hp <= 0) {
-        resolveVictory();
-      } else {
-        setTimeout(()=> enemyTurn(), 650);
-      }
-    }
-
-    function applyEffect(effect) {
-      if(!effect || effect==='None') return;
-      if(effect==='Fire') { combatState.enemy.hp = Math.max(0,combatState.enemy.hp-15); logCombat("🔥 Burn! -15 HP"); }
-      if(effect==='Poison') { combatState.enemy.hp = Math.max(0,combatState.enemy.hp-12); logCombat("☠️ Poison -12 HP"); }
-      if(effect==='Lightning') { combatState.enemy.hp = Math.max(0,combatState.enemy.hp-18); logCombat("⚡ Lightning -18 HP"); }
-      if(effect==='Bleed') { combatState.enemy.hp = Math.max(0,combatState.enemy.hp-14); logCombat("🩸 Hemorrhage -14 HP"); }
-      if(effect==='Heal') { combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp+16); logCombat("✨ Vital absorption +16 HP"); }
-    }
-
-    function updateEnemyStance() {
-      const e = combatState.enemy;
-      if(e.hp < e.maxHp*0.4) e.stance = 'furious';
-      else if(e.hp < e.maxHp*0.7) e.stance = 'guarded';
-      else e.stance = 'neutral';
-      
-      if(e.stance === 'furious') {
-        e.power = Math.floor(e.power * 1.3);
-        e.defense = Math.max(2, e.defense - 3);
-      } else if(e.stance === 'guarded') {
-        e.defense = Math.floor(e.defense * 1.4);
-      }
-    }
-
-    function enemyTurn() {
-      if(combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
-      const dodgeChance = userStats.dex * 0.02;
-      if(Math.random() < dodgeChance) {
-        logCombat("💨 Your agility evades the dragon attack!");
-        return;
-      }
-      const eRoll = Math.floor(Math.random()*20)+1;
-      let rawDmg = Math.floor(combatState.enemy.power * (eRoll/10));
-      if(combatState.enemy.stance === 'furious') rawDmg = Math.floor(rawDmg * 1.2);
-      combatState.player.hp = Math.max(0, combatState.player.hp - rawDmg);
-      logCombat(`💥 Dragon strikes for ${rawDmg} damage.`);
-      combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(userStats.end*1.3));
-      updateCombatUI();
-      if(combatState.player.hp <= 0) {
-        logCombat("☠️ Your elf has fallen...");
-        setTimeout(()=>{ combatScreen.classList.add('hidden'); mainMenu.classList.remove('hidden'); }, 2500);
-      }
-    }
-
-    function resolveVictory() {
-      logCombat("🏆 FORTRESS CONQUERED!");
-      userStats.points += 6;
-      userStats.score += 90;
-
-      const prefixes = ["Blazon","Standard","Insignia","Seal","Crown","Chalice"];
-      const cores = ["of the Dragon","of Ash","Elven Void","of Blood","Mystic Fief","Immortal"];
-      const rarities = ["comun","comun","rara","rara","epica","legendaria","reliquia"];
-      const icons = ["👑","🦅","⚔️","🐉","🔮","⚜️","💀"];
-      let rarity = rarities[Math.floor(Math.random()*rarities.length)];
-      if(rarity==='reliquia' && Math.random()>0.2) rarity='epica';
-      const medal = {
-        name: prefixes[Math.floor(Math.random()*prefixes.length)] + " " + cores[Math.floor(Math.random()*cores.length)],
-        rarity: rarity,
-        icon: icons[Math.floor(Math.random()*icons.length)]
-      };
-      userStats.medalsList.push(medal);
-      logCombat(`🏅 New medal: ${medal.name} (${rarity.toUpperCase()})`);
-
-      const lootRoll = Math.random();
-      if(lootRoll > 0.8) {
-        const highTier = itemPool.filter(i=>i.rarity==='legendaria'||i.rarity==='reliquia');
-        const picked = highTier[Math.floor(Math.random()*highTier.length)];
-        if(!userStats.ownedItems.includes(picked.id)) {
-          userStats.ownedItems.push(picked.id);
-          logCombat(`🎁 MYTHIC LOOT: ${picked.name}!`);
-        }
-      } else if(lootRoll > 0.4) {
-        const midTier = itemPool.filter(i=>i.rarity==='rara'||i.rarity==='epica');
-        const picked = midTier[Math.floor(Math.random()*midTier.length)];
-        if(!userStats.ownedItems.includes(picked.id)) {
-          userStats.ownedItems.push(picked.id);
-          logCombat(`🎁 Loot acquired: ${picked.name}`);
-        }
-      }
-
+  function levelUpSkill(skill) {
+    if(userStats.points > 0) {
+      userStats[skill]++;
+      userStats.points--;
+      userStats.level++;
+      renderUserData();
       saveToCloud();
-      setTimeout(()=>{
-        combatScreen.classList.add('hidden');
-        mainMenu.classList.remove('hidden');
-        renderAllMainUI();
-      }, 3800);
+    }
+  }
+
+  function equipItem(id) {
+    const item = itemPool.find(i=>i.id===id);
+    if(item.type==='weapon') userStats.weapon = id;
+    if(item.type==='armor') userStats.armor = id;
+    if(item.type==='shield') userStats.shield = id;
+    renderUserData();
+    saveToCloud();
+  }
+
+  // ========== DYNAMIC COMBAT ==========
+  function lookForCastle() {
+    const dragonNames = ["Tiamat the Twisted", "Ancalagon Void", "Glaurung Rot", "Smaug Rune-Blood", "Vermithrax Prime"];
+    const chosenName = dragonNames[Math.floor(Math.random()*dragonNames.length)] + " Lv."+(userStats.level+3);
+    const weapon = itemPool.find(i=>i.id===userStats.weapon) || itemPool[0];
+    const armor = itemPool.find(i=>i.id===userStats.armor) || itemPool[4];
+    const shield = itemPool.find(i=>i.id===userStats.shield) || itemPool[7];
+
+    combatState = {
+      enemy: {
+        name: chosenName,
+        hp: 100 + (userStats.level * 18),
+        maxHp: 100 + (userStats.level * 18),
+        power: 14 + userStats.level,
+        defense: 8 + Math.floor(userStats.level/2),
+        stance: 'neutral'
+      },
+      player: {
+        hp: userStats.vig * 12,
+        maxHp: userStats.vig * 12,
+        stamina: userStats.end * 7,
+        maxStamina: userStats.end * 7
+      },
+      equipment: { weapon, armor, shield }
+    };
+
+    document.getElementById('main-menu').classList.add('hidden');
+    document.getElementById('combat-screen').classList.remove('hidden');
+    document.getElementById('combat-log').innerHTML = '';
+    document.getElementById('enemy-name').innerText = combatState.enemy.name;
+    updateCombatUI();
+    logMessage(`🐉 ${chosenName} emerges! Analyze its stance and strike wisely.`);
+  }
+
+  function updateCombatUI() {
+    document.getElementById('p-hp').innerText = combatState.player.hp;
+    document.getElementById('p-maxhp').innerText = combatState.player.maxHp;
+    document.getElementById('p-stamina').innerText = combatState.player.stamina;
+    document.getElementById('p-maxstamina').innerText = combatState.player.maxStamina;
+    document.getElementById('e-hp').innerText = combatState.enemy.hp;
+    document.getElementById('e-maxhp').innerText = combatState.enemy.maxHp;
+    document.getElementById('e-power').innerText = combatState.enemy.power;
+    document.getElementById('e-defense').innerText = combatState.enemy.defense;
+    document.getElementById('p-hp-bar').style.width = (combatState.player.hp/combatState.player.maxHp*100)+'%';
+    document.getElementById('p-stamina-bar').style.width = (combatState.player.stamina/combatState.player.maxStamina*100)+'%';
+    document.getElementById('e-hp-bar').style.width = (combatState.enemy.hp/combatState.enemy.maxHp*100)+'%';
+    document.getElementById('enemy-stance').innerText = `🌀 Stance: ${combatState.enemy.stance.toUpperCase()}`;
+  }
+
+  function logMessage(msg) {
+    const log = document.getElementById('combat-log');
+    log.innerHTML += `<div>${msg}</div>`;
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function getScalingValue(item) {
+    if(!item) return 10;
+    switch(item.scaling) {
+      case 'str': return userStats.str;
+      case 'dex': return userStats.dex;
+      case 'att': return userStats.att;
+      case 'vig': return userStats.vig;
+      case 'end': return userStats.end;
+      default: return 10;
+    }
+  }
+
+  function executeAction(type) {
+    if(!combatState || combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
+    const cost = {melee:12, ranged:15, spell:20, defend:8}[type];
+    if(combatState.player.stamina < cost) {
+      alert("Not enough stamina!");
+      return;
+    }
+    combatState.player.stamina -= cost;
+
+    const roll = Math.floor(Math.random()*20)+1;
+    document.getElementById('dice-result').innerText = roll;
+    let factor = 0.5 + (roll/15);
+    let damage = 0;
+
+    if(roll === 1) {
+      document.getElementById('dice-modifier').innerText = "Fumble!";
+      logMessage("🎲 Critical failure...");
+    } else if(roll === 20) {
+      document.getElementById('dice-modifier').innerText = "ANCESTRAL CRIT!";
+      factor *= 2.5;
+      logMessage("🎲 Perfect strike!");
+    } else {
+      document.getElementById('dice-modifier').innerText = `Success x${factor.toFixed(1)}`;
     }
 
-    document.getElementById('action-melee').addEventListener('click', ()=> executeAction('melee'));
-    document.getElementById('action-ranged').addEventListener('click', ()=> executeAction('ranged'));
-    document.getElementById('action-spell').addEventListener('click',
+    if(roll > 1) {
+      if(type === 'melee') {
+        const base = getScalingValue(combatState.equipment.weapon) + combatState.equipment.weapon.bonus;
+        damage = Math.floor(base * factor * (1 - combatState.enemy.defense/40));
+        logMessage(`⚔️ Melee slash deals ${damage} damage.`);
+        applyEffect(combatState.equipment.weapon.effect);
+      } else if(type === 'ranged') {
+        const base = getScalingValue(combatState.equipment.armor) + combatState.equipment.armor.bonus;
+        damage = Math.floor(base * factor * 0.9);
+        logMessage(`🏹 Arrow pierces for ${damage}.`);
+        applyEffect(combatState.equipment.armor.effect);
+      } else if(type === 'spell') {
+        const base = userStats.att * 2.8;
+        damage = Math.floor(base * factor);
+        logMessage(`🔮 Void magic erupts: ${damage} damage.`);
+      } else if(type === 'defend') {
+        const shieldBase = getScalingValue(combatState.equipment.shield) + combatState.equipment.shield.bonus;
+        const heal = Math.floor(shieldBase * factor * 0.5);
+        combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal);
+        combatState.enemy.defense = Math.max(4, combatState.enemy.defense - 2);
+        logMessage(`🛡️ Shield wall restores ${heal} life, lowers enemy defense.`);
+      }
+      combatState.enemy.hp = Math.max(0, combatState.enemy.hp - damage);
+    }
+
+    updateEnemyStance();
+    updateCombatUI();
+
+    if(combatState.enemy.hp <= 0) {
+      resolveVictory();
+    } else {
+      setTimeout(()=> enemyTurn(), 650);
+    }
+  }
+
+  function applyEffect(effect) {
+    if(!effect || effect==='None') return;
+    if(effect==='Fire') { combatState.enemy.hp = Math.max(0,combatState.enemy.hp-15); logMessage("🔥 Burn! -15 HP"); }
+    if(effect==='Poison') { combatState.enemy.hp = Math.max(0,combatState.enemy.hp-12); logMessage("☠️ Poison -12 HP"); }
+    if(effect==='Lightning') { combatState.enemy.hp = Math.max(0,combatState.enemy.hp-18); logMessage("⚡ Lightning -18 HP"); }
+    if(effect==='Bleed') { combatState.enemy.hp = Math.max(0,combatState.enemy.hp-14); logMessage("🩸 Hemorrhage -14 HP"); }
+    if(effect==='Heal') { combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp+16); logMessage("✨ Vital absorption +16 HP"); }
+  }
+
+  function updateEnemyStance() {
+    const e = combatState.enemy;
+    if(e.hp < e.maxHp*0.4) e.stance = 'furious';
+    else if(e.hp < e.maxHp*0.7) e.stance = 'guarded';
+    else e.stance = 'neutral';
+    
+    if(e.stance === 'furious') {
+      e.power = Math.floor((14 + userStats.level) * 1.3);
+      e.defense = Math.max(2, (8 + Math.floor(userStats.level/2)) - 3);
+    } else if(e.stance === 'guarded') {
+      e.defense = Math.floor((8 + Math.floor(userStats.level/2)) * 1.4);
+    }
+  }
+
+  function enemyTurn() {
+    if(combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
+    const dodgeChance = userStats.dex * 0.02;
+    if(Math.random() < dodgeChance) {
+      logMessage("💨 Your agility evades the dragon attack!");
+      return;
+    }
+    const eRoll = Math.floor(Math.random()*20)+1;
+    let rawDmg = Math.floor(combatState.enemy.power * (eRoll/10));
+    if(combatState.enemy.stance === 'furious') rawDmg = Math.floor(rawDmg * 1.2);
+    combatState.player.hp = Math.max(0, combatState.player.hp - rawDmg);
+    logMessage(`💥 Dragon strikes for ${rawDmg} damage.`);
+    combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(userStats.end*1.3));
+    updateCombatUI();
+    if(combatState.player.hp <= 0) {
+      logMessage("☠️ Your elf has fallen...");
+      setTimeout(()=>{ document.getElementById('combat-screen').classList.add('hidden'); document.getElementById('main-menu').classList.remove('hidden'); }, 2500);
+    }
+  }
+
+  function resolveVictory() {
+    logMessage("🏆 FORTRESS CONQUERED!");
+    userStats.points += 6;
+    userStats.score += 90;
+
+    const prefixes = ["Blazon","Standard","Insignia","Seal","Crown","Chalice"];
+    const cores = ["of the Dragon","of Ash","Elven Void","of Blood","Mystic Fief","Immortal"];
+    const rarities = ["comun","comun","rara","rara","epica","legendaria","reliquia"];
+    const icons = ["👑","🦅","⚔️","🐉","🔮","⚜️","💀"];
+    let rarity = rarities[Math.floor(Math.random()*rarities.length)];
+    if(rarity==='reliquia' && Math.random()>0.2) rarity='epica';
+    const medal = {
+      name: prefixes[Math.floor(Math.random()*prefixes.length)] + " " + cores[Math.floor(Math.random()*cores.length)],
+      rarity: rarity,
+      icon: icons[Math.floor(Math.random()*icons.length)]
+    };
+    userStats.medalsList.push(medal);
+    logMessage(`🏅 New medal: ${medal.name} (${rarity.toUpperCase()})`);
+
+    const lootRoll = Math.random();
+    if(lootRoll > 0.8) {
+      const highTier = itemPool.filter(i=>i.rarity==='legendaria'||i.rarity==='reliquia');
+      const picked = highTier[Math.floor(Math.random()*highTier.length)];
+      if(!userStats.ownedItems.includes(picked.id)) {
+        userStats.ownedItems.push(picked.id);
+        logMessage(`🎁 MYTHIC LOOT: ${picked.name}!`);
+      }
+    } else if(lootRoll > 0.4) {
+      const midTier = itemPool.filter(i=>i.rarity==='rara'||i.rarity==='epica');
+      const picked = midTier[Math.floor(Math.random()*midTier.length)];
+      if(!userStats.ownedItems.includes(picked.id)) {
+        userStats.ownedItems.push(picked.id);
+        logMessage(`🎁 Loot acquired: ${picked.name}`);
+      }
+    }
+
+    saveToCloud();
+    setTimeout(()=>{
+      document.getElementById('combat-screen').classList.add('hidden');
+      document.getElementById('main-menu').classList.remove('hidden');
+      renderUserData();
+    }, 3800);
+  }
+</script>
+</body>
+</html>
