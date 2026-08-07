@@ -21,9 +21,7 @@
       align-items: center;
       min-height: 100vh;
       padding: 20px;
-      background-image: 
-        radial-gradient(circle at 10% 20%, #1a1118 0%, #020004 90%),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.03"/></svg>');
+      background-image: radial-gradient(circle at 10% 20%, #1a1118 0%, #020004 90%);
     }
 
     #game-master {
@@ -56,12 +54,6 @@
       background-clip: text;
       border-bottom: 3px solid #7a5e3e;
       padding-bottom: 14px;
-      animation: titleGlow 3s infinite;
-    }
-
-    @keyframes titleGlow {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.3); }
     }
 
     .subtitle {
@@ -70,7 +62,6 @@
       font-size: 1.2rem;
       color: #b49450;
       letter-spacing: 6px;
-      margin-bottom: 8px;
     }
 
     button {
@@ -87,23 +78,6 @@
       font-size: 0.85rem;
       letter-spacing: 2px;
       border-radius: 6px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      transition: left 0.5s;
-    }
-
-    button:hover:not(:disabled)::before {
-      left: 100%;
     }
 
     button:hover:not(:disabled) {
@@ -130,7 +104,6 @@
       width: 100%;
       text-align: center;
       border-radius: 6px;
-      transition: all 0.3s;
     }
 
     input:focus {
@@ -160,160 +133,152 @@
       display: none !important;
     }
 
-    .stat-line {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0;
-      font-size: 1.1rem;
-      color: #dbcaaa;
-    }
-
-    .stat-btn {
-      padding: 4px 12px;
-      font-size: 0.7rem;
-      border-radius: 20px;
-      background: #2a1a14;
-      border: 1px solid #b49450;
-      color: #f5e7c6;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .stat-btn:hover {
-      background: #4a2a24;
-      border-color: #e6b13e;
-      box-shadow: 0 0 10px rgba(230,177,62,0.3);
-    }
-
-    .dice-box {
-      background: linear-gradient(135deg, #170c10, #0d060a);
-      border: 3px dashed #b49450;
-      padding: 25px;
-      text-align: center;
-      margin: 15px 0;
-      border-radius: 10px;
-      position: relative;
-    }
-
-    .dice-val {
-      font-size: 4rem;
-      font-family: 'Uncial Antiqua', cursive;
-      color: #e63946;
-      text-shadow: 0 0 30px #e63946;
-      animation: dicePulse 0.5s ease-out;
-    }
-
-    @keyframes dicePulse {
-      0% { transform: scale(1.5); }
-      100% { transform: scale(1); }
-    }
-
-    .bar-container {
-      background: #12070a;
-      width: 100%;
-      height: 22px;
-      border: 2px solid #6a2e2e;
-      margin: 10px 0;
-      border-radius: 11px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .bar-container::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 50%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.1), transparent);
-      border-radius: 11px 11px 0 0;
-    }
-
-    .hp-fill {
-      background: linear-gradient(90deg, #7a1622, #e63946);
-      height: 100%;
-      width: 100%;
-      transition: width 0.5s ease-out;
-    }
-    .stamina-fill {
-      background: linear-gradient(90deg, #1b4d2a, #2ecc71);
-      height: 100%;
-      width: 100%;
-      transition: width 0.5s ease-out;
-    }
-    .mana-fill {
-      background: linear-gradient(90deg, #1a1b7a, #5b5ef7);
-      height: 100%;
-      width: 100%;
-      transition: width 0.5s ease-out;
-    }
-
-    .inventory-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 12px;
-      max-height: 300px;
-      overflow-y: auto;
-      background: #020103;
-      padding: 12px;
-      margin-top: 15px;
-      border-radius: 8px;
-    }
-
-    .inventory-grid::-webkit-scrollbar,
-    #combat-log::-webkit-scrollbar,
-    .medal-shelf::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .inventory-grid::-webkit-scrollbar-track,
-    #combat-log::-webkit-scrollbar-track,
-    .medal-shelf::-webkit-scrollbar-track {
+    /* ========== SKILL TREE STYLES ========== */
+    .skill-tree-container {
       background: #0a0709;
-      border-radius: 4px;
+      border: 2px solid #4a3827;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 15px;
     }
 
-    .inventory-grid::-webkit-scrollbar-thumb,
-    #combat-log::-webkit-scrollbar-thumb,
-    .medal-shelf::-webkit-scrollbar-thumb {
-      background: #5a432e;
-      border-radius: 4px;
+    .skill-tree-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+      text-align: center;
     }
 
-    .item-card {
-      background: linear-gradient(135deg, #171016, #1a1217);
-      border: 2px solid #42352b;
-      padding: 12px;
-      font-size: 0.85rem;
+    .skill-node {
+      background: linear-gradient(135deg, #1a1217, #0d090e);
+      border: 2px solid #3a2827;
+      padding: 15px 10px;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      text-align: center;
-      color: #cfbc92;
-      border-radius: 8px;
-      transition: all 0.3s;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
     }
 
-    .item-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    .skill-node:hover {
       border-color: #b49450;
+      box-shadow: 0 0 20px rgba(180,148,80,0.4);
+      transform: scale(1.1);
     }
 
-    .equipped-item {
-      border: 3px solid #f1c40f !important;
-      background: linear-gradient(135deg, #1b2b18, #1a2a1a) !important;
-      box-shadow: 0 0 20px rgba(241,196,15,0.4);
-      animation: equippedGlow 2s infinite;
+    .skill-node.unlocked {
+      border-color: #f1c40f;
+      box-shadow: 0 0 15px rgba(241,196,15,0.5);
+      background: linear-gradient(135deg, #1b2b18, #1a2a1a);
     }
 
-    @keyframes equippedGlow {
-      0%, 100% { box-shadow: 0 0 20px rgba(241,196,15,0.4); }
-      50% { box-shadow: 0 0 35px rgba(241,196,15,0.7); }
+    .skill-node.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(0.7);
     }
 
+    .skill-node-icon {
+      font-size: 1.8rem;
+    }
+
+    .skill-node-level {
+      font-size: 0.7rem;
+      color: #b49450;
+      margin-top: 2px;
+    }
+
+    .skill-node-name {
+      font-size: 0.6rem;
+      color: #dbcaaa;
+      margin-top: 2px;
+    }
+
+    .skill-points-display {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #e6b13e;
+      margin: 15px 0;
+      padding: 10px;
+      background: #0a0709;
+      border: 2px solid #b49450;
+      border-radius: 8px;
+    }
+
+    /* ========== COMBAT CHAIN SYSTEM ========== */
+    .combo-chain {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+      padding: 10px;
+      background: #0a0709;
+      border-radius: 8px;
+      min-height: 50px;
+    }
+
+    .chain-slot {
+      width: 40px;
+      height: 40px;
+      border: 2px dashed #4a3827;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #5a432e;
+    }
+
+    .chain-slot.filled {
+      border-color: #b49450;
+      border-style: solid;
+      color: #e6b13e;
+      box-shadow: 0 0 10px rgba(180,148,80,0.3);
+    }
+
+    .chain-bonus {
+      font-size: 0.8rem;
+      color: #b49450;
+      margin-top: 5px;
+    }
+
+    /* ========== WEAKNESS WHEEL ========== */
+    .weakness-wheel {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .weakness-indicator {
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      border: 2px solid #4a3827;
+      transition: all 0.3s;
+    }
+
+    .weakness-indicator.revealed {
+      border-color: #2ecc71;
+      color: #2ecc71;
+      box-shadow: 0 0 15px rgba(46,204,113,0.3);
+      animation: revealPulse 1s infinite;
+    }
+
+    @keyframes revealPulse {
+      0%, 100% { box-shadow: 0 0 15px rgba(46,204,113,0.3); }
+      50% { box-shadow: 0 0 30px rgba(46,204,113,0.6); }
+    }
+
+    /* ========== MEDAL REDESIGN ========== */
     .medal-shelf {
       display: flex;
       flex-wrap: wrap;
@@ -328,52 +293,91 @@
     }
 
     .medal-badge {
-      width: 110px;
-      height: 135px;
-      background: linear-gradient(135deg, #1f1712, #2a1f18);
+      width: 100px;
+      height: 130px;
+      background: linear-gradient(135deg, #1a1215, #0d090c);
       border: 3px solid #5a4532;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 0.8rem;
-      color: #c0a77b;
       text-align: center;
       padding: 10px;
       border-radius: 15px;
       transition: all 0.3s;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .medal-badge::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .medal-badge:hover::before {
+      opacity: 1;
     }
 
     .medal-badge:hover {
-      transform: scale(1.1) rotate(2deg);
-      box-shadow: 0 0 30px rgba(200,140,40,0.6);
-      z-index: 10;
+      transform: translateY(-5px) scale(1.05);
     }
 
-    .medal-icon {
-      font-size: 2.5rem;
-      margin-bottom: 5px;
+    .medal-shape {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .medal-shape svg {
+      width: 100%;
+      height: 100%;
       filter: drop-shadow(0 0 5px rgba(255,215,0,0.5));
     }
 
     .medal-name {
       font-weight: bold;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
+      color: #c0a77b;
       margin-bottom: 3px;
     }
 
     .medal-rarity {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 2px;
     }
 
     .rare-comun { border-color: #7e7e7e; }
+    .rare-comun .medal-shape svg { filter: drop-shadow(0 0 3px rgba(126,126,126,0.5)); }
+    
     .rare-rara { border-color: #0070dd; box-shadow: 0 0 10px rgba(0,112,221,0.3); }
+    .rare-rara .medal-shape svg { filter: drop-shadow(0 0 8px rgba(0,112,221,0.5)); }
+    
     .rare-epica { border-color: #a335ee; box-shadow: 0 0 15px rgba(163,53,238,0.5); }
-    .rare-legendaria { border-color: #ff8000; box-shadow: 0 0 20px rgba(255,128,0,0.6); animation: legendaryPulse 2s infinite; }
-    .rare-reliquia { border-color: #e63946; box-shadow: 0 0 25px rgba(230,57,70,0.7); animation: relicGlow 1.5s infinite; }
+    .rare-epica .medal-shape svg { filter: drop-shadow(0 0 12px rgba(163,53,238,0.6)); }
+    
+    .rare-legendaria { 
+      border-color: #ff8000; 
+      box-shadow: 0 0 20px rgba(255,128,0,0.6); 
+      animation: legendaryPulse 2s infinite; 
+    }
+    .rare-legendaria .medal-shape svg { filter: drop-shadow(0 0 15px rgba(255,128,0,0.7)); }
+    
+    .rare-reliquia { 
+      border-color: #e63946; 
+      box-shadow: 0 0 25px rgba(230,57,70,0.7); 
+      animation: relicGlow 1.5s infinite; 
+    }
+    .rare-reliquia .medal-shape svg { filter: drop-shadow(0 0 20px rgba(230,57,70,0.8)); }
 
     @keyframes legendaryPulse {
       0%, 100% { box-shadow: 0 0 20px rgba(255,128,0,0.6); }
@@ -385,6 +389,7 @@
       50% { box-shadow: 0 0 55px rgba(230,57,70,1); transform: scale(1.05); }
     }
 
+    /* ========== COMBAT LOG ========== */
     #combat-log {
       background: linear-gradient(180deg, #010101, #060408);
       border: 2px solid #3a2c22;
@@ -417,129 +422,29 @@
     .log-info { color: #b49450; font-style: italic; }
     .log-warning { color: #e67e22; }
 
-    .strategy-hint {
-      color: #b49450;
-      font-size: 0.9rem;
-      margin-top: 8px;
-      font-style: italic;
-      background: rgba(180,148,80,0.1);
-      padding: 8px;
-      border-radius: 6px;
-    }
-
-    .dragon-image {
-      width: 100%;
-      height: 280px;
-      object-fit: cover;
-      border: 3px solid #5a432e;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 50px rgba(200,140,40,0.2);
-      transition: all 0.5s;
-    }
-
-    .tactic-btn {
-      background: #2a1a24;
-      border: 2px solid #8b6b4a;
-      color: #e8dccf;
-      padding: 10px 15px;
-      margin: 5px;
-      font-size: 0.75rem;
-      border-radius: 20px;
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-
-    .tactic-btn.active {
-      background: linear-gradient(180deg, #4a1a2a, #3a1020);
-      border-color: #e6b13e;
-      box-shadow: 0 0 25px #e6b13e;
-      transform: scale(1.05);
-    }
-
-    .tactic-description {
-      font-size: 0.7rem;
-      color: #b49450;
-      margin-top: 5px;
-      font-style: italic;
-    }
-
-    .action-btn {
-      background: linear-gradient(180deg, #1a1218 0%, #0d090e 100%);
-      border: 2px solid #5a432e;
-      padding: 15px;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      border-radius: 6px;
-      color: #e8dccf;
-      font-family: 'Cinzel', serif;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .action-btn:hover:not(:disabled) {
-      background: linear-gradient(180deg, #3a1a28, #2a0a18);
-      border-color: #b49450;
-      box-shadow: 0 0 15px rgba(180,148,80,0.3);
-    }
-
-    .action-icon {
-      font-size: 1.8rem;
-      width: 40px;
-      text-align: center;
-    }
-
-    .action-info {
-      flex: 1;
-    }
-
-    .action-cost {
-      font-size: 0.7rem;
-      color: #b49450;
-      display: block;
-    }
-
-    .status-effect {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      margin: 2px;
-      animation: statusPulse 1s infinite;
-    }
-
-    @keyframes statusPulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    .status-poison { background: #1a4a1a; color: #2ecc71; border: 1px solid #2ecc71; }
-    .status-burn { background: #4a1a1a; color: #e63946; border: 1px solid #e63946; }
-    .status-freeze { background: #1a1a4a; color: #5b5ef7; border: 1px solid #5b5ef7; }
-    .status-bleed { background: #4a1a2a; color: #ff5566; border: 1px solid #ff5566; }
-    .status-regen { background: #1a3a1a; color: #2ecc71; border: 1px solid #2ecc71; }
-
-    .error-msg {
-      color: #e63946;
-      margin-top: 10px;
-      font-size: 0.9rem;
-    }
+    /* Rest of the styles... */
+    .strategy-hint { color: #b49450; font-size: 0.9rem; margin-top: 8px; font-style: italic; background: rgba(180,148,80,0.1); padding: 8px; border-radius: 6px; }
+    .dragon-image { width: 100%; height: 280px; object-fit: cover; border: 3px solid #5a432e; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .bar-container { background: #12070a; width: 100%; height: 22px; border: 2px solid #6a2e2e; margin: 10px 0; border-radius: 11px; overflow: hidden; position: relative; }
+    .bar-container::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, rgba(255,255,255,0.1), transparent); border-radius: 11px 11px 0 0; }
+    .hp-fill { background: linear-gradient(90deg, #7a1622, #e63946); height: 100%; width: 100%; transition: width 0.5s ease-out; }
+    .stamina-fill { background: linear-gradient(90deg, #1b4d2a, #2ecc71); height: 100%; width: 100%; transition: width 0.5s ease-out; }
+    .mana-fill { background: linear-gradient(90deg, #1a1b7a, #5b5ef7); height: 100%; width: 100%; transition: width 0.5s ease-out; }
+    .tactic-btn { background: #2a1a24; border: 2px solid #8b6b4a; color: #e8dccf; padding: 10px 15px; margin: 5px; font-size: 0.75rem; border-radius: 20px; cursor: pointer; transition: all 0.3s; }
+    .tactic-btn.active { background: linear-gradient(180deg, #4a1a2a, #3a1020); border-color: #e6b13e; box-shadow: 0 0 25px #e6b13e; transform: scale(1.05); }
+    .action-btn { background: linear-gradient(180deg, #1a1218 0%, #0d090e 100%); border: 2px solid #5a432e; padding: 15px; text-align: left; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; border-radius: 6px; color: #e8dccf; font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 1px; }
+    .action-btn:hover:not(:disabled) { background: linear-gradient(180deg, #3a1a28, #2a0a18); border-color: #b49450; box-shadow: 0 0 15px rgba(180,148,80,0.3); }
+    .action-btn.correct-choice { border-color: #2ecc71 !important; box-shadow: 0 0 25px rgba(46,204,113,0.5) !important; }
+    .action-btn.wrong-choice { border-color: #e63946 !important; box-shadow: 0 0 25px rgba(230,57,70,0.5) !important; }
+    .action-icon { font-size: 1.8rem; width: 40px; text-align: center; }
+    .action-info { flex: 1; }
+    .action-cost { font-size: 0.7rem; color: #b49450; display: block; }
 
     @media (max-width: 700px) {
-      .flex-row {
-        flex-direction: column;
-      }
-      h1 {
-        font-size: 2.5rem;
-      }
-      .dragon-image {
-        height: 180px;
-      }
+      .flex-row { flex-direction: column; }
+      h1 { font-size: 2.5rem; }
+      .dragon-image { height: 180px; }
+      .skill-tree-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
 </head>
@@ -556,7 +461,7 @@
     <button onclick="login()">⚡ Awaken Elf</button>
     <button onclick="register()">🌑 New Lineage</button>
     <div id="loading-overlay" class="hidden" style="margin-top:15px; color:#b49450;">⚔️ CHANNELING SKILLS FROM THE ABYSS...</div>
-    <div id="auth-error" class="error-msg hidden"></div>
+    <div id="auth-error" style="color:#e63946; margin-top:10px; font-size:0.9rem;" class="hidden"></div>
   </div>
 
   <!-- MAIN MENU -->
@@ -568,9 +473,18 @@
     <div class="flex-row">
       <div class="flex-col panel">
         <h3>📜 Elf Attributes</h3>
-        <p><strong>Total Level:</strong> <span id="stat-level">1</span> | <span style="color:#e6b13e;">Skill Points: <span id="stat-points">0</span></span></p>
-        <p style="color:#b49450;">🏆 Glory Score: <span id="stat-score">0</span> | 🐉 Dragons Slain: <span id="stat-dragons">0</span></p>
-        <div id="skills-container" class="stat-line"></div>
+        <p><strong>Total Level:</strong> <span id="stat-level">1</span> | 🏆 Glory: <span id="stat-score">0</span> | 🐉 Slain: <span id="stat-dragons">0</span></p>
+        
+        <!-- SKILL TREE -->
+        <div class="skill-points-display">
+          ⭐ Available Skill Points: <span id="stat-points" style="font-size:1.5rem;">5</span>
+        </div>
+        <div class="skill-tree-container">
+          <div class="skill-tree-grid" id="skill-tree"></div>
+        </div>
+        <div style="margin-top:15px; font-size:0.8rem; color:#b49450; text-align:center;">
+          💡 Skills cost increases with each level. Choose wisely!
+        </div>
       </div>
       <div class="flex-col panel">
         <h3>⚔️ Armory & Relics</h3>
@@ -580,7 +494,7 @@
           <div>🛡️ Shield: <span id="eq-shield" style="color:#f1c40f;"></span></div>
           <div>💍 Accessory: <span id="eq-accessory" style="color:#f1c40f;"></span></div>
         </div>
-        <div class="inventory-grid" id="inventory-container"></div>
+        <div class="inventory-grid" id="inventory-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; max-height: 300px; overflow-y: auto; background: #020103; padding: 12px; border-radius: 8px;"></div>
       </div>
     </div>
     <h3 style="margin-top:15px;">🏅 Royal Medal Treasury</h3>
@@ -594,20 +508,24 @@
   <div id="combat-screen" class="hidden">
     <div class="flex-row">
       <div class="flex-col panel">
-        <img id="dragon-img" class="dragon-image" src="" alt="Ancient Dragon" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22%3E%3Cstop offset=%220%22 stop-color=%22%231a1118%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%230a0508%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill=%22url(%23g)%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23b49450%22 x=%22300%22 y=%22180%22 text-anchor=%22middle%22 font-size=%2280%22%3E🐉%3C/text%3E%3Ctext fill=%22%23b49450%22 x=%22300%22 y=%22240%22 text-anchor=%22middle%22 font-size=%2220%22%3EAncient Dragon%3C/text%3E%3C/svg%3E'">
+        <img id="dragon-img" class="dragon-image" src="" alt="Ancient Dragon" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%231a1118%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23b49450%22 x=%22300%22 y=%22180%22 text-anchor=%22middle%22 font-size=%2280%22%3E🐉%3C/text%3E%3C/svg%3E'">
         <h3 id="enemy-name" style="color:#e03a4e; font-size:1.4rem;"></h3>
         <div id="dragon-lore" style="font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #c2b59c; margin: 12px 0; padding: 15px; background: linear-gradient(135deg, #0a0708, #0d0a10); border-left: 4px solid #b49450; border-radius: 6px; line-height:1.6;"></div>
+        
+        <!-- WEAKNESS DISCOVERY SYSTEM -->
+        <div style="margin:10px 0; font-size:0.85rem;">
+          <strong>🔍 Discovered Weaknesses:</strong>
+          <div class="weakness-wheel" id="weakness-wheel"></div>
+        </div>
+        
         <div style="font-size:0.9rem; margin:8px 0;">
-          <div>⚔️ Power: <span id="e-power">0</span></div>
-          <div>🛡️ Defense: <span id="e-defense">0</span></div>
-          <div>🔮 Resistance: <span id="e-resist">0</span></div>
+          <div>⚔️ Power: <span id="e-power">0</span> | 🛡️ Defense: <span id="e-defense">0</span> | 🔮 Resist: <span id="e-resist">0</span></div>
         </div>
         <div>❤️ Life: <span id="e-hp">0</span>/<span id="e-maxhp">0</span>
           <div class="bar-container"><div id="e-hp-bar" class="hp-fill"></div></div>
         </div>
         <div class="strategy-hint" id="enemy-stance">🌀 Stance: Neutral</div>
         <div id="dragon-weakness" style="color: #4da6ff; font-size:0.85rem; margin-top: 10px; padding:10px; background:rgba(10,10,25,0.8); border-radius:6px; border:1px solid #1a1a4a;"></div>
-        <div id="status-effects-enemy" style="margin-top:8px; display:flex; flex-wrap:wrap; gap:4px;"></div>
       </div>
       <div class="flex-col panel">
         <h3>✨ Your Elf</h3>
@@ -620,7 +538,18 @@
         <div>🔮 Mana: <span id="p-mana">0</span>/<span id="p-maxmana">0</span>
           <div class="bar-container"><div id="p-mana-bar" class="mana-fill"></div></div>
         </div>
-        <div id="status-effects-player" style="margin:8px 0; display:flex; flex-wrap:wrap; gap:4px;"></div>
+        
+        <!-- COMBO CHAIN SYSTEM -->
+        <div style="margin:10px 0; background:#0a0709; padding:10px; border-radius:8px;">
+          <strong>⚡ Combo Chain:</strong>
+          <div class="combo-chain" id="combo-chain">
+            <div class="chain-slot">1</div>
+            <div class="chain-slot">2</div>
+            <div class="chain-slot">3</div>
+          </div>
+          <div class="chain-bonus" id="chain-bonus">Complete 3-action combos for bonuses!</div>
+        </div>
+        
         <div style="margin: 15px 0; background:#0a0708; padding:12px; border-radius:8px;">
           <strong>🎯 Battle Tactic:</strong>
           <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top:8px;">
@@ -629,157 +558,211 @@
             <button class="tactic-btn" onclick="setTactic('defensive')">🛡️ Defensive</button>
             <button class="tactic-btn" onclick="setTactic('arcane')">🔮 Arcane</button>
           </div>
-          <div class="tactic-description" id="tactic-desc">Balanced approach: Moderate damage and defense.</div>
+          <div class="tactic-description" id="tactic-desc" style="font-size:0.7rem; color:#b49450; margin-top:5px;">Balanced approach: Moderate damage and defense.</div>
         </div>
-        <div class="dice-box">
+        
+        <div class="dice-box" style="background: linear-gradient(135deg, #170c10, #0d060a); border: 3px dashed #b49450; padding: 25px; text-align: center; margin: 15px 0; border-radius: 10px;">
           <span style="color:#b49450;">ACTION DIE (d20)</span>
-          <div id="dice-result" class="dice-val">—</div>
+          <div id="dice-result" style="font-size:4rem; font-family:'Uncial Antiqua',cursive; color:#e63946; text-shadow:0 0 30px #e63946;">—</div>
           <div id="dice-modifier" style="font-size:0.85rem;">Choose your maneuver...</div>
         </div>
-        <div style="display:flex; flex-direction: column; gap:8px;">
-          <button class="action-btn" onclick="executeAction('melee')">
-            <span class="action-icon">⚔️</span>
-            <span class="action-info">Melee Strike<span class="action-cost">15⚡ | Physical</span></span>
-          </button>
-          <button class="action-btn" onclick="executeAction('ranged')">
-            <span class="action-icon">🏹</span>
-            <span class="action-info">Arcane Arrow<span class="action-cost">18⚡ | Piercing</span></span>
-          </button>
-          <button class="action-btn" onclick="executeAction('spell')">
-            <span class="action-icon">🔮</span>
-            <span class="action-info">Void Spell<span class="action-cost">25⚡ 20🔮 | Magic</span></span>
-          </button>
-          <button class="action-btn" onclick="executeAction('defend')">
-            <span class="action-icon">🛡️</span>
-            <span class="action-info">Tactical Cover<span class="action-cost">10⚡ | Defense+Heal</span></span>
-          </button>
-          <button class="action-btn" onclick="executeAction('counter')">
-            <span class="action-icon">↩️</span>
-            <span class="action-info">Counter Stance<span class="action-cost">12⚡ | Counter</span></span>
-          </button>
-          <button class="action-btn" onclick="executeAction('finisher')">
-            <span class="action-icon">💀</span>
-            <span class="action-info">Execution<span class="action-cost">30⚡ 30🔮 | Massive</span></span>
-          </button>
+        
+        <div style="display:flex; flex-direction: column; gap:8px;" id="action-buttons">
+          <!-- Actions will be rendered dynamically -->
         </div>
       </div>
     </div>
-    <div id="combat-log">⚔️ The siege begins...</div>
+    <div id="combat-log">⚔️ The siege begins... Study the dragon's patterns carefully!</div>
   </div>
 </div>
 
 <script>
-  // ========== ELDEN VOID - ULTIMATE RPG ENGINE ==========
+  // ========== ELDEN VOID - STRATEGIC COMBAT ENGINE ==========
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYlHbPacdrNWQS5rVSxX72UJy71tGwMq-NDJftIVn4rChGv8VPoE8MkI6RYpFrzDsgFQ/exec";
 
-  // Expanded item pool
+  // Item pool (simplified for this version)
   const itemPool = [
     { id:"w1", name:"Steel Dagger", type:"weapon", effect:"None", bonus:6, rarity:"comun", scaling:"str" },
     { id:"w2", name:"Fallen King Greatsword", type:"weapon", effect:"Fire", bonus:15, rarity:"epica", scaling:"str" },
     { id:"w3", name:"Void Stormbreaker", type:"weapon", effect:"Lightning", bonus:27, rarity:"legendaria", scaling:"dex" },
     { id:"w4", name:"CTHULHU MYTHIC EDGE", type:"weapon", effect:"Poison", bonus:54, rarity:"reliquia", scaling:"att" },
     { id:"w5", name:"Elven Obsidian Blade", type:"weapon", effect:"Bleed", bonus:19, rarity:"rara", scaling:"dex" },
-    { id:"w6", name:"Crystal Fang Rapier", type:"weapon", effect:"Ice", bonus:25, rarity:"epica", scaling:"dex" },
     { id:"a1", name:"Forest Shortbow", type:"armor", effect:"None", bonus:7, rarity:"comun", scaling:"dex" },
     { id:"a2", name:"Sinister Bone Bow", type:"armor", effect:"Heal", bonus:17, rarity:"epica", scaling:"dex" },
     { id:"a3", name:"ARTEMIS DIVINE BOW", type:"armor", effect:"Heal", bonus:46, rarity:"reliquia", scaling:"dex" },
-    { id:"a4", name:"Shadow Recurve", type:"armor", effect:"Poison", bonus:21, rarity:"rara", scaling:"att" },
-    { id:"a5", name:"Stormcaller Longbow", type:"armor", effect:"Lightning", bonus:28, rarity:"legendaria", scaling:"dex" },
     { id:"s1", name:"Corrupted Wood Shield", type:"shield", effect:"None", bonus:5, rarity:"comun", scaling:"end" },
     { id:"s2", name:"Forged Obsidian Pavise", type:"shield", effect:"None", bonus:16, rarity:"epica", scaling:"end" },
     { id:"s3", name:"IMMORTAL ANCESTRAL BULWARK", type:"shield", effect:"Heal", bonus:40, rarity:"reliquia", scaling:"end" },
-    { id:"s4", name:"Dragonbone Guard", type:"shield", effect:"Fire", bonus:22, rarity:"rara", scaling:"vig" },
-    { id:"s5", name:"Mirror Shield of Echoes", type:"shield", effect:"Reflect", bonus:32, rarity:"legendaria", scaling:"att" },
     { id:"acc1", name:"Ring of the Berserker", type:"accessory", effect:"Fury", bonus:15, rarity:"epica", scaling:"str" },
     { id:"acc2", name:"Amulet of Mana Flow", type:"accessory", effect:"Regen", bonus:20, rarity:"rara", scaling:"att" },
-    { id:"acc3", name:"SOUL OF THE PHOENIX", type:"accessory", effect:"Rebirth", bonus:55, rarity:"reliquia", scaling:"vig" },
-    { id:"acc4", name:"Assassin's Pendant", type:"accessory", effect:"Crit", bonus:25, rarity:"legendaria", scaling:"dex" }
+    { id:"acc3", name:"SOUL OF THE PHOENIX", type:"accessory", effect:"Rebirth", bonus:55, rarity:"reliquia", scaling:"vig" }
   ];
 
-  // DRAGON ARCHETYPES - MASSIVELY EXPANDED
+  // Dragon archetypes with combat patterns
   const dragonArchetypes = [
-    // ELEMENTAL DRAGONS
-    { type:"Fire Wyrm", strengths:["Immune to Fire","Berserk rage below 40% HP","Devastating area attacks"], weaknesses:["Vulnerable to Ice magic","Slow after breathing fire","Low magic resistance"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"fire-dragon-volcano-castle", element:"fire" },
-    { type:"Frost Wyvern", strengths:["Freezes on contact","High defense when guarding","Deadly counter-attacks"], weaknesses:["Melts against Fire","Low stamina pool","Predictable attack patterns"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"ice-dragon-frozen-mountain", element:"ice" },
-    { type:"Storm Dragon", strengths:["Lightning-fast strikes","Chain lightning attacks","Flight advantage"], weaknesses:["Grounded by Earth magic","Exhausted after combos","Low defense while attacking"], tactics:{best:"balanced",worst:"defensive"}, imageSeed:"storm-dragon-thunder-sky", element:"lightning" },
-    { type:"Earth Wyrm", strengths:["Impenetrable scales","Earthquake attacks","Regenerates in soil"], weaknesses:["Slow movement","Vulnerable to air magic","Blind underground"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"earth-dragon-mountain-cave", element:"earth" },
-    { type:"Water Serpent", strengths:["Heals in water","Drowning attacks","Slippery and evasive"], weaknesses:["Vulnerable to lightning","Weak on land","Slow without water"], tactics:{best:"aggressive",worst:"defensive"}, imageSeed:"water-dragon-ocean-depths", element:"water" },
-    { type:"Wind Drake", strengths:["Invisible in air","Sonic boom attacks","Untouchable speed"], weaknesses:["Fragile body","Vulnerable when grounded","Exhausted quickly"], tactics:{best:"defensive",worst:"arcane"}, imageSeed:"wind-dragon-storm-clouds", element:"air" },
-    
-    // DARK DRAGONS
-    { type:"Shadow Drake", strengths:["Drains life force","Turns invisible at low HP","Toxic poison aura"], weaknesses:["Blinded by Light magic","Slow initial attacks","Vulnerable when visible"], tactics:{best:"defensive",worst:"balanced"}, imageSeed:"shadow-dragon-dark-cave", element:"shadow" },
-    { type:"Ancient Void Wyrm", strengths:["Absorbs magic attacks","Teleports around battlefield","Mind control abilities"], weaknesses:["Weak to physical damage","Depends on mana","Slow recovery time"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"void-dragon-cosmic-abyss", element:"void" },
-    { type:"Plague Wyrm", strengths:["Disease aura damages over time","Summons plague minions","Regenerates from decay"], weaknesses:["Purified by healing magic","Weak to fire cleansing","Slow attack speed"], tactics:{best:"aggressive",worst:"defensive"}, imageSeed:"plague-dragon-toxic-swamp", element:"plague" },
-    { type:"Blood Dragon", strengths:["Heals from your wounds","Bleeding attacks","Frenzy when bloodied"], weaknesses:["Cannot heal without blood","Weak to holy magic","Reckless when frenzied"], tactics:{best:"defensive",worst:"aggressive"}, imageSeed:"blood-dragon-crimson-lair", element:"blood" },
-    { type:"Soul Reaper Drake", strengths:["Steals soul fragments","Instant death below 10%","Invisible soul attacks"], weaknesses:["No physical defense","Destroyed by pure light","Slow soul collection"], tactics:{best:"arcane",worst:"defensive"}, imageSeed:"soul-dragon-spirit-realm", element:"soul" },
-    
-    // MYTHIC DRAGONS
-    { type:"Crystal Guardian", strengths:["Reflects damage back","Extremely high defense","Healing crystal minions"], weaknesses:["Shatters under pressure","Very slow movement","Weak to blunt weapons"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"crystal-dragon-gem-cavern", element:"crystal" },
-    { type:"Celestial Dragon", strengths:["Divine magic attacks","Heals itself with starlight","Immune to dark magic"], weaknesses:["Vulnerable to void magic","Low physical defense","Long casting times"], tactics:{best:"arcane",worst:"balanced"}, imageSeed:"celestial-dragon-star-temple", element:"celestial" },
-    { type:"Time Wyrm", strengths:["Slows time around it","Rewinds damage taken","Ages enemies rapidly"], weaknesses:["Temporal paradox if countered","Weak when time is stable","Predictable time loops"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"time-dragon-clockwork-realm", element:"time" },
-    { type:"Dream Drake", strengths:["Puts enemies to sleep","Nightmare damage over time","Creates illusion copies"], weaknesses:["Waking up breaks illusions","Weak to loud sounds","Vulnerable when awake"], tactics:{best:"balanced",worst:"defensive"}, imageSeed:"dream-dragon-nightmare-realm", element:"dream" },
-    
-    // LEGENDARY DRAGONS
-    { type:"Titan World Serpent", strengths:["Massive HP pool","Crushing constriction","Swallows enemies whole"], weaknesses:["Very slow","Cannot turn quickly","Vulnerable eyes"], tactics:{best:"aggressive",worst:"defensive"}, imageSeed:"titan-dragon-world-serpent", element:"titan" },
-    { type:"Chaos Dragon", strengths:["Random powerful effects","Unpredictable attacks","Reality warping"], weaknesses:["Sometimes hurts itself","Unstable power","Can be confused"], tactics:{best:"balanced",worst:"arcane"}, imageSeed:"chaos-dragon-madness-realm", element:"chaos" },
-    { type:"Phoenix Dragon", strengths:["Rebirth from ashes","Fire heals it","Explosive death"], weaknesses:["Dies permanently if frozen","Weak during rebirth","Vulnerable to water"], tactics:{best:"aggressive",worst:"defensive"}, imageSeed:"phoenix-dragon-sacred-flame", element:"phoenix" },
-    { type:"Necro Dragon", strengths:["Raises dead minions","Fear aura","Bone armor"], weaknesses:["Holy magic destroys bones","Fire burns corpses","Slow minion summoning"], tactics:{best:"arcane",worst:"balanced"}, imageSeed:"necro-dragon-bone-graveyard", element:"necro" },
-    { type:"Void Emperor Dragon", strengths:["Absolute magic immunity","Reality rift attacks","Existence erasure"], weaknesses:["Cannot be healed","Takes self damage","Slow and methodical"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"void-emperor-dragon-final-abyss", element:"void-emperor" }
+    { type:"Fire Wyrm", element:"fire", strengths:["Immune to Fire","Berserk below 40%"], weaknesses:["Ice attacks","Water magic","Slow after breath"], pattern:["melee","melee","spell","melee","spell","melee"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"fire-dragon-volcano" },
+    { type:"Frost Wyvern", element:"ice", strengths:["Freeze counter","High defense"], weaknesses:["Fire melts","Low stamina","Predictable"], pattern:["defend","counter","melee","defend","spell","melee"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"ice-dragon-frozen" },
+    { type:"Shadow Drake", element:"shadow", strengths:["Life drain","Invisible <30%"], weaknesses:["Light reveals","Slow start","Vulnerable windows"], pattern:["spell","melee","spell","defend","melee","spell"], tactics:{best:"defensive",worst:"balanced"}, imageSeed:"shadow-dragon-dark" },
+    { type:"Storm Dragon", element:"lightning", strengths:["Chain attacks","Speed boost"], weaknesses:["Grounded by Earth","Exhausted","Low defense"], pattern:["ranged","ranged","melee","ranged","spell","melee"], tactics:{best:"balanced",worst:"defensive"}, imageSeed:"storm-dragon-thunder" },
+    { type:"Void Wyrm", element:"void", strengths:["Magic absorb","Teleport"], weaknesses:["Physical damage","Mana hungry","Slow recovery"], pattern:["spell","spell","defend","spell","melee","spell"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"void-dragon-abyss" },
+    { type:"Crystal Guardian", element:"crystal", strengths:["Reflect damage","Healing"], weaknesses:["Shatter combos","Blunt force","Slow"], pattern:["defend","defend","melee","defend","spell","melee"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"crystal-dragon-gem" }
   ];
 
   const dragonNames = [
-    "Tiamat the Soul-Drinker", "Ancalagon Void-Terror", "Glaurung Rot-Wing",
+    "Tiamat Soul-Drinker", "Ancalagon Void-Terror", "Glaurung Rot-Wing",
     "Smaug Rune-Blood", "Vermithrax Prime", "Nidhogg Root-Breaker",
-    "Fafnir Gold-Curse", "Ladon Twilight-Keeper", "Yamata-no-Orochi Storm-Serpent",
-    "Drogon Shadow-Flame", "Viseryon Ice-Heart", "Rhaegal Storm-Born",
-    "Bahamut Star-Wing", "Leviathan Deep-Terror", "Jormungandr World-Coil",
-    "Quetzalcoatl Sky-Feather", "Ryujin Tide-Lord", "Shenlong Wish-Granter",
-    "Hydra Venom-Head", "Typhon Storm-Father", "Zirnitra Dark-Scale",
-    "Apep Chaos-Bringer", "Illuyanka Mountain-Crusher", "Vritra Drought-Bringer"
+    "Fafnir Gold-Curse", "Ladon Twilight-Keeper", "Yamata-no-Orochi"
   ];
+
+  // ========== SKILL TREE SYSTEM ==========
+  const skillTree = {
+    str: { name:"Brutality", icon:"💪", desc:"Physical damage", level:1, maxLevel:10, cost:1, scaling:1.5 },
+    dex: { name:"Reflexes", icon:"⚡", desc:"Speed & dodge", level:1, maxLevel:10, cost:1, scaling:1.5 },
+    att: { name:"Void Magic", icon:"🔮", desc:"Spell power & mana", level:1, maxLevel:10, cost:1, scaling:1.5 },
+    vig: { name:"Vitality", icon:"❤️", desc:"HP & survival", level:1, maxLevel:10, cost:1, scaling:1.5 },
+    end: { name:"Endurance", icon:"🔋", desc:"Stamina & defense", level:1, maxLevel:10, cost:1, scaling:1.5 }
+  };
 
   let currentUser = null;
   let currentTactic = 'balanced';
   let dragonsSlain = 0;
+  let availableSkillPoints = 5;
+  let combatPattern = [];
+  let patternPosition = 0;
+  let discoveredWeaknesses = [];
+  let comboChain = [];
   let userStats = {
-    level:1, score:0, points:5,
-    str:10, dex:10, att:10, vig:10, end:10,
+    level:1, score:0,
     weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2",
     ownedItems:["w1","a1","s1","acc2"],
     medalsList:[]
   };
   let combatState = null;
 
-  function generateDragonLore(archetype, level) {
-    const chosenName = dragonNames[Math.floor(Math.random() * dragonNames.length)] + " Lv." + (level + 3);
-    const dragon = archetype;
+  function getSkillLevel(skill) { return skillTree[skill].level; }
+  function getSkillCost(skill) { return Math.ceil(skillTree[skill].cost * skillTree[skill].scaling); }
+
+  function renderSkillTree() {
+    const container = document.getElementById('skill-tree');
+    container.innerHTML = '';
+    document.getElementById('stat-points').innerText = availableSkillPoints;
     
-    const loreTemplates = [
-      `The ${dragon.type} ${chosenName} emerged from the ${dragon.imageSeed.replace(/-/g, ' ')}. Its scales shimmer with ancient malice. ${dragon.strengths[0]}, but whispers among the dark elves say ${dragon.weaknesses[0]}.`,
-      `Born of ${dragon.imageSeed.split('-')[0]} and hatred, ${chosenName} terrorized the elven kingdoms for centuries. ${dragon.strengths[1]} makes it almost invincible. Yet, ancient texts reveal ${dragon.weaknesses[1]}.`,
-      `${chosenName} guards secrets of the ${dragon.imageSeed.replace(/-/g, ' ')}. Its ${dragon.strengths[2]} will test your mettle. The wise warrior knows to exploit its ${dragon.weaknesses[2]} to survive this encounter.`
+    Object.keys(skillTree).forEach(skill => {
+      const node = skillTree[skill];
+      const canLevel = availableSkillPoints >= getSkillCost(skill) && node.level < node.maxLevel;
+      container.innerHTML += `
+        <div>
+          <div class="skill-node ${node.level > 1 ? 'unlocked' : ''} ${!canLevel && node.level < node.maxLevel ? 'locked' : ''}" 
+               onclick="levelUpSkill('${skill}')" title="${node.desc}">
+            <span class="skill-node-icon">${node.icon}</span>
+            <span class="skill-node-level">Lv.${node.level}</span>
+            <span class="skill-node-name">${node.name}</span>
+          </div>
+          <div style="font-size:0.65rem; color:#b49450; margin-top:3px;">Cost: ${getSkillCost(skill)} pts</div>
+        </div>
+      `;
+    });
+  }
+
+  function levelUpSkill(skill) {
+    const node = skillTree[skill];
+    const cost = getSkillCost(skill);
+    if(availableSkillPoints >= cost && node.level < node.maxLevel) {
+      availableSkillPoints -= cost;
+      node.level++;
+      node.cost++;
+      userStats.level++;
+      renderSkillTree();
+      saveToCloud();
+    }
+  }
+
+  // ========== COMBAT PATTERN SYSTEM ==========
+  function generateCombatPattern(archetype) {
+    const patterns = {
+      fire: [['melee','spell','melee'], ['spell','melee','spell'], ['melee','melee','spell']],
+      ice: [['defend','counter','melee'], ['defend','melee','defend'], ['counter','defend','spell']],
+      shadow: [['spell','melee','spell'], ['melee','spell','defend'], ['spell','defend','melee']],
+      storm: [['ranged','ranged','melee'], ['ranged','melee','ranged'], ['melee','ranged','spell']],
+      void: [['spell','spell','defend'], ['spell','defend','spell'], ['defend','spell','melee']],
+      crystal: [['defend','defend','melee'], ['defend','melee','defend'], ['melee','defend','spell']]
+    };
+    return patterns[archetype.element] || patterns.fire;
+  }
+
+  function getCorrectAction(pattern, position) {
+    const counters = {
+      'melee': 'defend',
+      'ranged': 'counter',
+      'spell': 'melee',
+      'defend': 'spell',
+      'counter': 'ranged'
+    };
+    return counters[pattern] || 'melee';
+  }
+
+  function renderWeaknessWheel() {
+    const wheel = document.getElementById('weakness-wheel');
+    const allWeaknesses = ['Ice', 'Fire', 'Light', 'Earth', 'Physical', 'Blunt', 'Water', 'Lightning', 'Void', 'Holy'];
+    wheel.innerHTML = allWeaknesses.map(w => {
+      const revealed = discoveredWeaknesses.includes(w.toLowerCase());
+      return `<span class="weakness-indicator ${revealed ? 'revealed' : ''}">${revealed ? '✓' : '?'} ${w}</span>`;
+    }).join('');
+  }
+
+  function renderActionButtons() {
+    const container = document.getElementById('action-buttons');
+    const actions = [
+      { id:'melee', icon:'⚔️', name:'Melee Strike', cost:'15⚡', desc:'Physical damage' },
+      { id:'ranged', icon:'🏹', name:'Arcane Arrow', cost:'18⚡', desc:'Piercing damage' },
+      { id:'spell', icon:'🔮', name:'Void Spell', cost:'25⚡ 20🔮', desc:'Magic damage' },
+      { id:'defend', icon:'🛡️', name:'Tactical Cover', cost:'10⚡', desc:'Defense + Heal' },
+      { id:'counter', icon:'↩️', name:'Counter Stance', cost:'12⚡', desc:'Counter next attack' },
+      { id:'finisher', icon:'💀', name:'Execution', cost:'30⚡ 30🔮', desc:'Massive damage' }
     ];
     
-    return {
-      name: chosenName,
-      lore: loreTemplates[Math.floor(Math.random() * loreTemplates.length)],
-      archetype: dragon
-    };
+    container.innerHTML = actions.map(a => `
+      <button class="action-btn" onclick="executeAction('${a.id}')">
+        <span class="action-icon">${a.icon}</span>
+        <span class="action-info">${a.name}<span class="action-cost">${a.cost} | ${a.desc}</span></span>
+      </button>
+    `).join('');
   }
 
-  function generateDragonImage(seed) {
-    const randomSeed = Math.floor(Math.random() * 99999);
-    return `https://image.pollinations.ai/prompt/epic%20dark%20fantasy%20${seed.replace(/-/g, '%20')}%20dragon%20digital%20painting%20detailed%20scales%20wings%20fire%20smoke?width=600&height=400&nologo=true&seed=${randomSeed}`;
+  function updateComboChain(action) {
+    comboChain.push(action);
+    if(comboChain.length > 3) comboChain.shift();
+    
+    const slots = document.querySelectorAll('.chain-slot');
+    slots.forEach((slot, i) => {
+      slot.classList.remove('filled');
+      slot.textContent = i + 1;
+    });
+    
+    comboChain.forEach((act, i) => {
+      if(slots[i]) {
+        slots[i].classList.add('filled');
+        const icons = {melee:'⚔️',ranged:'🏹',spell:'🔮',defend:'🛡️',counter:'↩️',finisher:'💀'};
+        slots[i].textContent = icons[act] || act;
+      }
+    });
+    
+    // Check combo bonuses
+    const bonusDiv = document.getElementById('chain-bonus');
+    if(comboChain.length === 3) {
+      if(comboChain[0] === comboChain[1] && comboChain[1] === comboChain[2]) {
+        bonusDiv.innerHTML = '🔥 TRIPLE COMBO! +50% damage!';
+      } else if(comboChain.includes('melee') && comboChain.includes('ranged') && comboChain.includes('spell')) {
+        bonusDiv.innerHTML = '✨ PERFECT MIX! +30% damage & heal!';
+      } else if(comboChain[0] === 'defend' && comboChain[2] === 'counter') {
+        bonusDiv.innerHTML = '🛡️ DEFENSE CHAIN! Counter ready!';
+      } else {
+        bonusDiv.innerHTML = 'Complete 3-action combos for bonuses!';
+      }
+    }
   }
 
-  // ========== CLOUD FUNCTIONS (ORIGINAL SYSTEM - FIXED) ==========
-  function showError(msg) {
-    const errorDiv = document.getElementById('auth-error');
-    errorDiv.textContent = msg;
-    errorDiv.classList.remove('hidden');
-    setTimeout(() => errorDiv.classList.add('hidden'), 4000);
-  }
-
+  // ========== CLOUD FUNCTIONS (UNCHANGED) ==========
   async function cloudRequest(action, data = {}) {
     document.getElementById('loading-overlay').classList.remove('hidden');
     try {
@@ -789,26 +772,15 @@
         let response = await fetch(url);
         let text = await response.text();
         document.getElementById('loading-overlay').classList.add('hidden');
-        try {
-          return JSON.parse(text);
-        } catch(e) {
-          console.error('JSON parse error:', text);
-          return { success: false, error: 'Invalid server response' };
-        }
+        try { return JSON.parse(text); } catch(e) { return { success: false, error: 'Invalid response' }; }
       } else {
         data.action = action;
-        await fetch(WEB_APP_URL, { 
-          method: 'POST', 
-          mode: 'no-cors', 
-          headers: { 'Content-Type': 'application/json' }, 
-          body: JSON.stringify(data) 
-        });
+        await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
         document.getElementById('loading-overlay').classList.add('hidden');
         return { success: true };
       }
     } catch (e) {
       document.getElementById('loading-overlay').classList.add('hidden');
-      console.error('Cloud error:', e);
       return { success: false, error: e.message };
     }
   }
@@ -816,31 +788,25 @@
   async function register() {
     const u = document.getElementById('username').value.trim();
     const p = document.getElementById('password').value;
-    if(!u || !p) {
-      showError("Fill the codex, dark elf.");
+    if(!u || !p || u.length < 3 || p.length < 3) {
+      document.getElementById('auth-error').classList.remove('hidden');
+      document.getElementById('auth-error').innerText = "Name and rune must be at least 3 characters.";
+      setTimeout(() => document.getElementById('auth-error').classList.add('hidden'), 4000);
       return;
     }
-    if(u.length < 3) {
-      showError("Name must be at least 3 characters.");
-      return;
-    }
-    if(p.length < 3) {
-      showError("Rune must be at least 3 characters.");
-      return;
-    }
-    
     let defaultStats = {
-      level:1, score:0, points:5, str:10, dex:10, att:10, vig:10, end:10,
+      level:1, score:0,
       weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2",
-      ownedItems:["w1","a1","s1","acc2"], medalsList:[], dragonsSlain:0
+      ownedItems:["w1","a1","s1","acc2"], medalsList:[], dragonsSlain:0,
+      skillLevels:{str:1,dex:1,att:1,vig:1,end:1}, availablePoints:5
     };
-    
     let result = await cloudRequest('register', { username: u, password: p, stats: defaultStats });
     if(result && result.success) {
-      alert("Dark Elf lineage created. The Nexus accepts your offering. Now awaken.");
-      document.getElementById('password').value = '';
+      alert("Dark Elf lineage created. Awaken now.");
     } else {
-      showError("Failed to create lineage. Try another name.");
+      document.getElementById('auth-error').classList.remove('hidden');
+      document.getElementById('auth-error').innerText = "Failed to create lineage.";
+      setTimeout(() => document.getElementById('auth-error').classList.add('hidden'), 4000);
     }
   }
 
@@ -848,74 +814,74 @@
     const u = document.getElementById('username').value.trim();
     const p = document.getElementById('password').value;
     if(!u || !p) {
-      showError("Fill the codex, dark elf.");
+      document.getElementById('auth-error').classList.remove('hidden');
+      document.getElementById('auth-error').innerText = "Fill the codex.";
+      setTimeout(() => document.getElementById('auth-error').classList.add('hidden'), 4000);
       return;
     }
-    
     let res = await cloudRequest('login', { username: u, password: p });
-    
     if(res && res.success) {
       currentUser = u;
       userStats = res.stats;
       if(!userStats.ownedItems) userStats.ownedItems = ["w1","a1","s1","acc2"];
       if(!userStats.medalsList) userStats.medalsList = [];
       if(!userStats.accessory) userStats.accessory = "acc2";
-      if(!userStats.dragonsSlain) userStats.dragonsSlain = 0;
       dragonsSlain = userStats.dragonsSlain || 0;
+      
+      // Load skill levels
+      if(res.stats.skillLevels) {
+        Object.keys(res.stats.skillLevels).forEach(s => {
+          if(skillTree[s]) skillTree[s].level = res.stats.skillLevels[s];
+        });
+      }
+      availableSkillPoints = res.stats.availablePoints || 5;
+      
       document.getElementById('auth-screen').classList.add('hidden');
       document.getElementById('main-menu').classList.remove('hidden');
       document.getElementById('auth-error').classList.add('hidden');
       renderUserData();
     } else {
-      showError("Access denied by the Nexus. Check your runes or create a new lineage.");
+      document.getElementById('auth-error').classList.remove('hidden');
+      document.getElementById('auth-error').innerText = "Access denied. Check your runes.";
+      setTimeout(() => document.getElementById('auth-error').classList.add('hidden'), 4000);
     }
   }
 
-  function logout() { 
+  function logout() {
     currentUser = null;
-    userStats = {
-      level:1, score:0, points:5,
-      str:10, dex:10, att:10, vig:10, end:10,
-      weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2",
-      ownedItems:["w1","a1","s1","acc2"],
-      medalsList:[]
-    };
+    userStats = { level:1, score:0, weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2", ownedItems:["w1","a1","s1","acc2"], medalsList:[] };
     dragonsSlain = 0;
+    availableSkillPoints = 5;
+    Object.keys(skillTree).forEach(s => skillTree[s].level = 1);
     document.getElementById('auth-screen').classList.remove('hidden');
     document.getElementById('main-menu').classList.add('hidden');
     document.getElementById('combat-screen').classList.add('hidden');
     document.getElementById('username').value = '';
     document.getElementById('password').value = '';
-    document.getElementById('auth-error').classList.add('hidden');
   }
 
   async function saveToCloud() {
     if(!currentUser) return;
+    const skillLevels = {};
+    Object.keys(skillTree).forEach(s => skillLevels[s] = skillTree[s].level);
     userStats.dragonsSlain = dragonsSlain;
+    userStats.skillLevels = skillLevels;
+    userStats.availablePoints = availableSkillPoints;
     await cloudRequest('save', { username: currentUser, stats: userStats });
   }
 
-  // ========== RENDER MAIN MENU ==========
+  // ========== RENDER FUNCTIONS ==========
   function renderUserData() {
-    document.getElementById('welcome-msg').innerText = `⚔️ Elf Lineage: ${currentUser}`;
+    document.getElementById('welcome-msg').innerText = `⚔️ ${currentUser}`;
     document.getElementById('stat-level').innerText = userStats.level;
-    document.getElementById('stat-points').innerText = userStats.points;
     document.getElementById('stat-score').innerText = userStats.score;
     document.getElementById('stat-dragons').innerText = dragonsSlain;
-
-    const skillsContainer = document.getElementById('skills-container');
-    skillsContainer.innerHTML = `
-      <div>💪 Brutality (Str): ${userStats.str} <button class="stat-btn" onclick="levelUpSkill('str')">+</button></div>
-      <div>⚡ Reflexes (Dex): ${userStats.dex} <button class="stat-btn" onclick="levelUpSkill('dex')">+</button></div>
-      <div>🔮 Void Magic (Att): ${userStats.att} <button class="stat-btn" onclick="levelUpSkill('att')">+</button></div>
-      <div>❤️ Vitality (Vig): ${userStats.vig} <button class="stat-btn" onclick="levelUpSkill('vig')">+</button></div>
-      <div>🔋 Endurance (End): ${userStats.end} <button class="stat-btn" onclick="levelUpSkill('end')">+</button></div>
-    `;
-
+    renderSkillTree();
+    
     const weaponItem = itemPool.find(i=>i.id===userStats.weapon) || itemPool[0];
     const armorItem = itemPool.find(i=>i.id===userStats.armor) || itemPool[4];
     const shieldItem = itemPool.find(i=>i.id===userStats.shield) || itemPool[7];
-    const accessoryItem = itemPool.find(i=>i.id===userStats.accessory) || itemPool[16];
+    const accessoryItem = itemPool.find(i=>i.id===userStats.accessory) || itemPool[11];
     
     document.getElementById('eq-weapon').innerText = `${weaponItem.name} (+${weaponItem.bonus})`;
     document.getElementById('eq-armor').innerText = `${armorItem.name} (+${armorItem.bonus})`;
@@ -929,39 +895,47 @@
       if(!item) return;
       const equipped = (userStats.weapon===id || userStats.armor===id || userStats.shield===id || userStats.accessory===id);
       invContainer.innerHTML += `
-        <div class="item-card rare-${item.rarity} ${equipped?'equipped-item':''}" onclick="equipItem('${item.id}')">
-          <strong>${item.name}</strong>
-          <span>+${item.bonus} (${item.scaling})</span>
-          <small style="color:#b49450;">${item.effect}</small>
+        <div style="background: linear-gradient(135deg, #171016, #1a1217); border: 2px solid ${equipped ? '#f1c40f' : '#42352b'}; padding: 12px; font-size: 0.85rem; text-align: center; color: #cfbc92; border-radius: 8px; cursor: pointer; ${equipped ? 'box-shadow: 0 0 20px rgba(241,196,15,0.4);' : ''}" 
+             onclick="equipItem('${item.id}')">
+          <strong>${item.name}</strong><br>
+          <span>+${item.bonus} (${item.scaling})</span><br>
+          <small style="color:#b49450;">${item.effect}</small><br>
           ${equipped ? '<small style="color:#f1c40f;">[Equipped]</small>' : '<small>Click to equip</small>'}
         </div>
       `;
     });
 
+    renderMedalShelf();
+  }
+
+  function renderMedalShelf() {
     const shelf = document.getElementById('medal-shelf-container');
     shelf.innerHTML = '';
     if(!userStats.medalsList.length) {
       shelf.innerHTML = '<p style="color:#7a6a5c;">Conquer fortresses to forge legendary medals...</p>';
-    } else {
-      userStats.medalsList.forEach(m => {
-        shelf.innerHTML += `
-          <div class="medal-badge rare-${m.rarity}">
-            <span class="medal-icon">${m.icon}</span>
-            <span class="medal-name">${m.name}</span>
-            <span class="medal-rarity">${m.rarity}</span>
-          </div>`;
-      });
+      return;
     }
-  }
-
-  function levelUpSkill(skill) {
-    if(userStats.points > 0) {
-      userStats[skill]++;
-      userStats.points--;
-      userStats.level++;
-      renderUserData();
-      saveToCloud();
-    }
+    
+    const shapes = {
+      comun: '<polygon points="25,5 45,15 45,35 25,45 5,35 5,15" fill="#7e7e7e" stroke="#cbd5e1" stroke-width="2"/>',
+      rara: '<circle cx="25" cy="25" r="20" fill="#0070dd" stroke="#4da6ff" stroke-width="2"/>',
+      epica: '<polygon points="25,5 35,15 45,25 35,35 25,45 15,35 5,25 15,15" fill="#a335ee" stroke="#c27aff" stroke-width="2"/>',
+      legendaria: '<polygon points="25,3 47,17 47,33 25,47 3,33 3,17" fill="#ff8000" stroke="#ffaa33" stroke-width="3"/>',
+      reliquia: '<path d="M25 5 L35 20 L50 25 L35 30 L25 45 L15 30 L0 25 L15 20 Z" fill="#e63946" stroke="#ff5566" stroke-width="3"/>'
+    };
+    
+    userStats.medalsList.forEach(m => {
+      const shape = shapes[m.rarity] || shapes.comun;
+      shelf.innerHTML += `
+        <div class="medal-badge rare-${m.rarity}">
+          <div class="medal-shape">
+            <svg viewBox="0 0 50 50">${shape}</svg>
+          </div>
+          <span class="medal-name">${m.name}</span>
+          <span class="medal-rarity">${m.rarity}</span>
+        </div>
+      `;
+    });
   }
 
   function equipItem(id) {
@@ -979,68 +953,77 @@
     currentTactic = tactic;
     document.querySelectorAll('.tactic-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
-    const descriptions = {
-      'balanced': 'Balanced approach: Moderate damage and defense. Good for learning enemy patterns.',
-      'aggressive': 'Aggressive stance: +30% damage, -20% defense. Overwhelm enemies quickly!',
-      'defensive': 'Defensive stance: +30% defense, counter-attacks enabled. Weather the storm.',
-      'arcane': 'Arcane focus: +40% magic damage, +20 mana regen. Unleash void power!'
+    const desc = {
+      balanced:'Balanced: Moderate damage and defense.',
+      aggressive:'Aggressive: +30% damage, -20% defense.',
+      defensive:'Defensive: +30% defense, counter windows.',
+      arcane:'Arcane: +40% magic, +20 mana regen.'
     };
-    document.getElementById('tactic-desc').innerText = descriptions[tactic];
-    if(combatState) {
-      logMessage(`🎯 Tactic changed to ${tactic.toUpperCase()}.`, 'log-info');
-    }
+    document.getElementById('tactic-desc').innerText = desc[tactic];
+    if(combatState) logMessage(`🎯 Tactic: ${tactic.toUpperCase()}`, 'log-info');
   }
 
-  // ========== COMBAT SYSTEM ==========
+  // ========== ENHANCED COMBAT SYSTEM ==========
   function lookForCastle() {
     const archetype = dragonArchetypes[Math.floor(Math.random() * dragonArchetypes.length)];
-    const dragonData = generateDragonLore(archetype, userStats.level);
-    const weapon = itemPool.find(i=>i.id===userStats.weapon) || itemPool[0];
-    const armor = itemPool.find(i=>i.id===userStats.armor) || itemPool[4];
-    const shield = itemPool.find(i=>i.id===userStats.shield) || itemPool[7];
-    const accessory = itemPool.find(i=>i.id===userStats.accessory) || itemPool[16];
-
+    const chosenName = dragonNames[Math.floor(Math.random() * dragonNames.length)] + " Lv." + (userStats.level + 3);
+    const loreTemplates = [
+      `The ${archetype.type} ${chosenName} emerged from the ${archetype.imageSeed.replace(/-/g, ' ')}. ${archetype.strengths[0]}. Ancient texts whisper: ${archetype.weaknesses[0]}.`,
+      `Born of ${archetype.element}, ${chosenName} terrorized kingdoms. ${archetype.strengths[1]}. The wise exploit ${archetype.weaknesses[1]}.`
+    ];
+    
+    combatPattern = generateCombatPattern(archetype)[Math.floor(Math.random() * 3)];
+    patternPosition = 0;
+    discoveredWeaknesses = [];
+    comboChain = [];
+    
     combatState = {
-      dragonData: dragonData,
+      dragonData: { name: chosenName, lore: loreTemplates[Math.floor(Math.random()*loreTemplates.length)], archetype },
       enemy: {
-        name: dragonData.name,
+        name: chosenName,
         hp: 100 + (userStats.level * 20),
         maxHp: 100 + (userStats.level * 20),
         power: 14 + userStats.level,
         defense: 8 + Math.floor(userStats.level/2),
         magicResist: 8 + Math.floor(userStats.level/3),
         stance: 'neutral',
-        specialCharged: false,
-        statusEffects: []
+        nextAction: combatPattern[0]
       },
       player: {
-        hp: userStats.vig * 12,
-        maxHp: userStats.vig * 12,
-        stamina: userStats.end * 7,
-        maxStamina: userStats.end * 7,
-        mana: userStats.att * 5,
-        maxMana: userStats.att * 5,
+        hp: skillTree.vig.level * 14,
+        maxHp: skillTree.vig.level * 14,
+        stamina: skillTree.end.level * 8,
+        maxStamina: skillTree.end.level * 8,
+        mana: skillTree.att.level * 6,
+        maxMana: skillTree.att.level * 6,
         counterActive: false,
-        statusEffects: []
+        correctGuesses: 0
       },
-      equipment: { weapon, armor, shield, accessory },
-      turn: 0
+      equipment: {
+        weapon: itemPool.find(i=>i.id===userStats.weapon) || itemPool[0],
+        armor: itemPool.find(i=>i.id===userStats.armor) || itemPool[4],
+        shield: itemPool.find(i=>i.id===userStats.shield) || itemPool[7],
+        accessory: itemPool.find(i=>i.id===userStats.accessory) || itemPool[11]
+      }
     };
 
     document.getElementById('main-menu').classList.add('hidden');
     document.getElementById('combat-screen').classList.remove('hidden');
     document.getElementById('combat-log').innerHTML = '';
-    document.getElementById('enemy-name').innerText = combatState.enemy.name;
-    document.getElementById('dragon-lore').innerText = dragonData.lore;
-    document.getElementById('dragon-img').src = generateDragonImage(archetype.imageSeed);
-    document.getElementById('dragon-weakness').innerHTML = `<strong>💡 Weaknesses:</strong> ${archetype.weaknesses.join('; ')}<br><strong>⚠️ Strengths:</strong> ${archetype.strengths.join('; ')}<br><strong>🎯 Best Tactic:</strong> ${archetype.tactics.best.toUpperCase()}`;
-    document.getElementById('status-effects-enemy').innerHTML = '';
-    document.getElementById('status-effects-player').innerHTML = '';
+    document.getElementById('enemy-name').innerText = chosenName;
+    document.getElementById('dragon-lore').innerText = combatState.dragonData.lore;
+    document.getElementById('dragon-img').src = `https://image.pollinations.ai/prompt/epic%20dark%20fantasy%20${archetype.imageSeed.replace(/-/g, '%20')}%20dragon%20digital%20art?width=600&height=400&nologo=true&seed=${Math.floor(Math.random()*99999)}`;
+    document.getElementById('dragon-weakness').innerHTML = `<strong>💡 Strengths:</strong> ${archetype.strengths.join('; ')}<br><strong>🎯 Best Tactic:</strong> ${archetype.tactics.best.toUpperCase()}`;
     
+    renderWeaknessWheel();
+    renderActionButtons();
+    updateComboChain('reset');
     updateCombatUI();
-    logMessage(`🐉 <span class="log-warning">${dragonData.name} emerges from the void!</span>`, '');
-    logMessage(`📖 <span class="log-info">"${dragonData.lore}"</span>`, '');
-    logMessage(`💡 Best tactic: <span class="log-info">${archetype.tactics.best.toUpperCase()}</span> | Avoid: <span class="log-warning">${archetype.tactics.worst.toUpperCase()}</span>`, '');
+    
+    logMessage(`🐉 <span class="log-warning">${chosenName} emerges!</span>`, '');
+    logMessage(`📖 <span class="log-info">"${combatState.dragonData.lore}"</span>`, '');
+    logMessage(`💡 <span class="log-info">Study the dragon's pattern. The lore contains clues to its weaknesses.</span>`, '');
+    logMessage(`⚡ <span class="log-info">Watch the enemy's stance to predict its next move!</span>`, '');
   }
 
   function updateCombatUI() {
@@ -1054,7 +1037,6 @@
     document.getElementById('p-maxstamina').innerText = p.maxStamina;
     document.getElementById('p-mana').innerText = Math.max(0, p.mana);
     document.getElementById('p-maxmana').innerText = p.maxMana;
-    
     document.getElementById('e-hp').innerText = Math.max(0, e.hp);
     document.getElementById('e-maxhp').innerText = e.maxHp;
     document.getElementById('e-power').innerText = e.power;
@@ -1066,7 +1048,8 @@
     document.getElementById('p-mana-bar').style.width = Math.max(0, (p.mana/p.maxMana)*100)+'%';
     document.getElementById('e-hp-bar').style.width = Math.max(0, (e.hp/e.maxHp)*100)+'%';
     
-    document.getElementById('enemy-stance').innerText = `🌀 Stance: ${e.stance.toUpperCase()}`;
+    const stanceText = e.stance === 'furious' ? 'FURIOUS (+40% damage)' : e.stance === 'guarded' ? 'GUARDED (+50% defense)' : 'NEUTRAL';
+    document.getElementById('enemy-stance').innerText = `🌀 Stance: ${stanceText} | Next: ${e.nextAction?.toUpperCase() || 'Unknown'}`;
   }
 
   function logMessage(msg, className) {
@@ -1077,20 +1060,17 @@
 
   function getScalingValue(item) {
     if(!item) return 10;
-    const scaleMap = { str: userStats.str, dex: userStats.dex, att: userStats.att, vig: userStats.vig, end: userStats.end };
-    return scaleMap[item.scaling] || 10;
+    const map = { str: skillTree.str.level * 3, dex: skillTree.dex.level * 3, att: skillTree.att.level * 3, vig: skillTree.vig.level * 3, end: skillTree.end.level * 3 };
+    return map[item.scaling] || 10;
   }
 
   function executeAction(type) {
     if(!combatState || combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
     
     const costs = {
-      melee: {stamina:15, mana:0},
-      ranged: {stamina:18, mana:0},
-      spell: {stamina:25, mana:20},
-      defend: {stamina:10, mana:0},
-      counter: {stamina:12, mana:0},
-      finisher: {stamina:30, mana:30}
+      melee: {stamina:15, mana:0}, ranged: {stamina:18, mana:0},
+      spell: {stamina:25, mana:20}, defend: {stamina:10, mana:0},
+      counter: {stamina:12, mana:0}, finisher: {stamina:30, mana:30}
     };
     
     const cost = costs[type];
@@ -1105,16 +1085,14 @@
     
     combatState.player.stamina -= cost.stamina;
     combatState.player.mana -= cost.mana;
-    combatState.turn++;
     
-    // Tactic modifiers
-    let tacticMultiplier = 1;
-    let defenseMultiplier = 1;
-    switch(currentTactic) {
-      case 'aggressive': tacticMultiplier = 1.3; defenseMultiplier = 0.8; break;
-      case 'defensive': tacticMultiplier = 0.8; defenseMultiplier = 1.3; break;
-      case 'arcane': tacticMultiplier = type==='spell' ? 1.4 : 0.9; break;
-    }
+    // Update combo chain
+    updateComboChain(type);
+    
+    // Check if this is the correct counter to enemy's next action
+    const enemyAction = combatState.enemy.nextAction;
+    const correctAction = getCorrectAction(enemyAction);
+    let isCorrectCounter = (type === correctAction);
     
     const roll = Math.floor(Math.random()*20)+1;
     document.getElementById('dice-result').innerText = roll;
@@ -1122,56 +1100,91 @@
     setTimeout(() => document.getElementById('dice-result').style.animation = 'dicePulse 0.5s ease-out', 10);
     
     let damage = 0;
-    let isCritical = false;
+    let tacticMultiplier = 1;
+    switch(currentTactic) {
+      case 'aggressive': tacticMultiplier = 1.3; break;
+      case 'defensive': tacticMultiplier = 0.8; break;
+      case 'arcane': tacticMultiplier = type==='spell' ? 1.4 : 0.9; break;
+    }
     
-    // Accessory effect: Crit chance
-    const accessory = combatState.equipment.accessory;
-    const critChance = (accessory && accessory.effect === 'Crit') ? 0.25 : 0.1;
+    // Correct counter bonus
+    if(isCorrectCounter) {
+      tacticMultiplier *= 1.5;
+      combatState.player.correctGuesses++;
+      logMessage('🎯 <span class="log-critical">CORRECT COUNTER! +50% damage!</span>', '');
+      
+      // Reveal weakness on correct guesses
+      if(combatState.player.correctGuesses >= 2 && discoveredWeaknesses.length < 3) {
+        const allWeaknesses = combatState.dragonData.archetype.weaknesses;
+        const newWeakness = allWeaknesses[discoveredWeaknesses.length].split(' ')[0].toLowerCase();
+        discoveredWeaknesses.push(newWeakness);
+        renderWeaknessWheel();
+        logMessage(`🔍 <span class="log-info">Weakness discovered: ${newWeakness.toUpperCase()}!</span>`, '');
+      }
+      
+      // Highlight correct button
+      document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('correct-choice'));
+      event.target.classList.add('correct-choice');
+      setTimeout(() => event.target.classList.remove('correct-choice'), 500);
+    } else if(type !== 'defend' && type !== 'counter' && type !== 'finisher') {
+      // Wrong choice feedback
+      document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('wrong-choice'));
+      event.target.classList.add('wrong-choice');
+      setTimeout(() => event.target.classList.remove('wrong-choice'), 500);
+    }
     
     if(roll === 1) {
       document.getElementById('dice-modifier').innerText = "Critical Failure!";
-      logMessage('🎲 Critical failure! Attack misses completely.', 'log-warning');
+      logMessage('🎲 Critical failure!', 'log-warning');
       damage = 0;
-    } else if(roll === 20 || Math.random() < critChance) {
+    } else if(roll === 20) {
       document.getElementById('dice-modifier').innerText = "ANCESTRAL CRITICAL!";
-      isCritical = true;
-      logMessage('🎲 <span class="log-critical">PERFECT STRIKE! Critical hit!</span>', '');
       tacticMultiplier *= 2.5;
+      logMessage('🎲 <span class="log-critical">PERFECT STRIKE!</span>', '');
     } else {
-      document.getElementById('dice-modifier').innerText = `Roll: ${roll} | Multiplier: x${(0.5 + roll/15).toFixed(1)}`;
+      document.getElementById('dice-modifier').innerText = `Roll: ${roll}`;
     }
     
-    if(roll > 1 || isCritical) {
+    if(roll > 1) {
       const factor = 0.5 + (roll/15);
+      
+      // Combo bonus
+      if(comboChain.length === 3) {
+        if(comboChain[0] === comboChain[1] && comboChain[1] === comboChain[2]) {
+          tacticMultiplier += 0.5;
+          logMessage('🔥 Triple combo bonus!', 'log-critical');
+        } else if(new Set(comboChain).size === 3 && !comboChain.includes('defend') && !comboChain.includes('counter')) {
+          tacticMultiplier += 0.3;
+          combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + 15);
+          logMessage('✨ <span class="log-heal">Perfect mix! +30% damage & heal!</span>', '');
+        }
+      }
       
       if(type === 'melee') {
         const base = getScalingValue(combatState.equipment.weapon) + combatState.equipment.weapon.bonus;
         damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.defense/50));
-        logMessage(`⚔️ Melee slash deals <span class="log-damage">${damage} damage</span>.`, '');
-        applyWeaponEffect(combatState.equipment.weapon.effect);
+        logMessage(`⚔️ Melee: <span class="log-damage">${damage} damage</span>`, '');
       } else if(type === 'ranged') {
         const base = getScalingValue(combatState.equipment.armor) + combatState.equipment.armor.bonus;
         damage = Math.floor(base * factor * tacticMultiplier * 0.9);
-        logMessage(`🏹 Arrow pierces for <span class="log-damage">${damage} damage</span>.`, '');
-        applyWeaponEffect(combatState.equipment.armor.effect);
+        logMessage(`🏹 Arrow: <span class="log-damage">${damage} damage</span>`, '');
       } else if(type === 'spell') {
-        const base = userStats.att * 3;
+        const base = skillTree.att.level * 4;
         damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.magicResist/40));
-        logMessage(`🔮 Void magic erupts: <span class="log-magic">${damage} damage</span>.`, '');
+        logMessage(`🔮 Magic: <span class="log-magic">${damage} damage</span>`, '');
       } else if(type === 'defend') {
         const shieldBase = getScalingValue(combatState.equipment.shield) + combatState.equipment.shield.bonus;
-        const heal = Math.floor(shieldBase * factor * 0.6 * defenseMultiplier);
+        const heal = Math.floor(shieldBase * factor * 0.6);
         combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal);
         combatState.enemy.defense = Math.max(4, combatState.enemy.defense - 3);
-        logMessage(`🛡️ <span class="log-heal">Shield wall restores ${heal} life</span>, lowers enemy defense.`, '');
-        applyWeaponEffect(combatState.equipment.shield.effect);
+        logMessage(`🛡️ <span class="log-heal">Healed ${heal} HP</span>`, '');
       } else if(type === 'counter') {
         combatState.player.counterActive = true;
-        logMessage('↩️ Counter stance ready! Next enemy attack will be countered.', 'log-info');
+        logMessage('↩️ Counter stance ready!', 'log-info');
       } else if(type === 'finisher') {
-        const base = (getScalingValue(combatState.equipment.weapon) + userStats.att) * 2;
-        damage = Math.floor(base * factor * tacticMultiplier);
-        logMessage(`💀 <span class="log-critical">EXECUTION! Massive ${damage} damage!</span>`, '');
+        const base = (getScalingValue(combatState.equipment.weapon) + skillTree.att.level) * 2;
+        damage = Math.floor(base * factor * tacticMultiplier * 1.5);
+        logMessage(`💀 <span class="log-critical">EXECUTION! ${damage} damage!</span>`, '');
       }
       
       combatState.enemy.hp = Math.max(0, combatState.enemy.hp - damage);
@@ -1180,44 +1193,39 @@
     updateEnemyStance();
     updateCombatUI();
     
-    // Check for accessory effects
-    if(accessory && accessory.effect === 'Regen') {
+    // Accessory effects
+    if(combatState.equipment.accessory?.effect === 'Regen') {
       combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + 3);
     }
     
     if(combatState.enemy.hp <= 0) {
       resolveVictory();
     } else {
-      // Stamina and mana regen
-      combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(userStats.end * 1.2));
-      combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + Math.floor(userStats.att * 0.8));
-      setTimeout(()=> enemyTurn(), 700);
+      // Advance pattern and regen
+      patternPosition = (patternPosition + 1) % combatPattern.length;
+      combatState.enemy.nextAction = combatPattern[patternPosition];
+      combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(skillTree.end.level * 1.5));
+      combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + Math.floor(skillTree.att.level * 1.2));
+      
+      // Show hint about next action
+      const stanceHints = {
+        melee: 'The dragon draws closer...',
+        ranged: 'The dragon spreads its wings...',
+        spell: 'Arcane energy builds up...',
+        defend: 'The dragon takes a defensive posture...',
+        counter: 'The dragon watches you carefully...'
+      };
+      logMessage(`👁️ ${stanceHints[combatState.enemy.nextAction] || 'The dragon prepares...'}`, 'log-info');
+      
+      setTimeout(()=> enemyTurn(), 800);
     }
-  }
-
-  function applyWeaponEffect(effect) {
-    if(!effect || effect==='None') return;
-    const e = combatState.enemy;
-    if(effect==='Fire') { e.hp = Math.max(0, e.hp-15); logMessage('🔥 Burn! -15 HP', 'log-damage'); }
-    if(effect==='Poison') { e.hp = Math.max(0, e.hp-12); e.statusEffects.push('poison'); logMessage('☠️ Poison -12 HP', 'log-damage'); }
-    if(effect==='Lightning') { e.hp = Math.max(0, e.hp-18); logMessage('⚡ Lightning -18 HP', 'log-damage'); }
-    if(effect==='Bleed') { e.hp = Math.max(0, e.hp-14); e.statusEffects.push('bleed'); logMessage('🩸 Hemorrhage -14 HP', 'log-damage'); }
-    if(effect==='Ice') { e.defense = Math.max(2, e.defense-4); e.statusEffects.push('freeze'); logMessage('❄️ Frozen! Defense reduced.', 'log-info'); }
-    if(effect==='Heal') { combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp+18); logMessage('✨ <span class="log-heal">Vital absorption +18 HP</span>', ''); }
   }
 
   function updateEnemyStance() {
     const e = combatState.enemy;
-    const prevStance = e.stance;
     if(e.hp < e.maxHp*0.4) e.stance = 'furious';
     else if(e.hp < e.maxHp*0.7) e.stance = 'guarded';
     else e.stance = 'neutral';
-    
-    if(prevStance !== e.stance) {
-      logMessage(`🌀 Dragon enters <span class="log-warning">${e.stance.toUpperCase()}</span> phase!`, '');
-      document.getElementById('combat-screen').classList.add('phase-transition');
-      setTimeout(() => document.getElementById('combat-screen').classList.remove('phase-transition'), 1000);
-    }
     
     if(e.stance === 'furious') {
       e.power = Math.floor((14 + userStats.level) * 1.4);
@@ -1234,12 +1242,9 @@
   function enemyTurn() {
     if(combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
     
-    // Dodge chance based on dex and tactic
-    let dodgeChance = userStats.dex * 0.02;
-    if(currentTactic === 'defensive') dodgeChance += 0.1;
-    
+    const dodgeChance = skillTree.dex.level * 0.03;
     if(Math.random() < dodgeChance && !combatState.player.counterActive) {
-      logMessage('💨 Your agility evades the dragon attack!', 'log-info');
+      logMessage('💨 Dodged!', 'log-info');
       return;
     }
     
@@ -1247,37 +1252,29 @@
     let rawDmg = Math.floor(combatState.enemy.power * (eRoll/10));
     if(combatState.enemy.stance === 'furious') rawDmg = Math.floor(rawDmg * 1.3);
     
-    // Counter mechanic
     if(combatState.player.counterActive) {
       rawDmg = Math.floor(rawDmg * 0.3);
-      const counterDmg = Math.floor(rawDmg * 1.5);
+      const counterDmg = Math.floor(rawDmg * 2);
       combatState.enemy.hp = Math.max(0, combatState.enemy.hp - counterDmg);
       combatState.player.counterActive = false;
-      logMessage(`↩️ <span class="log-critical">Counter strike!</span> Reflected ${counterDmg} damage!`, '');
+      logMessage(`↩️ <span class="log-critical">Counter! ${counterDmg} reflected!</span>`, '');
     }
     
     combatState.player.hp = Math.max(0, combatState.player.hp - rawDmg);
-    logMessage(`💥 Dragon strikes for <span class="log-damage">${rawDmg} damage</span>.`, '');
-    
-    // Accessory: Fury effect
-    const accessory = combatState.equipment.accessory;
-    if(accessory && accessory.effect === 'Fury' && combatState.player.hp < combatState.player.maxHp * 0.3) {
-      logMessage('💢 Berserker rage! Damage increased!', 'log-warning');
-    }
+    logMessage(`💥 Dragon strikes for <span class="log-damage">${rawDmg} damage</span>`, '');
     
     updateCombatUI();
     
     if(combatState.player.hp <= 0) {
-      // Phoenix accessory check
-      if(accessory && accessory.effect === 'Rebirth') {
+      if(combatState.equipment.accessory?.effect === 'Rebirth') {
         combatState.player.hp = Math.floor(combatState.player.maxHp * 0.5);
         combatState.player.stamina = combatState.player.maxStamina;
         combatState.player.mana = combatState.player.maxMana;
-        logMessage('🦅 <span class="log-critical">PHOENIX REBIRTH!</span> You rise from the ashes!', '');
+        logMessage('🦅 <span class="log-critical">PHOENIX REBIRTH!</span>', '');
         updateCombatUI();
         return;
       }
-      logMessage('☠️ <span class="log-warning">Your elf has fallen...</span>', '');
+      logMessage('☠️ <span class="log-warning">Defeated...</span>', '');
       setTimeout(()=>{
         document.getElementById('combat-screen').classList.add('hidden');
         document.getElementById('main-menu').classList.remove('hidden');
@@ -1289,42 +1286,30 @@
 
   function resolveVictory() {
     logMessage('🏆 <span class="log-critical">FORTRESS CONQUERED!</span>', '');
-    userStats.points += 6;
+    availableSkillPoints += 4 + Math.floor(userStats.level / 3);
     userStats.score += 100 + (userStats.level * 10);
     dragonsSlain++;
     
     const prefixes = ["Blazon","Standard","Insignia","Seal","Crown","Chalice","Crest","Emblem","Sigil","Mark"];
-    const cores = ["of the Dragon","of Ash","Elven Void","of Blood","Mystic Fief","Immortal","of the Abyss","of Shadows","of Fire","of Ice"];
+    const cores = ["of the Dragon","of Ash","Elven Void","of Blood","Mystic Fief","Immortal","of the Abyss","of Shadows"];
     const rarities = ["comun","comun","rara","rara","epica","epica","legendaria","reliquia"];
-    const icons = ["👑","🦅","⚔️","🐉","🔮","⚜️","💀","🌟","🔥","❄️"];
-    
     let rarity = rarities[Math.floor(Math.random()*rarities.length)];
     if(rarity==='reliquia' && Math.random()>0.15) rarity='legendaria';
-    if(rarity==='legendaria' && Math.random()>0.3) rarity='epica';
     
     const medal = {
       name: prefixes[Math.floor(Math.random()*prefixes.length)] + " " + cores[Math.floor(Math.random()*cores.length)],
-      rarity: rarity,
-      icon: icons[Math.floor(Math.random()*icons.length)]
+      rarity: rarity
     };
     userStats.medalsList.push(medal);
-    logMessage(`🏅 New medal: <span class="log-info">${medal.name} (${medal.rarity.toUpperCase()})</span>`, '');
+    logMessage(`🏅 Medal: <span class="log-info">${medal.name} (${medal.rarity.toUpperCase()})</span>`, '');
     
-    // Loot drops
-    const lootRoll = Math.random();
-    if(lootRoll > 0.85) {
-      const highTier = itemPool.filter(i=>i.rarity==='legendaria'||i.rarity==='reliquia');
-      const picked = highTier[Math.floor(Math.random()*highTier.length)];
-      if(!userStats.ownedItems.includes(picked.id)) {
-        userStats.ownedItems.push(picked.id);
-        logMessage(`🎁 <span class="log-critical">MYTHIC LOOT: ${picked.name}!</span>`, '');
-      }
-    } else if(lootRoll > 0.5) {
-      const midTier = itemPool.filter(i=>i.rarity==='rara'||i.rarity==='epica');
-      const picked = midTier[Math.floor(Math.random()*midTier.length)];
-      if(!userStats.ownedItems.includes(picked.id)) {
-        userStats.ownedItems.push(picked.id);
-        logMessage(`🎁 Loot acquired: <span class="log-info">${picked.name}</span>`, '');
+    // Loot
+    if(Math.random() > 0.7) {
+      const pool = itemPool.filter(i => !userStats.ownedItems.includes(i.id));
+      if(pool.length > 0) {
+        const loot = pool[Math.floor(Math.random()*pool.length)];
+        userStats.ownedItems.push(loot.id);
+        logMessage(`🎁 Loot: <span class="log-info">${loot.name}</span>`, '');
       }
     }
     
@@ -1336,6 +1321,13 @@
       renderUserData();
     }, 4000);
   }
+
+  function generateDragonImage(seed) {
+    return `https://image.pollinations.ai/prompt/epic%20dark%20fantasy%20${seed.replace(/-/g, '%20')}%20dragon%20digital%20art?width=600&height=400&nologo=true&seed=${Math.floor(Math.random()*99999)}`;
+  }
+
+  // Initialize
+  renderSkillTree();
 </script>
 </body>
 </html>
