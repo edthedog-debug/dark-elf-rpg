@@ -7,11 +7,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Almendra+Display&family=Uncial+Antiqua&family=MedievalSharp&family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: #030104;
@@ -56,13 +52,7 @@
       padding-bottom: 14px;
     }
 
-    .subtitle {
-      font-family: 'Almendra Display', serif;
-      text-align: center;
-      font-size: 1.2rem;
-      color: #b49450;
-      letter-spacing: 6px;
-    }
+    .subtitle { font-family: 'Almendra Display', serif; text-align: center; font-size: 1.2rem; color: #b49450; letter-spacing: 6px; }
 
     button {
       background: linear-gradient(180deg, #2a1f1a 0%, #1f1812 100%);
@@ -88,11 +78,7 @@
       color: white;
     }
 
-    button:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      filter: grayscale(0.5);
-    }
+    button:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(0.5); }
 
     input {
       background: #08050a;
@@ -106,11 +92,7 @@
       border-radius: 6px;
     }
 
-    input:focus {
-      outline: none;
-      border-color: #e6b13e;
-      box-shadow: 0 0 20px rgba(230, 177, 62, 0.3);
-    }
+    input:focus { outline: none; border-color: #e6b13e; box-shadow: 0 0 20px rgba(230, 177, 62, 0.3); }
 
     .panel {
       background: rgba(6, 4, 8, 0.95);
@@ -120,207 +102,59 @@
       border-radius: 10px;
     }
 
-    .flex-row {
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-    }
-    .flex-col {
-      flex: 1 1 320px;
-    }
+    .flex-row { display: flex; gap: 30px; flex-wrap: wrap; }
+    .flex-col { flex: 1 1 320px; }
+    .hidden { display: none !important; }
 
-    .hidden {
-      display: none !important;
-    }
-
-    /* Leaderboard */
-    .leaderboard-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      font-size: 0.9rem;
-    }
-    .leaderboard-table th {
-      background: #1a1217;
-      color: #e6b13e;
-      padding: 12px;
-      border: 1px solid #4a3827;
-      font-family: 'Cinzel', serif;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-    .leaderboard-table td {
-      padding: 10px;
-      border: 1px solid #3a2c22;
-      text-align: center;
-      color: #dbcaaa;
-    }
-    .leaderboard-table tr:nth-child(even) {
-      background: rgba(10, 7, 9, 0.5);
-    }
-    .leaderboard-table tr:hover {
-      background: rgba(180, 148, 80, 0.1);
-    }
+    .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
+    .leaderboard-table th { background: #1a1217; color: #e6b13e; padding: 12px; border: 1px solid #4a3827; font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 2px; }
+    .leaderboard-table td { padding: 10px; border: 1px solid #3a2c22; text-align: center; color: #dbcaaa; }
+    .leaderboard-table tr:nth-child(even) { background: rgba(10, 7, 9, 0.5); }
+    .leaderboard-table tr:hover { background: rgba(180, 148, 80, 0.1); }
     .rank-1 { color: #f1c40f; font-weight: bold; }
     .rank-2 { color: #c0c0c0; font-weight: bold; }
     .rank-3 { color: #cd7f32; font-weight: bold; }
 
-    /* Skill Tree */
-    .skill-tree-container {
-      background: #0a0709;
-      border: 2px solid #4a3827;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 15px;
-    }
-    .skill-tree-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 15px;
-      text-align: center;
-    }
+    .skill-tree-container { background: #0a0709; border: 2px solid #4a3827; padding: 20px; border-radius: 10px; margin-top: 15px; }
+    .skill-tree-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; text-align: center; }
     .skill-node {
       background: linear-gradient(135deg, #1a1217, #0d090e);
       border: 2px solid #3a2827;
       padding: 15px 10px;
       border-radius: 50%;
-      width: 80px;
-      height: 80px;
+      width: 80px; height: 80px;
       margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.3s; position: relative;
     }
-    .skill-node:hover {
-      border-color: #b49450;
-      box-shadow: 0 0 20px rgba(180,148,80,0.4);
-      transform: scale(1.1);
-    }
-    .skill-node.unlocked {
-      border-color: #f1c40f;
-      box-shadow: 0 0 15px rgba(241,196,15,0.5);
-      background: linear-gradient(135deg, #1b2b18, #1a2a1a);
-    }
-    .skill-node.locked {
-      opacity: 0.5;
-      cursor: not-allowed;
-      filter: grayscale(0.7);
-    }
+    .skill-node:hover { border-color: #b49450; box-shadow: 0 0 20px rgba(180,148,80,0.4); transform: scale(1.1); }
+    .skill-node.unlocked { border-color: #f1c40f; box-shadow: 0 0 15px rgba(241,196,15,0.5); background: linear-gradient(135deg, #1b2b18, #1a2a1a); }
+    .skill-node.locked { opacity: 0.5; cursor: not-allowed; filter: grayscale(0.7); }
     .skill-node-icon { font-size: 1.8rem; }
     .skill-node-level { font-size: 0.7rem; color: #b49450; margin-top: 2px; }
     .skill-node-name { font-size: 0.6rem; color: #dbcaaa; margin-top: 2px; }
-    .skill-points-display {
-      text-align: center;
-      font-size: 1.2rem;
-      color: #e6b13e;
-      margin: 15px 0;
-      padding: 10px;
-      background: #0a0709;
-      border: 2px solid #b49450;
-      border-radius: 8px;
-    }
+    .skill-points-display { text-align: center; font-size: 1.2rem; color: #e6b13e; margin: 15px 0; padding: 10px; background: #0a0709; border: 2px solid #b49450; border-radius: 8px; }
 
-    /* Combat */
-    .combo-chain {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-      justify-content: center;
-      margin: 10px 0;
-      padding: 10px;
-      background: #0a0709;
-      border-radius: 8px;
-      min-height: 50px;
-    }
-    .chain-slot {
-      width: 40px;
-      height: 40px;
-      border: 2px dashed #4a3827;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      color: #5a432e;
-    }
-    .chain-slot.filled {
-      border-color: #b49450;
-      border-style: solid;
-      color: #e6b13e;
-      box-shadow: 0 0 10px rgba(180,148,80,0.3);
-    }
+    .combo-chain { display: flex; gap: 5px; align-items: center; justify-content: center; margin: 10px 0; padding: 10px; background: #0a0709; border-radius: 8px; min-height: 50px; }
+    .chain-slot { width: 40px; height: 40px; border: 2px dashed #4a3827; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #5a432e; }
+    .chain-slot.filled { border-color: #b49450; border-style: solid; color: #e6b13e; box-shadow: 0 0 10px rgba(180,148,80,0.3); }
     .chain-bonus { font-size: 0.8rem; color: #b49450; margin-top: 5px; }
 
-    .weakness-wheel {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 15px 0;
-      flex-wrap: wrap;
-    }
-    .weakness-indicator {
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      border: 2px solid #4a3827;
-      transition: all 0.3s;
-    }
-    .weakness-indicator.revealed {
-      border-color: #2ecc71;
-      color: #2ecc71;
-      box-shadow: 0 0 15px rgba(46,204,113,0.3);
-      animation: revealPulse 1s infinite;
-    }
-    @keyframes revealPulse {
-      0%, 100% { box-shadow: 0 0 15px rgba(46,204,113,0.3); }
-      50% { box-shadow: 0 0 30px rgba(46,204,113,0.6); }
-    }
+    .weakness-wheel { display: flex; justify-content: center; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+    .weakness-indicator { padding: 8px 15px; border-radius: 20px; font-size: 0.8rem; border: 2px solid #4a3827; transition: all 0.3s; }
+    .weakness-indicator.revealed { border-color: #2ecc71; color: #2ecc71; box-shadow: 0 0 15px rgba(46,204,113,0.3); animation: revealPulse 1s infinite; }
+    @keyframes revealPulse { 0%, 100% { box-shadow: 0 0 15px rgba(46,204,113,0.3); } 50% { box-shadow: 0 0 30px rgba(46,204,113,0.6); } }
 
-    /* Medals */
-    .medal-shelf {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      background: linear-gradient(135deg, #0d0806, #1a1210);
-      border: 3px ridge #6b4e2e;
-      padding: 24px;
-      min-height: 120px;
-      max-height: 250px;
-      overflow-y: auto;
-      border-radius: 10px;
-    }
+    .medal-shelf { display: flex; flex-wrap: wrap; gap: 20px; background: linear-gradient(135deg, #0d0806, #1a1210); border: 3px ridge #6b4e2e; padding: 24px; min-height: 120px; max-height: 250px; overflow-y: auto; border-radius: 10px; }
     .medal-badge {
-      width: 100px;
-      height: 130px;
+      width: 100px; height: 130px;
       background: linear-gradient(135deg, #1a1215, #0d090c);
       border: 3px solid #5a4532;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 10px;
-      border-radius: 15px;
-      transition: all 0.3s;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 10px; border-radius: 15px;
+      transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden;
     }
-    .medal-badge::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+    .medal-badge::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%); opacity: 0; transition: opacity 0.3s; }
     .medal-badge:hover::before { opacity: 1; }
     .medal-badge:hover { transform: translateY(-5px) scale(1.05); }
     .medal-shape { width: 50px; height: 50px; margin-bottom: 8px; position: relative; }
@@ -328,34 +162,21 @@
     .medal-name { font-weight: bold; font-size: 0.7rem; color: #c0a77b; margin-bottom: 3px; }
     .medal-rarity { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; }
 
-    .rare-comun { border-color: #7e7e7e; }
-    .rare-rara { border-color: #0070dd; box-shadow: 0 0 10px rgba(0,112,221,0.3); }
-    .rare-epica { border-color: #a335ee; box-shadow: 0 0 15px rgba(163,53,238,0.5); }
-    .rare-legendaria { border-color: #ff8000; box-shadow: 0 0 20px rgba(255,128,0,0.6); animation: legendaryPulse 2s infinite; }
-    .rare-reliquia { border-color: #e63946; box-shadow: 0 0 25px rgba(230,57,70,0.7); animation: relicGlow 1.5s infinite; }
+    .rare-common { border-color: #7e7e7e; }
+    .rare-rare { border-color: #0070dd; box-shadow: 0 0 10px rgba(0,112,221,0.3); }
+    .rare-epic { border-color: #a335ee; box-shadow: 0 0 15px rgba(163,53,238,0.5); }
+    .rare-legendary { border-color: #ff8000; box-shadow: 0 0 20px rgba(255,128,0,0.6); animation: legendaryPulse 2s infinite; }
+    .rare-relic { border-color: #e63946; box-shadow: 0 0 25px rgba(230,57,70,0.7); animation: relicGlow 1.5s infinite; }
 
-    @keyframes legendaryPulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(255,128,0,0.6); }
-      50% { box-shadow: 0 0 45px rgba(255,128,0,1); }
-    }
-    @keyframes relicGlow {
-      0%, 100% { box-shadow: 0 0 25px rgba(230,57,70,0.7); transform: scale(1); }
-      50% { box-shadow: 0 0 55px rgba(230,57,70,1); transform: scale(1.05); }
-    }
+    @keyframes legendaryPulse { 0%, 100% { box-shadow: 0 0 20px rgba(255,128,0,0.6); } 50% { box-shadow: 0 0 45px rgba(255,128,0,1); } }
+    @keyframes relicGlow { 0%, 100% { box-shadow: 0 0 25px rgba(230,57,70,0.7); transform: scale(1); } 50% { box-shadow: 0 0 55px rgba(230,57,70,1); transform: scale(1.05); } }
 
-    /* Combat Log */
     #combat-log {
       background: linear-gradient(180deg, #010101, #060408);
       border: 2px solid #3a2c22;
-      height: 240px;
-      overflow-y: auto;
-      padding: 18px;
-      font-size: 0.95rem;
-      color: #c2b59c;
-      margin-top: 20px;
-      border-radius: 8px;
-      font-family: 'Cormorant Garamond', serif;
-      line-height: 1.7;
+      height: 240px; overflow-y: auto; padding: 18px;
+      font-size: 0.95rem; color: #c2b59c; margin-top: 20px;
+      border-radius: 8px; font-family: 'Cormorant Garamond', serif; line-height: 1.7;
     }
     .log-entry { padding: 4px 0; border-bottom: 1px solid rgba(58, 44, 34, 0.3); animation: fadeIn 0.3s ease-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
@@ -367,7 +188,6 @@
     .log-warning { color: #e67e22; }
     .log-flee { color: #9b59b6; font-style: italic; }
 
-    /* General */
     .strategy-hint { color: #b49450; font-size: 0.9rem; margin-top: 8px; font-style: italic; background: rgba(180,148,80,0.1); padding: 8px; border-radius: 6px; }
     .dragon-image { width: 100%; height: 280px; object-fit: cover; border: 3px solid #5a432e; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     .bar-container { background: #12070a; width: 100%; height: 22px; border: 2px solid #6a2e2e; margin: 10px 0; border-radius: 11px; overflow: hidden; position: relative; }
@@ -388,22 +208,8 @@
     .flee-btn:hover:not(:disabled) { background: linear-gradient(180deg, #4a1a4a, #2a0a2a) !important; border-color: #c27aff !important; box-shadow: 0 0 25px #9b59b6 !important; }
     .restore-btn { background: linear-gradient(180deg, #1a2a1a, #0a1a0a) !important; border-color: #2ecc71 !important; }
     .restore-btn:hover:not(:disabled) { background: linear-gradient(180deg, #2a4a2a, #1a2a1a) !important; border-color: #58d68d !important; box-shadow: 0 0 25px #2ecc71 !important; }
-
-    .restore-stone-indicator {
-      display: inline-block;
-      padding: 5px 10px;
-      background: #1a2a1a;
-      border: 2px solid #2ecc71;
-      border-radius: 20px;
-      color: #2ecc71;
-      font-size: 0.8rem;
-      margin: 5px;
-      animation: stoneGlow 2s infinite;
-    }
-    @keyframes stoneGlow {
-      0%, 100% { box-shadow: 0 0 10px rgba(46,204,113,0.3); }
-      50% { box-shadow: 0 0 25px rgba(46,204,113,0.7); }
-    }
+    .restore-stone-indicator { display: inline-block; padding: 5px 10px; background: #1a2a1a; border: 2px solid #2ecc71; border-radius: 20px; color: #2ecc71; font-size: 0.8rem; margin: 5px; animation: stoneGlow 2s infinite; }
+    @keyframes stoneGlow { 0%, 100% { box-shadow: 0 0 10px rgba(46,204,113,0.3); } 50% { box-shadow: 0 0 25px rgba(46,204,113,0.7); } }
 
     @media (max-width: 700px) {
       .flex-row { flex-direction: column; }
@@ -435,9 +241,7 @@
   <div id="leaderboard-screen" class="hidden panel">
     <h2 style="text-align:center;">🏆 NEXUS LEADERBOARD 🏆</h2>
     <div id="leaderboard-content"></div>
-    <div style="text-align:center; margin-top:20px;">
-      <button onclick="closeLeaderboard()">Return to Nexus</button>
-    </div>
+    <div style="text-align:center; margin-top:20px;"><button onclick="closeLeaderboard()">Return to Nexus</button></div>
   </div>
 
   <!-- MAIN MENU -->
@@ -454,15 +258,9 @@
         <h3>📜 Elf Attributes</h3>
         <p><strong>Total Level:</strong> <span id="stat-level">1</span> | 🏆 Glory: <span id="stat-score">0</span> | 🐉 Slain: <span id="stat-dragons">0</span></p>
         <p><span id="restore-stones-display" style="color:#2ecc71;">💎 Void Stones: 0</span></p>
-        <div class="skill-points-display">
-          ⭐ Available Skill Points: <span id="stat-points" style="font-size:1.5rem;">5</span>
-        </div>
-        <div class="skill-tree-container">
-          <div class="skill-tree-grid" id="skill-tree"></div>
-        </div>
-        <div style="margin-top:15px; font-size:0.8rem; color:#b49450; text-align:center;">
-          💡 Each level costs more points. Choose your path wisely!
-        </div>
+        <div class="skill-points-display">⭐ Available Skill Points: <span id="stat-points" style="font-size:1.5rem;">5</span></div>
+        <div class="skill-tree-container"><div class="skill-tree-grid" id="skill-tree"></div></div>
+        <div style="margin-top:15px; font-size:0.8rem; color:#b49450; text-align:center;">💡 Each level costs more points. Choose your path wisely!</div>
       </div>
       <div class="flex-col panel">
         <h3>⚔️ Armory & Relics</h3>
@@ -489,38 +287,21 @@
         <img id="dragon-img" class="dragon-image" src="" alt="Ancient Dragon" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%231a1118%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23b49450%22 x=%22300%22 y=%22180%22 text-anchor=%22middle%22 font-size=%2280%22%3E🐉%3C/text%3E%3C/svg%3E'">
         <h3 id="enemy-name" style="color:#e03a4e; font-size:1.4rem;"></h3>
         <div id="dragon-lore" style="font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #c2b59c; margin: 12px 0; padding: 15px; background: linear-gradient(135deg, #0a0708, #0d0a10); border-left: 4px solid #b49450; border-radius: 6px; line-height:1.6;"></div>
-        <div style="margin:10px 0; font-size:0.85rem;">
-          <strong>🔍 Discovered Weaknesses:</strong>
-          <div class="weakness-wheel" id="weakness-wheel"></div>
-        </div>
-        <div style="font-size:0.9rem; margin:8px 0;">
-          <div>⚔️ Power: <span id="e-power">0</span> | 🛡️ Defense: <span id="e-defense">0</span> | 🔮 Resist: <span id="e-resist">0</span></div>
-        </div>
-        <div>❤️ Life: <span id="e-hp">0</span>/<span id="e-maxhp">0</span>
-          <div class="bar-container"><div id="e-hp-bar" class="hp-fill"></div></div>
-        </div>
+        <div style="margin:10px 0; font-size:0.85rem;"><strong>🔍 Discovered Weaknesses:</strong><div class="weakness-wheel" id="weakness-wheel"></div></div>
+        <div style="font-size:0.9rem; margin:8px 0;"><div>⚔️ Power: <span id="e-power">0</span> | 🛡️ Defense: <span id="e-defense">0</span> | 🔮 Resist: <span id="e-resist">0</span></div></div>
+        <div>❤️ Life: <span id="e-hp">0</span>/<span id="e-maxhp">0</span><div class="bar-container"><div id="e-hp-bar" class="hp-fill"></div></div></div>
         <div class="strategy-hint" id="enemy-stance">🌀 Stance: Neutral</div>
         <div id="dragon-weakness" style="color: #4da6ff; font-size:0.85rem; margin-top: 10px; padding:10px; background:rgba(10,10,25,0.8); border-radius:6px; border:1px solid #1a1a4a;"></div>
       </div>
       <div class="flex-col panel">
         <h3>✨ Your Elf</h3>
         <div id="restore-stone-combat" style="margin-bottom:10px;"></div>
-        <div>❤️ Life: <span id="p-hp">0</span>/<span id="p-maxhp">0</span>
-          <div class="bar-container"><div id="p-hp-bar" class="hp-fill"></div></div>
-        </div>
-        <div>⚡ Stamina: <span id="p-stamina">0</span>/<span id="p-maxstamina">0</span>
-          <div class="bar-container"><div id="p-stamina-bar" class="stamina-fill"></div></div>
-        </div>
-        <div>🔮 Mana: <span id="p-mana">0</span>/<span id="p-maxmana">0</span>
-          <div class="bar-container"><div id="p-mana-bar" class="mana-fill"></div></div>
-        </div>
+        <div>❤️ Life: <span id="p-hp">0</span>/<span id="p-maxhp">0</span><div class="bar-container"><div id="p-hp-bar" class="hp-fill"></div></div></div>
+        <div>⚡ Stamina: <span id="p-stamina">0</span>/<span id="p-maxstamina">0</span><div class="bar-container"><div id="p-stamina-bar" class="stamina-fill"></div></div></div>
+        <div>🔮 Mana: <span id="p-mana">0</span>/<span id="p-maxmana">0</span><div class="bar-container"><div id="p-mana-bar" class="mana-fill"></div></div></div>
         <div style="margin:10px 0; background:#0a0709; padding:10px; border-radius:8px;">
           <strong>⚡ Combo Chain:</strong>
-          <div class="combo-chain" id="combo-chain">
-            <div class="chain-slot">1</div>
-            <div class="chain-slot">2</div>
-            <div class="chain-slot">3</div>
-          </div>
+          <div class="combo-chain" id="combo-chain"><div class="chain-slot">1</div><div class="chain-slot">2</div><div class="chain-slot">3</div></div>
           <div class="chain-bonus" id="chain-bonus">Complete 3-action combos for bonuses!</div>
         </div>
         <div style="margin: 15px 0; background:#0a0708; padding:12px; border-radius:8px;">
@@ -540,14 +321,8 @@
         </div>
         <div style="display:flex; flex-direction: column; gap:8px;" id="action-buttons"></div>
         <div style="display:flex; gap:8px; margin-top:8px;">
-          <button class="action-btn restore-btn" onclick="useRestoreStone()" id="restore-btn" disabled>
-            <span class="action-icon">💎</span>
-            <span class="action-info">Use Void Stone<span class="action-cost">Restore all resources</span></span>
-          </button>
-          <button class="action-btn flee-btn" onclick="fleeCombat()">
-            <span class="action-icon">🏃</span>
-            <span class="action-info">Flee Battle<span class="action-cost">Escape (lose progress)</span></span>
-          </button>
+          <button class="action-btn restore-btn" onclick="useRestoreStone()" id="restore-btn" disabled><span class="action-icon">💎</span><span class="action-info">Use Void Stone<span class="action-cost">Restore all resources</span></span></button>
+          <button class="action-btn flee-btn" onclick="fleeCombat()"><span class="action-icon">🏃</span><span class="action-info">Flee Battle<span class="action-cost">Escape (lose progress)</span></span></button>
         </div>
       </div>
     </div>
@@ -556,28 +331,26 @@
 </div>
 
 <script>
-  // ========== ELDEN VOID - COMPLETE RPG ENGINE ==========
+  // ========== ELDEN VOID - BALANCED SCALING RPG ENGINE ==========
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYlHbPacdrNWQS5rVSxX72UJy71tGwMq-NDJftIVn4rChGv8VPoE8MkI6RYpFrzDsgFQ/exec";
 
-  // Item pool
   const itemPool = [
-    { id:"w1", name:"Steel Dagger", type:"weapon", effect:"None", bonus:6, rarity:"common", scaling:"str" },
-    { id:"w2", name:"Fallen King Greatsword", type:"weapon", effect:"Fire", bonus:15, rarity:"epic", scaling:"str" },
-    { id:"w3", name:"Void Stormbreaker", type:"weapon", effect:"Lightning", bonus:27, rarity:"legendary", scaling:"dex" },
-    { id:"w4", name:"CTHULHU MYTHIC EDGE", type:"weapon", effect:"Poison", bonus:54, rarity:"relic", scaling:"att" },
-    { id:"w5", name:"Elven Obsidian Blade", type:"weapon", effect:"Bleed", bonus:19, rarity:"rare", scaling:"dex" },
-    { id:"a1", name:"Forest Shortbow", type:"armor", effect:"None", bonus:7, rarity:"common", scaling:"dex" },
-    { id:"a2", name:"Sinister Bone Bow", type:"armor", effect:"Heal", bonus:17, rarity:"epic", scaling:"dex" },
-    { id:"a3", name:"ARTEMIS DIVINE BOW", type:"armor", effect:"Heal", bonus:46, rarity:"relic", scaling:"dex" },
-    { id:"s1", name:"Corrupted Wood Shield", type:"shield", effect:"None", bonus:5, rarity:"common", scaling:"end" },
-    { id:"s2", name:"Forged Obsidian Pavise", type:"shield", effect:"None", bonus:16, rarity:"epic", scaling:"end" },
-    { id:"s3", name:"IMMORTAL ANCESTRAL BULWARK", type:"shield", effect:"Heal", bonus:40, rarity:"relic", scaling:"end" },
-    { id:"acc1", name:"Ring of the Berserker", type:"accessory", effect:"Fury", bonus:15, rarity:"epic", scaling:"str" },
-    { id:"acc2", name:"Amulet of Mana Flow", type:"accessory", effect:"Regen", bonus:20, rarity:"rare", scaling:"att" },
-    { id:"acc3", name:"SOUL OF THE PHOENIX", type:"accessory", effect:"Rebirth", bonus:55, rarity:"relic", scaling:"vig" }
+    { id:"w1", name:"Steel Dagger", type:"weapon", effect:"None", bonus:3, rarity:"common", scaling:"str" },
+    { id:"w2", name:"Fallen King Greatsword", type:"weapon", effect:"Fire", bonus:8, rarity:"epic", scaling:"str" },
+    { id:"w3", name:"Void Stormbreaker", type:"weapon", effect:"Lightning", bonus:14, rarity:"legendary", scaling:"dex" },
+    { id:"w4", name:"CTHULHU MYTHIC EDGE", type:"weapon", effect:"Poison", bonus:28, rarity:"relic", scaling:"att" },
+    { id:"w5", name:"Elven Obsidian Blade", type:"weapon", effect:"Bleed", bonus:10, rarity:"rare", scaling:"dex" },
+    { id:"a1", name:"Forest Shortbow", type:"armor", effect:"None", bonus:4, rarity:"common", scaling:"dex" },
+    { id:"a2", name:"Sinister Bone Bow", type:"armor", effect:"Heal", bonus:9, rarity:"epic", scaling:"dex" },
+    { id:"a3", name:"ARTEMIS DIVINE BOW", type:"armor", effect:"Heal", bonus:23, rarity:"relic", scaling:"dex" },
+    { id:"s1", name:"Corrupted Wood Shield", type:"shield", effect:"None", bonus:3, rarity:"common", scaling:"end" },
+    { id:"s2", name:"Forged Obsidian Pavise", type:"shield", effect:"None", bonus:8, rarity:"epic", scaling:"end" },
+    { id:"s3", name:"IMMORTAL ANCESTRAL BULWARK", type:"shield", effect:"Heal", bonus:20, rarity:"relic", scaling:"end" },
+    { id:"acc1", name:"Ring of the Berserker", type:"accessory", effect:"Fury", bonus:8, rarity:"epic", scaling:"str" },
+    { id:"acc2", name:"Amulet of Mana Flow", type:"accessory", effect:"Regen", bonus:10, rarity:"rare", scaling:"att" },
+    { id:"acc3", name:"SOUL OF THE PHOENIX", type:"accessory", effect:"Rebirth", bonus:28, rarity:"relic", scaling:"vig" }
   ];
 
-  // Dragon archetypes
   const dragonArchetypes = [
     { type:"Fire Wyrm", element:"fire", strengths:["Immune to Fire","Berserk below 40%"], weaknesses:["Ice attacks","Water magic","Slow after breath"], pattern:["melee","melee","spell","melee","spell","melee"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"fire-dragon-volcano" },
     { type:"Frost Wyvern", element:"ice", strengths:["Freeze counter","High defense"], weaknesses:["Fire melts","Low stamina","Predictable"], pattern:["defend","counter","melee","defend","spell","melee"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"ice-dragon-frozen" },
@@ -587,12 +360,8 @@
     { type:"Crystal Guardian", element:"crystal", strengths:["Reflect damage","Healing"], weaknesses:["Shatter combos","Blunt force","Slow"], pattern:["defend","defend","melee","defend","spell","melee"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"crystal-dragon-gem" }
   ];
 
-  const dragonNames = [
-    "Tiamat Soul-Drinker","Ancalagon Void-Terror","Glaurung Rot-Wing","Smaug Rune-Blood",
-    "Vermithrax Prime","Nidhogg Root-Breaker","Fafnir Gold-Curse","Ladon Twilight-Keeper","Yamata-no-Orochi"
-  ];
+  const dragonNames = ["Tiamat Soul-Drinker","Ancalagon Void-Terror","Glaurung Rot-Wing","Smaug Rune-Blood","Vermithrax Prime","Nidhogg Root-Breaker","Fafnir Gold-Curse","Ladon Twilight-Keeper","Yamata-no-Orochi"];
 
-  // Skill Tree
   const skillTree = {
     str: { name:"Brutality", icon:"💪", desc:"Physical damage", level:1, maxLevel:10, baseCost:1, costScaling:1.4 },
     dex: { name:"Reflexes", icon:"⚡", desc:"Speed & dodge", level:1, maxLevel:10, baseCost:1, costScaling:1.4 },
@@ -610,40 +379,45 @@
   let patternPosition = 0;
   let discoveredWeaknesses = [];
   let comboChain = [];
-  let userStats = {
-    level:1, score:0,
-    weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2",
-    ownedItems:["w1","a1","s1","acc2"],
-    medalsList:[]
-  };
+  let userStats = { level:1, score:0, weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2", ownedItems:["w1","a1","s1","acc2"], medalsList:[] };
   let combatState = null;
 
   function getSkillLevel(skill) { return skillTree[skill].level; }
   function getSkillCost(skill) { return Math.ceil(skillTree[skill].baseCost * Math.pow(skillTree[skill].costScaling, skillTree[skill].level - 1)); }
+
+  // ========== BALANCED SCALING FORMULAS ==========
+  function getPlayerMaxHP() { return 60 + (skillTree.vig.level * 8); }
+  function getPlayerMaxStamina() { return 30 + (skillTree.end.level * 5); }
+  function getPlayerMaxMana() { return 20 + (skillTree.att.level * 4); }
+  
+  function getActionCosts() {
+    const endLevel = skillTree.end.level;
+    const attLevel = skillTree.att.level;
+    return {
+      melee: {stamina: Math.floor(8 + endLevel * 1.2), mana: 0},
+      ranged: {stamina: Math.floor(10 + endLevel * 1.3), mana: 0},
+      spell: {stamina: Math.floor(12 + endLevel * 1.5), mana: Math.floor(8 + attLevel * 1.5)},
+      defend: {stamina: Math.floor(5 + endLevel * 0.8), mana: 0},
+      counter: {stamina: Math.floor(6 + endLevel * 1.0), mana: 0},
+      finisher: {stamina: Math.floor(15 + endLevel * 2), mana: Math.floor(12 + attLevel * 2)}
+    };
+  }
+
+  function getBaseDamage() {
+    return 4 + Math.floor(userStats.level * 0.8);
+  }
 
   function renderSkillTree() {
     const container = document.getElementById('skill-tree');
     if(!container) return;
     container.innerHTML = '';
     document.getElementById('stat-points').innerText = availableSkillPoints;
-    
     Object.keys(skillTree).forEach(skill => {
       const node = skillTree[skill];
       const cost = getSkillCost(skill);
       const canLevel = availableSkillPoints >= cost && node.level < node.maxLevel;
-      container.innerHTML += `
-        <div>
-          <div class="skill-node ${node.level > 1 ? 'unlocked' : ''} ${!canLevel && node.level < node.maxLevel ? 'locked' : ''}" 
-               onclick="levelUpSkill('${skill}')" title="${node.desc}\nCost: ${cost} pts">
-            <span class="skill-node-icon">${node.icon}</span>
-            <span class="skill-node-level">Lv.${node.level}</span>
-            <span class="skill-node-name">${node.name}</span>
-          </div>
-          <div style="font-size:0.65rem; color:#b49450; margin-top:3px;">Cost: ${cost} pts</div>
-        </div>
-      `;
+      container.innerHTML += `<div><div class="skill-node ${node.level > 1 ? 'unlocked' : ''} ${!canLevel && node.level < node.maxLevel ? 'locked' : ''}" onclick="levelUpSkill('${skill}')" title="${node.desc}\nCost: ${cost} pts"><span class="skill-node-icon">${node.icon}</span><span class="skill-node-level">Lv.${node.level}</span><span class="skill-node-name">${node.name}</span></div><div style="font-size:0.65rem; color:#b49450; margin-top:3px;">Cost: ${cost} pts</div></div>`;
     });
-    
     document.getElementById('restore-stones-display').innerHTML = `💎 Void Stones: ${restoreStones}`;
   }
 
@@ -662,15 +436,12 @@
   function penalizeDeath() {
     const penaltyPoints = Math.min(availableSkillPoints, Math.ceil(userStats.level * 0.2));
     availableSkillPoints -= penaltyPoints;
-    
     const skills = Object.keys(skillTree).filter(s => skillTree[s].level > 1);
     if(skills.length > 0) {
       const randomSkill = skills[Math.floor(Math.random() * skills.length)];
       skillTree[randomSkill].level--;
       userStats.level = Math.max(1, userStats.level - 2);
-      logMessage(`💀 <span class="log-warning">DEATH PENALTY: Lost ${randomSkill.toUpperCase()} level and ${penaltyPoints} skill points!</span>`, '');
     }
-    
     if(availableSkillPoints < 0) availableSkillPoints = 0;
     saveToCloud();
   }
@@ -696,76 +467,42 @@
     const wheel = document.getElementById('weakness-wheel');
     if(!wheel) return;
     const allWeaknesses = ['Ice', 'Fire', 'Light', 'Earth', 'Physical', 'Blunt', 'Water', 'Lightning', 'Void', 'Holy'];
-    wheel.innerHTML = allWeaknesses.map(w => {
-      const revealed = discoveredWeaknesses.includes(w.toLowerCase());
-      return `<span class="weakness-indicator ${revealed ? 'revealed' : ''}">${revealed ? '✓' : '?'} ${w}</span>`;
-    }).join('');
+    wheel.innerHTML = allWeaknesses.map(w => `<span class="weakness-indicator ${discoveredWeaknesses.includes(w.toLowerCase()) ? 'revealed' : ''}">${discoveredWeaknesses.includes(w.toLowerCase()) ? '✓' : '?'} ${w}</span>`).join('');
   }
 
   function renderActionButtons() {
     const container = document.getElementById('action-buttons');
     if(!container) return;
+    const costs = getActionCosts();
     const actions = [
-      { id:'melee', icon:'⚔️', name:'Melee Strike', cost:'15⚡', desc:'Physical damage' },
-      { id:'ranged', icon:'🏹', name:'Arcane Arrow', cost:'18⚡', desc:'Piercing damage' },
-      { id:'spell', icon:'🔮', name:'Void Spell', cost:'25⚡ 20🔮', desc:'Magic damage' },
-      { id:'defend', icon:'🛡️', name:'Tactical Cover', cost:'10⚡', desc:'Defense + Heal' },
-      { id:'counter', icon:'↩️', name:'Counter Stance', cost:'12⚡', desc:'Counter next attack' },
-      { id:'finisher', icon:'💀', name:'Execution', cost:'30⚡ 30🔮', desc:'Massive damage' }
+      { id:'melee', icon:'⚔️', name:'Melee Strike', cost:`${costs.melee.stamina}⚡`, desc:'Physical damage' },
+      { id:'ranged', icon:'🏹', name:'Arcane Arrow', cost:`${costs.ranged.stamina}⚡`, desc:'Piercing damage' },
+      { id:'spell', icon:'🔮', name:'Void Spell', cost:`${costs.spell.stamina}⚡ ${costs.spell.mana}🔮`, desc:'Magic damage' },
+      { id:'defend', icon:'🛡️', name:'Tactical Cover', cost:`${costs.defend.stamina}⚡`, desc:'Defense + Heal' },
+      { id:'counter', icon:'↩️', name:'Counter Stance', cost:`${costs.counter.stamina}⚡`, desc:'Counter next attack' },
+      { id:'finisher', icon:'💀', name:'Execution', cost:`${costs.finisher.stamina}⚡ ${costs.finisher.mana}🔮`, desc:'Massive damage' }
     ];
-    
-    container.innerHTML = actions.map(a => `
-      <button class="action-btn" onclick="executeAction('${a.id}')">
-        <span class="action-icon">${a.icon}</span>
-        <span class="action-info">${a.name}<span class="action-cost">${a.cost} | ${a.desc}</span></span>
-      </button>
-    `).join('');
-    
+    container.innerHTML = actions.map(a => `<button class="action-btn" onclick="executeAction('${a.id}')"><span class="action-icon">${a.icon}</span><span class="action-info">${a.name}<span class="action-cost">${a.cost} | ${a.desc}</span></span></button>`).join('');
     const restoreBtn = document.getElementById('restore-btn');
     if(restoreBtn) {
       restoreBtn.disabled = restoreStones <= 0;
-      restoreBtn.innerHTML = restoreStones > 0 
-        ? `<span class="action-icon">💎</span><span class="action-info">Use Void Stone<span class="action-cost">Restore all (${restoreStones} left)</span></span>`
-        : `<span class="action-icon">💎</span><span class="action-info">No Void Stones<span class="action-cost">Find in battle</span></span>`;
+      restoreBtn.innerHTML = restoreStones > 0 ? `<span class="action-icon">💎</span><span class="action-info">Use Void Stone<span class="action-cost">Restore all (${restoreStones} left)</span></span>` : `<span class="action-icon">💎</span><span class="action-info">No Void Stones<span class="action-cost">Find in battle</span></span>`;
     }
   }
 
   function updateComboChain(action) {
-    if(action === 'reset') {
-      comboChain = [];
-    } else {
-      comboChain.push(action);
-      if(comboChain.length > 3) comboChain.shift();
-    }
-    
+    if(action === 'reset') { comboChain = []; }
+    else { comboChain.push(action); if(comboChain.length > 3) comboChain.shift(); }
     const slots = document.querySelectorAll('.chain-slot');
-    slots.forEach((slot, i) => {
-      slot.classList.remove('filled');
-      slot.textContent = i + 1;
-    });
-    
-    comboChain.forEach((act, i) => {
-      if(slots[i]) {
-        slots[i].classList.add('filled');
-        const icons = {melee:'⚔️',ranged:'🏹',spell:'🔮',defend:'🛡️',counter:'↩️',finisher:'💀'};
-        slots[i].textContent = icons[act] || act;
-      }
-    });
-    
+    slots.forEach((s, i) => { s.classList.remove('filled'); s.textContent = i + 1; });
+    comboChain.forEach((act, i) => { if(slots[i]) { slots[i].classList.add('filled'); const icons = {melee:'⚔️',ranged:'🏹',spell:'🔮',defend:'🛡️',counter:'↩️',finisher:'💀'}; slots[i].textContent = icons[act] || act; } });
     const bonusDiv = document.getElementById('chain-bonus');
     if(comboChain.length === 3) {
-      if(comboChain[0] === comboChain[1] && comboChain[1] === comboChain[2]) {
-        bonusDiv.innerHTML = '🔥 TRIPLE COMBO! +50% damage!';
-      } else if(comboChain.includes('melee') && comboChain.includes('ranged') && comboChain.includes('spell')) {
-        bonusDiv.innerHTML = '✨ PERFECT MIX! +30% damage & heal!';
-      } else if(comboChain[0] === 'defend' && comboChain[2] === 'counter') {
-        bonusDiv.innerHTML = '🛡️ DEFENSE CHAIN! Counter ready!';
-      } else {
-        bonusDiv.innerHTML = 'Complete 3-action combos for bonuses!';
-      }
-    } else {
-      bonusDiv.innerHTML = 'Complete 3-action combos for bonuses!';
-    }
+      if(comboChain[0] === comboChain[1] && comboChain[1] === comboChain[2]) bonusDiv.innerHTML = '🔥 TRIPLE COMBO! +50% damage!';
+      else if(comboChain.includes('melee') && comboChain.includes('ranged') && comboChain.includes('spell')) bonusDiv.innerHTML = '✨ PERFECT MIX! +30% damage & heal!';
+      else if(comboChain[0] === 'defend' && comboChain[2] === 'counter') bonusDiv.innerHTML = '🛡️ DEFENSE CHAIN! Counter ready!';
+      else bonusDiv.innerHTML = 'Complete 3-action combos for bonuses!';
+    } else bonusDiv.innerHTML = 'Complete 3-action combos for bonuses!';
   }
 
   // ========== CLOUD FUNCTIONS ==========
@@ -775,8 +512,7 @@
       if (action === 'login' || action === 'getRanking') {
         let url = `${WEB_APP_URL}?action=${action}`;
         if (data.username) url += `&username=${encodeURIComponent(data.username)}&password=${encodeURIComponent(data.password)}`;
-        let response = await fetch(url);
-        let text = await response.text();
+        let response = await fetch(url); let text = await response.text();
         document.getElementById('loading-overlay').classList.add('hidden');
         try { return JSON.parse(text); } catch(e) { return { success: false, error: 'Invalid response' }; }
       } else {
@@ -785,271 +521,155 @@
         document.getElementById('loading-overlay').classList.add('hidden');
         return { success: true };
       }
-    } catch (e) {
-      document.getElementById('loading-overlay').classList.add('hidden');
-      return { success: false, error: e.message };
-    }
+    } catch (e) { document.getElementById('loading-overlay').classList.add('hidden'); return { success: false, error: e.message }; }
   }
 
-  function showError(msg) {
-    const errDiv = document.getElementById('auth-error');
-    errDiv.textContent = msg;
-    errDiv.classList.remove('hidden');
-    setTimeout(() => errDiv.classList.add('hidden'), 4000);
-  }
+  function showError(msg) { const errDiv = document.getElementById('auth-error'); errDiv.textContent = msg; errDiv.classList.remove('hidden'); setTimeout(() => errDiv.classList.add('hidden'), 4000); }
 
   async function register() {
-    const u = document.getElementById('username').value.trim();
-    const p = document.getElementById('password').value;
-    if(!u || !p || u.length < 3 || p.length < 3) {
-      showError("Name and rune must be at least 3 characters.");
-      return;
-    }
-    let defaultStats = {
-      level:1, score:0,
-      weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2",
-      ownedItems:["w1","a1","s1","acc2"], medalsList:[], dragonsSlain:0,
-      skillLevels:{str:1,dex:1,att:1,vig:1,end:1}, availablePoints:5, restoreStones:0
-    };
+    const u = document.getElementById('username').value.trim(), p = document.getElementById('password').value;
+    if(!u || !p || u.length < 3 || p.length < 3) { showError("Name and rune must be at least 3 characters."); return; }
+    let defaultStats = { level:1, score:0, weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2", ownedItems:["w1","a1","s1","acc2"], medalsList:[], dragonsSlain:0, skillLevels:{str:1,dex:1,att:1,vig:1,end:1}, availablePoints:5, restoreStones:0 };
     let result = await cloudRequest('register', { username: u, password: p, stats: defaultStats });
-    if(result && result.success) {
-      alert("Dark Elf lineage created. Awaken now.");
-      document.getElementById('password').value = '';
-    } else {
-      showError("Failed to create lineage. Try another name.");
-    }
+    if(result && result.success) { alert("Dark Elf lineage created. Awaken now."); document.getElementById('password').value = ''; }
+    else showError("Failed to create lineage. Try another name.");
   }
 
   async function login() {
-    const u = document.getElementById('username').value.trim();
-    const p = document.getElementById('password').value;
-    if(!u || !p) {
-      showError("Fill the codex.");
-      return;
-    }
+    const u = document.getElementById('username').value.trim(), p = document.getElementById('password').value;
+    if(!u || !p) { showError("Fill the codex."); return; }
     let res = await cloudRequest('login', { username: u, password: p });
     if(res && res.success) {
-      currentUser = u;
-      userStats = res.stats;
+      currentUser = u; userStats = res.stats;
       if(!userStats.ownedItems) userStats.ownedItems = ["w1","a1","s1","acc2"];
       if(!userStats.medalsList) userStats.medalsList = [];
       if(!userStats.accessory) userStats.accessory = "acc2";
       dragonsSlain = userStats.dragonsSlain || 0;
       restoreStones = userStats.restoreStones || 0;
-      
-      if(res.stats.skillLevels) {
-        Object.keys(res.stats.skillLevels).forEach(s => {
-          if(skillTree[s]) skillTree[s].level = res.stats.skillLevels[s];
-        });
-      }
+      if(res.stats.skillLevels) Object.keys(res.stats.skillLevels).forEach(s => { if(skillTree[s]) skillTree[s].level = res.stats.skillLevels[s]; });
       availableSkillPoints = res.stats.availablePoints || 5;
-      
       document.getElementById('auth-screen').classList.add('hidden');
       document.getElementById('main-menu').classList.remove('hidden');
       document.getElementById('auth-error').classList.add('hidden');
       renderUserData();
-    } else {
-      showError("Access denied. Check your runes or create a new lineage.");
-    }
+    } else showError("Access denied. Check your runes or create a new lineage.");
   }
 
   function logout() {
-    currentUser = null;
-    userStats = { level:1, score:0, weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2", ownedItems:["w1","a1","s1","acc2"], medalsList:[] };
-    dragonsSlain = 0;
-    restoreStones = 0;
-    availableSkillPoints = 5;
+    currentUser = null; userStats = { level:1, score:0, weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2", ownedItems:["w1","a1","s1","acc2"], medalsList:[] };
+    dragonsSlain = 0; restoreStones = 0; availableSkillPoints = 5;
     Object.keys(skillTree).forEach(s => skillTree[s].level = 1);
     document.getElementById('auth-screen').classList.remove('hidden');
     document.getElementById('main-menu').classList.add('hidden');
     document.getElementById('combat-screen').classList.add('hidden');
     document.getElementById('leaderboard-screen').classList.add('hidden');
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
+    document.getElementById('username').value = ''; document.getElementById('password').value = '';
   }
 
   async function saveToCloud() {
     if(!currentUser) return;
-    const skillLevels = {};
-    Object.keys(skillTree).forEach(s => skillLevels[s] = skillTree[s].level);
-    userStats.dragonsSlain = dragonsSlain;
-    userStats.skillLevels = skillLevels;
-    userStats.availablePoints = availableSkillPoints;
-    userStats.restoreStones = restoreStones;
+    const skillLevels = {}; Object.keys(skillTree).forEach(s => skillLevels[s] = skillTree[s].level);
+    userStats.dragonsSlain = dragonsSlain; userStats.skillLevels = skillLevels;
+    userStats.availablePoints = availableSkillPoints; userStats.restoreStones = restoreStones;
     await cloudRequest('save', { username: currentUser, stats: userStats });
   }
 
-  // ========== LEADERBOARD ==========
   async function showLeaderboard() {
     document.getElementById('leaderboard-screen').classList.remove('hidden');
-    if(currentUser) {
-      document.getElementById('main-menu').classList.add('hidden');
-    } else {
-      document.getElementById('auth-screen').classList.add('hidden');
-    }
-    
+    if(currentUser) document.getElementById('main-menu').classList.add('hidden');
+    else document.getElementById('auth-screen').classList.add('hidden');
     const content = document.getElementById('leaderboard-content');
     content.innerHTML = '<p style="text-align:center; color:#b49450;">Loading rankings...</p>';
-    
     let res = await cloudRequest('getRanking');
     if(res && res.rankings) {
-      let html = `<table class="leaderboard-table">
-        <thead><tr><th>Rank</th><th>Dark Elf</th><th>Level</th><th>Glory</th><th>Dragons Slain</th></tr></thead><tbody>`;
-      
-      res.rankings.forEach((player, index) => {
-        const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
-        html += `<tr>
-          <td class="${rankClass}">#${index + 1}</td>
-          <td>${player.username}</td>
-          <td>${player.level || 1}</td>
-          <td>${player.score || 0}</td>
-          <td>${player.dragonsSlain || 0}</td>
-        </tr>`;
-      });
-      
-      html += '</tbody></table>';
-      content.innerHTML = html;
-    } else {
-      content.innerHTML = '<p style="text-align:center; color:#b49450;">No warriors in the rankings yet. Be the first!</p>';
-    }
+      let html = `<table class="leaderboard-table"><thead><tr><th>Rank</th><th>Dark Elf</th><th>Level</th><th>Glory</th><th>Dragons Slain</th></tr></thead><tbody>`;
+      res.rankings.forEach((player, index) => { const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : ''; html += `<tr><td class="${rankClass}">#${index+1}</td><td>${player.username}</td><td>${player.level||1}</td><td>${player.score||0}</td><td>${player.dragonsSlain||0}</td></tr>`; });
+      html += '</tbody></table>'; content.innerHTML = html;
+    } else content.innerHTML = '<p style="text-align:center; color:#b49450;">No warriors in the rankings yet. Be the first!</p>';
   }
 
   function closeLeaderboard() {
     document.getElementById('leaderboard-screen').classList.add('hidden');
-    if(currentUser) {
-      document.getElementById('main-menu').classList.remove('hidden');
-    } else {
-      document.getElementById('auth-screen').classList.remove('hidden');
-    }
+    if(currentUser) document.getElementById('main-menu').classList.remove('hidden');
+    else document.getElementById('auth-screen').classList.remove('hidden');
   }
 
-  // ========== RENDER ==========
   function renderUserData() {
     document.getElementById('welcome-msg').innerText = `⚔️ ${currentUser}`;
     document.getElementById('stat-level').innerText = userStats.level;
     document.getElementById('stat-score').innerText = userStats.score;
     document.getElementById('stat-dragons').innerText = dragonsSlain;
     renderSkillTree();
-    
     const weaponItem = itemPool.find(i=>i.id===userStats.weapon) || itemPool[0];
     const armorItem = itemPool.find(i=>i.id===userStats.armor) || itemPool[4];
     const shieldItem = itemPool.find(i=>i.id===userStats.shield) || itemPool[7];
     const accessoryItem = itemPool.find(i=>i.id===userStats.accessory) || itemPool[11];
-    
     document.getElementById('eq-weapon').innerText = `${weaponItem.name} (+${weaponItem.bonus})`;
     document.getElementById('eq-armor').innerText = `${armorItem.name} (+${armorItem.bonus})`;
     document.getElementById('eq-shield').innerText = `${shieldItem.name} (+${shieldItem.bonus})`;
     document.getElementById('eq-accessory').innerText = accessoryItem ? `${accessoryItem.name} (+${accessoryItem.bonus})` : 'None';
-
     const invContainer = document.getElementById('inventory-container');
     invContainer.innerHTML = '';
     userStats.ownedItems.forEach(id => {
-      const item = itemPool.find(i=>i.id===id);
-      if(!item) return;
+      const item = itemPool.find(i=>i.id===id); if(!item) return;
       const equipped = (userStats.weapon===id || userStats.armor===id || userStats.shield===id || userStats.accessory===id);
-      invContainer.innerHTML += `
-        <div style="background: linear-gradient(135deg, #171016, #1a1217); border: 2px solid ${equipped ? '#f1c40f' : '#42352b'}; padding: 12px; font-size: 0.85rem; text-align: center; color: #cfbc92; border-radius: 8px; cursor: pointer; ${equipped ? 'box-shadow: 0 0 20px rgba(241,196,15,0.4);' : ''}" 
-             onclick="equipItem('${item.id}')">
-          <strong>${item.name}</strong><br>
-          <span>+${item.bonus} (${item.scaling})</span><br>
-          <small style="color:#b49450;">${item.effect}</small><br>
-          ${equipped ? '<small style="color:#f1c40f;">[Equipped]</small>' : '<small>Click to equip</small>'}
-        </div>
-      `;
+      invContainer.innerHTML += `<div style="background: linear-gradient(135deg, #171016, #1a1217); border: 2px solid ${equipped ? '#f1c40f' : '#42352b'}; padding: 12px; font-size: 0.85rem; text-align: center; color: #cfbc92; border-radius: 8px; cursor: pointer; ${equipped ? 'box-shadow: 0 0 20px rgba(241,196,15,0.4);' : ''}" onclick="equipItem('${item.id}')"><strong>${item.name}</strong><br><span>+${item.bonus} (${item.scaling})</span><br><small style="color:#b49450;">${item.effect}</small><br>${equipped ? '<small style="color:#f1c40f;">[Equipped]</small>' : '<small>Click to equip</small>'}</div>`;
     });
-
     renderMedalShelf();
   }
 
   function renderMedalShelf() {
-    const shelf = document.getElementById('medal-shelf-container');
-    if(!shelf) return;
+    const shelf = document.getElementById('medal-shelf-container'); if(!shelf) return;
     shelf.innerHTML = '';
-    if(!userStats.medalsList.length) {
-      shelf.innerHTML = '<p style="color:#7a6a5c;">Conquer fortresses to forge legendary medals...</p>';
-      return;
-    }
-    
-    const shapes = {
-      common: '<polygon points="25,5 45,15 45,35 25,45 5,35 5,15" fill="#7e7e7e" stroke="#cbd5e1" stroke-width="2"/>',
-      rare: '<circle cx="25" cy="25" r="20" fill="#0070dd" stroke="#4da6ff" stroke-width="2"/>',
-      epic: '<polygon points="25,5 35,15 45,25 35,35 25,45 15,35 5,25 15,15" fill="#a335ee" stroke="#c27aff" stroke-width="2"/>',
-      legendary: '<polygon points="25,3 47,17 47,33 25,47 3,33 3,17" fill="#ff8000" stroke="#ffaa33" stroke-width="3"/>',
-      relic: '<path d="M25 5 L35 20 L50 25 L35 30 L25 45 L15 30 L0 25 L15 20 Z" fill="#e63946" stroke="#ff5566" stroke-width="3"/>'
-    };
-    
-    userStats.medalsList.forEach(m => {
-      const shape = shapes[m.rarity] || shapes.common;
-      shelf.innerHTML += `
-        <div class="medal-badge rare-${m.rarity}">
-          <div class="medal-shape"><svg viewBox="0 0 50 50">${shape}</svg></div>
-          <span class="medal-name">${m.name}</span>
-          <span class="medal-rarity">${m.rarity}</span>
-        </div>
-      `;
-    });
+    if(!userStats.medalsList.length) { shelf.innerHTML = '<p style="color:#7a6a5c;">Conquer fortresses to forge legendary medals...</p>'; return; }
+    const shapes = { common: '<polygon points="25,5 45,15 45,35 25,45 5,35 5,15" fill="#7e7e7e" stroke="#cbd5e1" stroke-width="2"/>', rare: '<circle cx="25" cy="25" r="20" fill="#0070dd" stroke="#4da6ff" stroke-width="2"/>', epic: '<polygon points="25,5 35,15 45,25 35,35 25,45 15,35 5,25 15,15" fill="#a335ee" stroke="#c27aff" stroke-width="2"/>', legendary: '<polygon points="25,3 47,17 47,33 25,47 3,33 3,17" fill="#ff8000" stroke="#ffaa33" stroke-width="3"/>', relic: '<path d="M25 5 L35 20 L50 25 L35 30 L25 45 L15 30 L0 25 L15 20 Z" fill="#e63946" stroke="#ff5566" stroke-width="3"/>' };
+    userStats.medalsList.forEach(m => { const shape = shapes[m.rarity] || shapes.common; shelf.innerHTML += `<div class="medal-badge rare-${m.rarity}"><div class="medal-shape"><svg viewBox="0 0 50 50">${shape}</svg></div><span class="medal-name">${m.name}</span><span class="medal-rarity">${m.rarity}</span></div>`; });
   }
 
   function equipItem(id) {
-    const item = itemPool.find(i=>i.id===id);
-    if(!item) return;
+    const item = itemPool.find(i=>i.id===id); if(!item) return;
     if(item.type==='weapon') userStats.weapon = id;
     if(item.type==='armor') userStats.armor = id;
     if(item.type==='shield') userStats.shield = id;
     if(item.type==='accessory') userStats.accessory = id;
-    renderUserData();
-    saveToCloud();
+    renderUserData(); saveToCloud();
   }
 
   function setTactic(tactic) {
     currentTactic = tactic;
     document.querySelectorAll('.tactic-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
-    const desc = {
-      balanced:'Balanced: Moderate damage and defense.',
-      aggressive:'Aggressive: +30% damage, -20% defense.',
-      defensive:'Defensive: +30% defense, counter windows.',
-      arcane:'Arcane: +40% magic, +20 mana regen.'
-    };
+    const desc = { balanced:'Balanced: Moderate damage and defense.', aggressive:'Aggressive: +30% damage, -20% defense.', defensive:'Defensive: +30% defense, counter windows.', arcane:'Arcane: +40% magic, +20 mana regen.' };
     document.getElementById('tactic-desc').innerText = desc[tactic];
     if(combatState) logMessage(`🎯 Tactic: ${tactic.toUpperCase()}`, 'log-info');
   }
 
-  // ========== COMBAT ==========
+  // ========== BALANCED COMBAT SYSTEM ==========
   function lookForCastle() {
     const archetype = dragonArchetypes[Math.floor(Math.random() * dragonArchetypes.length)];
-    const chosenName = dragonNames[Math.floor(Math.random() * dragonNames.length)] + " Lv." + (userStats.level + 3);
-    const loreTemplates = [
-      `The ${archetype.type} ${chosenName} emerged from the ${archetype.imageSeed.replace(/-/g, ' ')}. ${archetype.strengths[0]}. Ancient texts whisper: ${archetype.weaknesses[0]}.`,
-      `Born of ${archetype.element}, ${chosenName} terrorized kingdoms. ${archetype.strengths[1]}. The wise exploit ${archetype.weaknesses[1]}.`
-    ];
-    
+    const chosenName = dragonNames[Math.floor(Math.random() * dragonNames.length)] + " Lv." + (userStats.level + 2);
+    const loreTemplates = [`The ${archetype.type} ${chosenName} emerged from the ${archetype.imageSeed.replace(/-/g, ' ')}. ${archetype.strengths[0]}. Ancient texts whisper: ${archetype.weaknesses[0]}.`, `Born of ${archetype.element}, ${chosenName} terrorized kingdoms. ${archetype.strengths[1]}. The wise exploit ${archetype.weaknesses[1]}.`];
     combatPattern = generateCombatPattern(archetype)[Math.floor(Math.random() * 3)];
-    patternPosition = 0;
-    discoveredWeaknesses = [];
-    comboChain = [];
+    patternPosition = 0; discoveredWeaknesses = []; comboChain = [];
+    
+    // Low level dragons are easier, high level dragons are harder
+    const dragonLevel = userStats.level + 2;
+    const enemyHP = 40 + (dragonLevel * 8);
     
     combatState = {
       dragonData: { name: chosenName, lore: loreTemplates[Math.floor(Math.random()*loreTemplates.length)], archetype },
       enemy: {
-        name: chosenName,
-        hp: 100 + (userStats.level * 20),
-        maxHp: 100 + (userStats.level * 20),
-        power: 14 + userStats.level,
-        defense: 8 + Math.floor(userStats.level/2),
-        magicResist: 8 + Math.floor(userStats.level/3),
-        stance: 'neutral',
-        nextAction: combatPattern[0]
+        name: chosenName, hp: enemyHP, maxHp: enemyHP,
+        power: 6 + Math.floor(dragonLevel * 0.8),
+        defense: 3 + Math.floor(dragonLevel * 0.4),
+        magicResist: 3 + Math.floor(dragonLevel * 0.3),
+        stance: 'neutral', nextAction: combatPattern[0]
       },
       player: {
-        hp: skillTree.vig.level * 14,
-        maxHp: skillTree.vig.level * 14,
-        stamina: skillTree.end.level * 8,
-        maxStamina: skillTree.end.level * 8,
-        mana: skillTree.att.level * 6,
-        maxMana: skillTree.att.level * 6,
-        counterActive: false,
-        correctGuesses: 0
+        hp: getPlayerMaxHP(), maxHp: getPlayerMaxHP(),
+        stamina: getPlayerMaxStamina(), maxStamina: getPlayerMaxStamina(),
+        mana: getPlayerMaxMana(), maxMana: getPlayerMaxMana(),
+        counterActive: false, correctGuesses: 0
       },
       equipment: {
         weapon: itemPool.find(i=>i.id===userStats.weapon) || itemPool[0],
@@ -1066,27 +686,16 @@
     document.getElementById('dragon-lore').innerText = combatState.dragonData.lore;
     document.getElementById('dragon-img').src = `https://image.pollinations.ai/prompt/epic%20dark%20fantasy%20${archetype.imageSeed.replace(/-/g, '%20')}%20dragon%20digital%20art?width=600&height=400&nologo=true&seed=${Math.floor(Math.random()*99999)}`;
     document.getElementById('dragon-weakness').innerHTML = `<strong>💡 Strengths:</strong> ${archetype.strengths.join('; ')}<br><strong>🎯 Best Tactic:</strong> ${archetype.tactics.best.toUpperCase()}`;
-    
-    renderWeaknessWheel();
-    renderActionButtons();
-    updateComboChain('reset');
-    updateCombatUI();
-    
-    document.getElementById('restore-stone-combat').innerHTML = restoreStones > 0 
-      ? `<span class="restore-stone-indicator">💎 ${restoreStones} Void Stone${restoreStones > 1 ? 's' : ''} available</span>`
-      : '';
-    
+    renderWeaknessWheel(); renderActionButtons(); updateComboChain('reset'); updateCombatUI();
+    document.getElementById('restore-stone-combat').innerHTML = restoreStones > 0 ? `<span class="restore-stone-indicator">💎 ${restoreStones} Void Stone${restoreStones > 1 ? 's' : ''} available</span>` : '';
     logMessage(`🐉 <span class="log-warning">${chosenName} emerges!</span>`, '');
     logMessage(`📖 <span class="log-info">"${combatState.dragonData.lore}"</span>`, '');
-    logMessage(`💡 <span class="log-info">Study the dragon's pattern. The lore contains clues.</span>`, '');
-    logMessage(`⚡ <span class="log-info">Your stamina and mana start FULL. Watch the enemy's stance!</span>`, '');
+    logMessage(`💡 <span class="log-info">Early dragons are weaker. As you grow stronger, so do they.</span>`, '');
   }
 
   function updateCombatUI() {
     if(!combatState) return;
-    const p = combatState.player;
-    const e = combatState.enemy;
-    
+    const p = combatState.player, e = combatState.enemy;
     document.getElementById('p-hp').innerText = Math.max(0, p.hp);
     document.getElementById('p-maxhp').innerText = p.maxHp;
     document.getElementById('p-stamina').innerText = Math.max(0, p.stamina);
@@ -1098,329 +707,74 @@
     document.getElementById('e-power').innerText = e.power;
     document.getElementById('e-defense').innerText = e.defense;
     document.getElementById('e-resist').innerText = e.magicResist;
-    
     document.getElementById('p-hp-bar').style.width = Math.max(0, (p.hp/p.maxHp)*100)+'%';
     document.getElementById('p-stamina-bar').style.width = Math.max(0, (p.stamina/p.maxStamina)*100)+'%';
     document.getElementById('p-mana-bar').style.width = Math.max(0, (p.mana/p.maxMana)*100)+'%';
     document.getElementById('e-hp-bar').style.width = Math.max(0, (e.hp/e.maxHp)*100)+'%';
-    
-    const stanceText = e.stance === 'furious' ? 'FURIOUS (+40% damage)' : e.stance === 'guarded' ? 'GUARDED (+50% defense)' : 'NEUTRAL';
+    const stanceText = e.stance === 'furious' ? 'FURIOUS' : e.stance === 'guarded' ? 'GUARDED' : 'NEUTRAL';
     document.getElementById('enemy-stance').innerText = `🌀 Stance: ${stanceText} | Next: ${e.nextAction?.toUpperCase() || 'Unknown'}`;
   }
 
-  function logMessage(msg, className) {
-    const log = document.getElementById('combat-log');
-    log.innerHTML += `<div class="log-entry ${className}">${msg}</div>`;
-    log.scrollTop = log.scrollHeight;
-  }
+  function logMessage(msg, className) { const log = document.getElementById('combat-log'); log.innerHTML += `<div class="log-entry ${className}">${msg}</div>`; log.scrollTop = log.scrollHeight; }
 
-  function getScalingValue(item) {
-    if(!item) return 10;
-    const map = { str: skillTree.str.level * 3, dex: skillTree.dex.level * 3, att: skillTree.att.level * 3, vig: skillTree.vig.level * 3, end: skillTree.end.level * 3 };
-    return map[item.scaling] || 10;
-  }
+  function getScalingValue(item) { if(!item) return 5; const map = { str: skillTree.str.level * 2, dex: skillTree.dex.level * 2, att: skillTree.att.level * 2, vig: skillTree.vig.level * 2, end: skillTree.end.level * 2 }; return map[item.scaling] || 5; }
 
   function executeAction(type) {
     if(!combatState || combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
-    
-    const costs = {
-      melee: {stamina:15, mana:0}, ranged: {stamina:18, mana:0},
-      spell: {stamina:25, mana:20}, defend: {stamina:10, mana:0},
-      counter: {stamina:12, mana:0}, finisher: {stamina:30, mana:30}
-    };
-    
+    const costs = getActionCosts();
     const cost = costs[type];
-    if(combatState.player.stamina < cost.stamina) {
-      logMessage(`⚠️ <span class="log-warning">Not enough stamina! Need ${cost.stamina}, have ${combatState.player.stamina}.</span>`, '');
-      return;
-    }
-    if(combatState.player.mana < cost.mana) {
-      logMessage(`⚠️ <span class="log-warning">Not enough mana! Need ${cost.mana}, have ${combatState.player.mana}.</span>`, '');
-      return;
-    }
-    
+    if(combatState.player.stamina < cost.stamina) { logMessage(`⚠️ <span class="log-warning">Not enough stamina! Need ${cost.stamina}, have ${combatState.player.stamina}.</span>`, ''); return; }
+    if(combatState.player.mana < cost.mana) { logMessage(`⚠️ <span class="log-warning">Not enough mana! Need ${cost.mana}, have ${combatState.player.mana}.</span>`, ''); return; }
     combatState.player.stamina -= cost.stamina;
     combatState.player.mana -= cost.mana;
-    
     updateComboChain(type);
-    
     const enemyAction = combatState.enemy.nextAction;
     const correctAction = getCorrectAction(enemyAction);
     let isCorrectCounter = (type === correctAction);
-    
     const roll = Math.floor(Math.random()*20)+1;
     document.getElementById('dice-result').innerText = roll;
     document.getElementById('dice-result').style.animation = 'none';
     setTimeout(() => document.getElementById('dice-result').style.animation = 'dicePulse 0.5s ease-out', 10);
-    
     let damage = 0;
     let tacticMultiplier = 1;
-    switch(currentTactic) {
-      case 'aggressive': tacticMultiplier = 1.3; break;
-      case 'defensive': tacticMultiplier = 0.8; break;
-      case 'arcane': tacticMultiplier = type==='spell' ? 1.4 : 0.9; break;
-    }
-    
-    if(isCorrectCounter) {
-      tacticMultiplier *= 1.5;
-      combatState.player.correctGuesses++;
-      logMessage('🎯 <span class="log-critical">CORRECT COUNTER! +50% damage!</span>', '');
-      
-      if(combatState.player.correctGuesses >= 2 && discoveredWeaknesses.length < 3) {
-        const allWeaknesses = combatState.dragonData.archetype.weaknesses;
-        const newWeakness = allWeaknesses[discoveredWeaknesses.length].split(' ')[0].toLowerCase();
-        discoveredWeaknesses.push(newWeakness);
-        renderWeaknessWheel();
-        logMessage(`🔍 <span class="log-info">Weakness discovered: ${newWeakness.toUpperCase()}!</span>`, '');
-      }
-      
-      document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('correct-choice'));
-      event.target.classList.add('correct-choice');
-      setTimeout(() => event.target.classList.remove('correct-choice'), 500);
-    } else if(type !== 'defend' && type !== 'counter' && type !== 'finisher') {
-      document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('wrong-choice'));
-      event.target.classList.add('wrong-choice');
-      setTimeout(() => event.target.classList.remove('wrong-choice'), 500);
-    }
-    
-    if(roll === 1) {
-      document.getElementById('dice-modifier').innerText = "Critical Failure!";
-      logMessage('🎲 Critical failure!', 'log-warning');
-      damage = 0;
-    } else if(roll === 20) {
-      document.getElementById('dice-modifier').innerText = "ANCESTRAL CRITICAL!";
-      tacticMultiplier *= 2.5;
-      logMessage('🎲 <span class="log-critical">PERFECT STRIKE!</span>', '');
-    } else {
-      document.getElementById('dice-modifier').innerText = `Roll: ${roll}`;
-    }
-    
+    switch(currentTactic) { case 'aggressive': tacticMultiplier = 1.3; break; case 'defensive': tacticMultiplier = 0.8; break; case 'arcane': tacticMultiplier = type==='spell' ? 1.4 : 0.9; break; }
+    if(isCorrectCounter) { tacticMultiplier *= 1.5; combatState.player.correctGuesses++; logMessage('🎯 <span class="log-critical">CORRECT COUNTER! +50% damage!</span>', ''); if(combatState.player.correctGuesses >= 2 && discoveredWeaknesses.length < 3) { const allWeaknesses = combatState.dragonData.archetype.weaknesses; const newWeakness = allWeaknesses[discoveredWeaknesses.length].split(' ')[0].toLowerCase(); discoveredWeaknesses.push(newWeakness); renderWeaknessWheel(); logMessage(`🔍 <span class="log-info">Weakness discovered: ${newWeakness.toUpperCase()}!</span>`, ''); } document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('correct-choice')); event.target.classList.add('correct-choice'); setTimeout(() => event.target.classList.remove('correct-choice'), 500); }
+    else if(type !== 'defend' && type !== 'counter' && type !== 'finisher') { document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('wrong-choice')); event.target.classList.add('wrong-choice'); setTimeout(() => event.target.classList.remove('wrong-choice'), 500); }
+    if(roll === 1) { document.getElementById('dice-modifier').innerText = "Critical Failure!"; logMessage('🎲 Critical failure!', 'log-warning'); damage = 0; }
+    else if(roll === 20) { document.getElementById('dice-modifier').innerText = "ANCESTRAL CRITICAL!"; tacticMultiplier *= 2.5; logMessage('🎲 <span class="log-critical">PERFECT STRIKE!</span>', ''); }
+    else { document.getElementById('dice-modifier').innerText = `Roll: ${roll}`; }
     if(roll > 1) {
       const factor = 0.5 + (roll/15);
-      
-      if(comboChain.length === 3) {
-        if(comboChain[0] === comboChain[1] && comboChain[1] === comboChain[2]) {
-          tacticMultiplier += 0.5;
-          logMessage('🔥 Triple combo bonus!', 'log-critical');
-        } else if(new Set(comboChain).size === 3 && !comboChain.includes('defend') && !comboChain.includes('counter')) {
-          tacticMultiplier += 0.3;
-          combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + 15);
-          logMessage('✨ <span class="log-heal">Perfect mix! +30% damage & heal!</span>', '');
-        }
-      }
-      
-      if(type === 'melee') {
-        const base = getScalingValue(combatState.equipment.weapon) + combatState.equipment.weapon.bonus;
-        damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.defense/50));
-        logMessage(`⚔️ Melee: <span class="log-damage">${damage} damage</span>`, '');
-      } else if(type === 'ranged') {
-        const base = getScalingValue(combatState.equipment.armor) + combatState.equipment.armor.bonus;
-        damage = Math.floor(base * factor * tacticMultiplier * 0.9);
-        logMessage(`🏹 Arrow: <span class="log-damage">${damage} damage</span>`, '');
-      } else if(type === 'spell') {
-        const base = skillTree.att.level * 4;
-        damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.magicResist/40));
-        logMessage(`🔮 Magic: <span class="log-magic">${damage} damage</span>`, '');
-      } else if(type === 'defend') {
-        const shieldBase = getScalingValue(combatState.equipment.shield) + combatState.equipment.shield.bonus;
-        const heal = Math.floor(shieldBase * factor * 0.6);
-        combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal);
-        combatState.enemy.defense = Math.max(4, combatState.enemy.defense - 3);
-        logMessage(`🛡️ <span class="log-heal">Healed ${heal} HP</span>`, '');
-      } else if(type === 'counter') {
-        combatState.player.counterActive = true;
-        logMessage('↩️ Counter stance ready!', 'log-info');
-      } else if(type === 'finisher') {
-        const base = (getScalingValue(combatState.equipment.weapon) + skillTree.att.level) * 2;
-        damage = Math.floor(base * factor * tacticMultiplier * 1.5);
-        logMessage(`💀 <span class="log-critical">EXECUTION! ${damage} damage!</span>`, '');
-      }
-      
+      if(comboChain.length === 3) { if(comboChain[0] === comboChain[1] && comboChain[1] === comboChain[2]) { tacticMultiplier += 0.5; logMessage('🔥 Triple combo bonus!', 'log-critical'); } else if(new Set(comboChain).size === 3 && !comboChain.includes('defend') && !comboChain.includes('counter')) { tacticMultiplier += 0.3; combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + 10); logMessage('✨ <span class="log-heal">Perfect mix! +30% damage & heal!</span>', ''); } }
+      const baseDamage = getBaseDamage();
+      if(type === 'melee') { const base = getScalingValue(combatState.equipment.weapon) + combatState.equipment.weapon.bonus + baseDamage; damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.defense/60)); logMessage(`⚔️ Melee: <span class="log-damage">${damage} damage</span>`, ''); }
+      else if(type === 'ranged') { const base = getScalingValue(combatState.equipment.armor) + combatState.equipment.armor.bonus + baseDamage; damage = Math.floor(base * factor * tacticMultiplier * 0.9); logMessage(`🏹 Arrow: <span class="log-damage">${damage} damage</span>`, ''); }
+      else if(type === 'spell') { const base = skillTree.att.level * 3 + baseDamage; damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.magicResist/50)); logMessage(`🔮 Magic: <span class="log-magic">${damage} damage</span>`, ''); }
+      else if(type === 'defend') { const shieldBase = getScalingValue(combatState.equipment.shield) + combatState.equipment.shield.bonus; const heal = Math.floor(shieldBase * factor * 0.5); combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal); combatState.enemy.defense = Math.max(2, combatState.enemy.defense - 2); logMessage(`🛡️ <span class="log-heal">Healed ${heal} HP</span>`, ''); }
+      else if(type === 'counter') { combatState.player.counterActive = true; logMessage('↩️ Counter stance ready!', 'log-info'); }
+      else if(type === 'finisher') { const base = (getScalingValue(combatState.equipment.weapon) + skillTree.att.level) * 1.5 + baseDamage; damage = Math.floor(base * factor * tacticMultiplier * 1.5); logMessage(`💀 <span class="log-critical">EXECUTION! ${damage} damage!</span>`, ''); }
       combatState.enemy.hp = Math.max(0, combatState.enemy.hp - damage);
     }
-    
-    updateEnemyStance();
-    updateCombatUI();
-    
-    if(combatState.equipment.accessory?.effect === 'Regen') {
-      combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + 3);
-    }
-    
-    if(combatState.enemy.hp <= 0) {
-      resolveVictory();
-    } else {
-      patternPosition = (patternPosition + 1) % combatPattern.length;
-      combatState.enemy.nextAction = combatPattern[patternPosition];
-      
-      combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(skillTree.end.level * 1.8));
-      combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + Math.floor(skillTree.att.level * 1.4));
-      
-      const stanceHints = {
-        melee: 'The dragon draws closer...',
-        ranged: 'The dragon spreads its wings...',
-        spell: 'Arcane energy builds up...',
-        defend: 'The dragon takes a defensive posture...',
-        counter: 'The dragon watches you carefully...'
-      };
-      logMessage(`👁️ ${stanceHints[combatState.enemy.nextAction] || 'The dragon prepares...'}`, 'log-info');
-      
-      setTimeout(()=> enemyTurn(), 800);
-    }
+    updateEnemyStance(); updateCombatUI();
+    if(combatState.equipment.accessory?.effect === 'Regen') combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + 2);
+    if(combatState.enemy.hp <= 0) { resolveVictory(); }
+    else { patternPosition = (patternPosition + 1) % combatPattern.length; combatState.enemy.nextAction = combatPattern[patternPosition]; combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(skillTree.end.level * 0.8)); combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + Math.floor(skillTree.att.level * 0.6)); const hints = { melee:'The dragon draws closer...', ranged:'The dragon spreads its wings...', spell:'Arcane energy builds up...', defend:'The dragon takes a defensive posture...', counter:'The dragon watches you carefully...' }; logMessage(`👁️ ${hints[combatState.enemy.nextAction] || 'The dragon prepares...'}`, 'log-info'); setTimeout(()=> enemyTurn(), 800); }
   }
 
-  function useRestoreStone() {
-    if(!combatState || restoreStones <= 0) return;
-    restoreStones--;
-    combatState.player.stamina = combatState.player.maxStamina;
-    combatState.player.mana = combatState.player.maxMana;
-    combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + Math.floor(combatState.player.maxHp * 0.5));
-    logMessage('💎 <span class="log-heal">VOID STONE! All resources restored!</span>', '');
-    updateCombatUI();
-    renderActionButtons();
-    document.getElementById('restore-stone-combat').innerHTML = restoreStones > 0 
-      ? `<span class="restore-stone-indicator">💎 ${restoreStones} Void Stone${restoreStones > 1 ? 's' : ''} left</span>`
-      : '';
-    saveToCloud();
-  }
+  function useRestoreStone() { if(!combatState || restoreStones <= 0) return; restoreStones--; combatState.player.stamina = combatState.player.maxStamina; combatState.player.mana = combatState.player.maxMana; combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + Math.floor(combatState.player.maxHp * 0.5)); logMessage('💎 <span class="log-heal">VOID STONE! All resources restored!</span>', ''); updateCombatUI(); renderActionButtons(); document.getElementById('restore-stone-combat').innerHTML = restoreStones > 0 ? `<span class="restore-stone-indicator">💎 ${restoreStones} Void Stone${restoreStones > 1 ? 's' : ''} left</span>` : ''; saveToCloud(); }
 
-  function fleeCombat() {
-    if(!combatState) return;
-    const fleeChance = 0.5 + (skillTree.dex.level * 0.03);
-    if(Math.random() < fleeChance) {
-      logMessage('🏃 <span class="log-flee">Successfully fled! You live to fight another day.</span>', '');
-      availableSkillPoints = Math.max(0, availableSkillPoints - 1);
-      saveToCloud();
-      setTimeout(()=>{
-        document.getElementById('combat-screen').classList.add('hidden');
-        document.getElementById('main-menu').classList.remove('hidden');
-        combatState = null;
-        renderUserData();
-      }, 2000);
-    } else {
-      logMessage('🚫 <span class="log-warning">Failed to flee! The dragon blocks your escape!</span>', '');
-      combatState.player.hp = Math.max(0, combatState.player.hp - 20);
-      updateCombatUI();
-      if(combatState.player.hp <= 0) handleDeath();
-    }
-  }
+  function fleeCombat() { if(!combatState) return; const fleeChance = 0.5 + (skillTree.dex.level * 0.04); if(Math.random() < fleeChance) { logMessage('🏃 <span class="log-flee">Successfully fled!</span>', ''); availableSkillPoints = Math.max(0, availableSkillPoints - 1); saveToCloud(); setTimeout(()=>{ document.getElementById('combat-screen').classList.add('hidden'); document.getElementById('main-menu').classList.remove('hidden'); combatState = null; renderUserData(); }, 2000); } else { logMessage('🚫 <span class="log-warning">Failed to flee!</span>', ''); combatState.player.hp = Math.max(0, combatState.player.hp - 15); updateCombatUI(); if(combatState.player.hp <= 0) handleDeath(); } }
 
-  function handleDeath() {
-    logMessage('☠️ <span class="log-warning">Your elf has fallen...</span>', '');
-    penalizeDeath();
-    restoreStones = Math.max(0, restoreStones - 1);
-    saveToCloud();
-    setTimeout(()=>{
-      document.getElementById('combat-screen').classList.add('hidden');
-      document.getElementById('main-menu').classList.remove('hidden');
-      combatState = null;
-      renderUserData();
-    }, 3000);
-  }
+  function handleDeath() { logMessage('☠️ <span class="log-warning">Your elf has fallen...</span>', ''); penalizeDeath(); restoreStones = Math.max(0, restoreStones - 1); saveToCloud(); setTimeout(()=>{ document.getElementById('combat-screen').classList.add('hidden'); document.getElementById('main-menu').classList.remove('hidden'); combatState = null; renderUserData(); }, 3000); }
 
-  function updateEnemyStance() {
-    const e = combatState.enemy;
-    if(e.hp < e.maxHp*0.4) e.stance = 'furious';
-    else if(e.hp < e.maxHp*0.7) e.stance = 'guarded';
-    else e.stance = 'neutral';
-    
-    if(e.stance === 'furious') {
-      e.power = Math.floor((14 + userStats.level) * 1.4);
-      e.defense = Math.max(2, (8 + Math.floor(userStats.level/2)) - 4);
-    } else if(e.stance === 'guarded') {
-      e.power = 14 + userStats.level;
-      e.defense = Math.floor((8 + Math.floor(userStats.level/2)) * 1.5);
-    } else {
-      e.power = 14 + userStats.level;
-      e.defense = 8 + Math.floor(userStats.level/2);
-    }
-  }
+  function updateEnemyStance() { const e = combatState.enemy; if(e.hp < e.maxHp*0.4) e.stance = 'furious'; else if(e.hp < e.maxHp*0.7) e.stance = 'guarded'; else e.stance = 'neutral'; const dragonLevel = userStats.level + 2; if(e.stance === 'furious') { e.power = Math.floor((6 + dragonLevel * 0.8) * 1.4); e.defense = Math.max(1, Math.floor((3 + dragonLevel * 0.4) - 2)); } else if(e.stance === 'guarded') { e.power = 6 + Math.floor(dragonLevel * 0.8); e.defense = Math.floor((3 + dragonLevel * 0.4) * 1.5); } else { e.power = 6 + Math.floor(dragonLevel * 0.8); e.defense = 3 + Math.floor(dragonLevel * 0.4); } }
 
-  function enemyTurn() {
-    if(combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
-    
-    const dodgeChance = skillTree.dex.level * 0.03;
-    if(Math.random() < dodgeChance && !combatState.player.counterActive) {
-      logMessage('💨 Dodged!', 'log-info');
-      return;
-    }
-    
-    const eRoll = Math.floor(Math.random()*20)+1;
-    let rawDmg = Math.floor(combatState.enemy.power * (eRoll/10));
-    if(combatState.enemy.stance === 'furious') rawDmg = Math.floor(rawDmg * 1.3);
-    
-    if(combatState.player.counterActive) {
-      rawDmg = Math.floor(rawDmg * 0.3);
-      const counterDmg = Math.floor(rawDmg * 2);
-      combatState.enemy.hp = Math.max(0, combatState.enemy.hp - counterDmg);
-      combatState.player.counterActive = false;
-      logMessage(`↩️ <span class="log-critical">Counter! ${counterDmg} reflected!</span>`, '');
-    }
-    
-    combatState.player.hp = Math.max(0, combatState.player.hp - rawDmg);
-    logMessage(`💥 Dragon strikes for <span class="log-damage">${rawDmg} damage</span>`, '');
-    
-    updateCombatUI();
-    
-    if(combatState.player.hp <= 0) {
-      if(combatState.equipment.accessory?.effect === 'Rebirth') {
-        combatState.player.hp = Math.floor(combatState.player.maxHp * 0.5);
-        combatState.player.stamina = combatState.player.maxStamina;
-        combatState.player.mana = combatState.player.maxMana;
-        logMessage('🦅 <span class="log-critical">PHOENIX REBIRTH!</span>', '');
-        updateCombatUI();
-        return;
-      }
-      handleDeath();
-    }
-  }
+  function enemyTurn() { if(combatState.enemy.hp <=0 || combatState.player.hp <=0) return; const dodgeChance = skillTree.dex.level * 0.03; if(Math.random() < dodgeChance && !combatState.player.counterActive) { logMessage('💨 Dodged!', 'log-info'); return; } const eRoll = Math.floor(Math.random()*20)+1; let rawDmg = Math.floor(combatState.enemy.power * (eRoll/12)); if(combatState.enemy.stance === 'furious') rawDmg = Math.floor(rawDmg * 1.3); if(combatState.player.counterActive) { rawDmg = Math.floor(rawDmg * 0.3); const counterDmg = Math.floor(rawDmg * 2); combatState.enemy.hp = Math.max(0, combatState.enemy.hp - counterDmg); combatState.player.counterActive = false; logMessage(`↩️ <span class="log-critical">Counter! ${counterDmg} reflected!</span>`, ''); } combatState.player.hp = Math.max(0, combatState.player.hp - rawDmg); logMessage(`💥 Dragon strikes for <span class="log-damage">${rawDmg} damage</span>`, ''); updateCombatUI(); if(combatState.player.hp <= 0) { if(combatState.equipment.accessory?.effect === 'Rebirth') { combatState.player.hp = Math.floor(combatState.player.maxHp * 0.5); combatState.player.stamina = combatState.player.maxStamina; combatState.player.mana = combatState.player.maxMana; logMessage('🦅 <span class="log-critical">PHOENIX REBIRTH!</span>', ''); updateCombatUI(); return; } handleDeath(); } }
 
-  function resolveVictory() {
-    logMessage('🏆 <span class="log-critical">FORTRESS CONQUERED!</span>', '');
-    availableSkillPoints += 4 + Math.floor(userStats.level / 3);
-    userStats.score += 100 + (userStats.level * 10);
-    dragonsSlain++;
-    
-    if(Math.random() < 0.15) {
-      restoreStones++;
-      logMessage('💎 <span class="log-heal">VOID STONE FOUND! Use it to restore all resources in battle.</span>', '');
-    }
-    
-    const prefixes = ["Blazon","Standard","Insignia","Seal","Crown","Chalice","Crest","Emblem","Sigil","Mark"];
-    const cores = ["of the Dragon","of Ash","Elven Void","of Blood","Mystic Fief","Immortal","of the Abyss","of Shadows"];
-    const rarities = ["common","common","rare","rare","epic","epic","legendary","relic"];
-    let rarity = rarities[Math.floor(Math.random()*rarities.length)];
-    if(rarity==='relic' && Math.random()>0.15) rarity='legendary';
-    
-    const medal = {
-      name: prefixes[Math.floor(Math.random()*prefixes.length)] + " " + cores[Math.floor(Math.random()*cores.length)],
-      rarity: rarity
-    };
-    userStats.medalsList.push(medal);
-    logMessage(`🏅 Medal: <span class="log-info">${medal.name} (${medal.rarity.toUpperCase()})</span>`, '');
-    
-    if(Math.random() > 0.7) {
-      const pool = itemPool.filter(i => !userStats.ownedItems.includes(i.id));
-      if(pool.length > 0) {
-        const loot = pool[Math.floor(Math.random()*pool.length)];
-        userStats.ownedItems.push(loot.id);
-        logMessage(`🎁 Loot: <span class="log-info">${loot.name}</span>`, '');
-      }
-    }
-    
-    saveToCloud();
-    setTimeout(()=>{
-      document.getElementById('combat-screen').classList.add('hidden');
-      document.getElementById('main-menu').classList.remove('hidden');
-      combatState = null;
-      renderUserData();
-    }, 4000);
-  }
+  function resolveVictory() { logMessage('🏆 <span class="log-critical">FORTRESS CONQUERED!</span>', ''); availableSkillPoints += 3 + Math.floor(userStats.level / 4); userStats.score += 50 + (userStats.level * 8); dragonsSlain++; if(Math.random() < 0.15) { restoreStones++; logMessage('💎 <span class="log-heal">VOID STONE FOUND!</span>', ''); } const prefixes = ["Blazon","Standard","Insignia","Seal","Crown","Chalice","Crest","Emblem","Sigil","Mark"]; const cores = ["of the Dragon","of Ash","Elven Void","of Blood","Mystic Fief","Immortal","of the Abyss","of Shadows"]; const rarities = ["common","common","rare","rare","epic","epic","legendary","relic"]; let rarity = rarities[Math.floor(Math.random()*rarities.length)]; if(rarity==='relic' && Math.random()>0.15) rarity='legendary'; const medal = { name: prefixes[Math.floor(Math.random()*prefixes.length)] + " " + cores[Math.floor(Math.random()*cores.length)], rarity: rarity }; userStats.medalsList.push(medal); logMessage(`🏅 Medal: <span class="log-info">${medal.name} (${medal.rarity.toUpperCase()})</span>`, ''); if(Math.random() > 0.7) { const pool = itemPool.filter(i => !userStats.ownedItems.includes(i.id)); if(pool.length > 0) { const loot = pool[Math.floor(Math.random()*pool.length)]; userStats.ownedItems.push(loot.id); logMessage(`🎁 Loot: <span class="log-info">${loot.name}</span>`, ''); } } saveToCloud(); setTimeout(()=>{ document.getElementById('combat-screen').classList.add('hidden'); document.getElementById('main-menu').classList.remove('hidden'); combatState = null; renderUserData(); }, 4000); }
 
-  function generateDragonImage(seed) {
-    return `https://image.pollinations.ai/prompt/epic%20dark%20fantasy%20${seed.replace(/-/g, '%20')}%20dragon%20digital%20art?width=600&height=400&nologo=true&seed=${Math.floor(Math.random()*99999)}`;
-  }
+  function generateDragonImage(seed) { return `https://image.pollinations.ai/prompt/epic%20dark%20fantasy%20${seed.replace(/-/g, '%20')}%20dragon%20digital%20art?width=600&height=400&nologo=true&seed=${Math.floor(Math.random()*99999)}`; }
 
-  // Initialize
   renderSkillTree();
 </script>
 </body>
