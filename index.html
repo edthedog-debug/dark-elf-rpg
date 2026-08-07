@@ -644,6 +644,62 @@
     if(combatState) logMessage(`🎯 Tactic: ${tactic.toUpperCase()}`, 'log-info');
   }
 
+  // ========== RESOURCE RECOVERY SYSTEM ==========
+  function recoverResources() {
+    if(!combatState) return;
+    const p = combatState.player;
+    
+    // Random stamina recovery (between 2 and 8 points, affected by Endurance)
+    const staminaRecovery = Math.floor(Math.random() * 7) + 2 + Math.floor(skillTree.end.level * 0.5);
+    p.stamina = Math.min(p.maxStamina, p.stamina + staminaRecovery);
+    
+    // Random mana recovery (between 1 and 6 points, affected by Attunement)
+    const manaRecovery = Math.floor(Math.random() * 6) + 1 + Math.floor(skillTree.att.level * 0.4);
+    p.mana = Math.min(p.maxMana, p.mana + manaRecovery);
+    
+    // Arcane tactic gives bonus mana recovery
+    if(currentTactic === 'arcane') {
+      const bonusMana = Math.floor(Math.random() * 3) + 1;
+      p.mana = Math.min(p.maxMana, p.mana + bonusMana);
+    }
+    
+    logMessage(`✨ <span class="log-heal">Recovered ${staminaRecovery}⚡ stamina & ${manaRecovery}🔮 mana</span>`, 'log-info');
+    
+    // Check if player cannot perform ANY action (including defend/counter)
+    checkHelplessState();
+  }
+  
+  function checkHelplessState() {
+    if(!combatState || combatState.enemy.hp <= 0 || combatState.player.hp <= 0) return;
+    
+    const costs = getActionCosts();
+    const p = combatState.player;
+    
+    // Check if ALL actions are impossible due to resource constraints
+    const canMelee = p.stamina >= costs.melee.stamina && p.mana >= costs.melee.mana;
+    const canRanged = p.stamina >= costs.ranged.stamina && p.mana >= costs.ranged.mana;
+    const canSpell = p.stamina >= costs.spell.stamina && p.mana >= costs.spell.mana;
+    const canDefend = p.stamina >= costs.defend.stamina && p.mana >= costs.defend.mana;
+    const canCounter = p.stamina >= costs.counter.stamina && p.mana >= costs.counter.mana;
+    const canFinisher = p.stamina >= costs.finisher.stamina && p.mana >= costs.finisher.mana;
+    
+    // If player can't do any action and has no restore stones, there's a tiny chance of dragon insta-kill
+    const canDoAnything = canMelee || canRanged || canSpell || canDefend || canCounter || canFinisher;
+    
+    if(!canDoAnything && restoreStones <= 0) {
+      // Infima posibilidad: 5% chance per check that the dragon kills you
+      if(Math.random() < 0.05) {
+        logMessage('💀 <span class="log-warning">HELPLESS! The dragon sees your weakness and strikes a fatal blow!</span>', '');
+        combatState.player.hp = 0;
+        updateCombatUI();
+        handleDeath();
+        return;
+      } else {
+        logMessage('⚠️ <span class="log-warning">You lack resources to act! The dragon watches you struggle...</span>', '');
+      }
+    }
+  }
+
   // ========== BALANCED COMBAT SYSTEM ==========
   function lookForCastle() {
     const archetype = dragonArchetypes[Math.floor(Math.random() * dragonArchetypes.length)];
@@ -758,7 +814,17 @@
     updateEnemyStance(); updateCombatUI();
     if(combatState.equipment.accessory?.effect === 'Regen') combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + 2);
     if(combatState.enemy.hp <= 0) { resolveVictory(); }
-    else { patternPosition = (patternPosition + 1) % combatPattern.length; combatState.enemy.nextAction = combatPattern[patternPosition]; combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(skillTree.end.level * 0.8)); combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + Math.floor(skillTree.att.level * 0.6)); const hints = { melee:'The dragon draws closer...', ranged:'The dragon spreads its wings...', spell:'Arcane energy builds up...', defend:'The dragon takes a defensive posture...', counter:'The dragon watches you carefully...' }; logMessage(`👁️ ${hints[combatState.enemy.nextAction] || 'The dragon prepares...'}`, 'log-info'); setTimeout(()=> enemyTurn(), 800); }
+    else { 
+      patternPosition = (patternPosition + 1) % combatPattern.length; 
+      combatState.enemy.nextAction = combatPattern[patternPosition]; 
+      
+      // Recover random resources each turn
+      recoverResources();
+      
+      const hints = { melee:'The dragon draws closer...', ranged:'The dragon spreads its wings...', spell:'Arcane energy builds up...', defend:'The dragon takes a defensive posture...', counter:'The dragon watches you carefully...' }; 
+      logMessage(`👁️ ${hints[combatState.enemy.nextAction] || 'The dragon prepares...'}`, 'log-info'); 
+      setTimeout(()=> enemyTurn(), 800); 
+    }
   }
 
   function useRestoreStone() { if(!combatState || restoreStones <= 0) return; restoreStones--; combatState.player.stamina = combatState.player.maxStamina; combatState.player.mana = combatState.player.maxMana; combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + Math.floor(combatState.player.maxHp * 0.5)); logMessage('💎 <span class="log-heal">VOID STONE! All resources restored!</span>', ''); updateCombatUI(); renderActionButtons(); document.getElementById('restore-stone-combat').innerHTML = restoreStones > 0 ? `<span class="restore-stone-indicator">💎 ${restoreStones} Void Stone${restoreStones > 1 ? 's' : ''} left</span>` : ''; saveToCloud(); }
@@ -769,7 +835,33 @@
 
   function updateEnemyStance() { const e = combatState.enemy; if(e.hp < e.maxHp*0.4) e.stance = 'furious'; else if(e.hp < e.maxHp*0.7) e.stance = 'guarded'; else e.stance = 'neutral'; const dragonLevel = userStats.level + 2; if(e.stance === 'furious') { e.power = Math.floor((6 + dragonLevel * 0.8) * 1.4); e.defense = Math.max(1, Math.floor((3 + dragonLevel * 0.4) - 2)); } else if(e.stance === 'guarded') { e.power = 6 + Math.floor(dragonLevel * 0.8); e.defense = Math.floor((3 + dragonLevel * 0.4) * 1.5); } else { e.power = 6 + Math.floor(dragonLevel * 0.8); e.defense = 3 + Math.floor(dragonLevel * 0.4); } }
 
-  function enemyTurn() { if(combatState.enemy.hp <=0 || combatState.player.hp <=0) return; const dodgeChance = skillTree.dex.level * 0.03; if(Math.random() < dodgeChance && !combatState.player.counterActive) { logMessage('💨 Dodged!', 'log-info'); return; } const eRoll = Math.floor(Math.random()*20)+1; let rawDmg = Math.floor(combatState.enemy.power * (eRoll/12)); if(combatState.enemy.stance === 'furious') rawDmg = Math.floor(rawDmg * 1.3); if(combatState.player.counterActive) { rawDmg = Math.floor(rawDmg * 0.3); const counterDmg = Math.floor(rawDmg * 2); combatState.enemy.hp = Math.max(0, combatState.enemy.hp - counterDmg); combatState.player.counterActive = false; logMessage(`↩️ <span class="log-critical">Counter! ${counterDmg} reflected!</span>`, ''); } combatState.player.hp = Math.max(0, combatState.player.hp - rawDmg); logMessage(`💥 Dragon strikes for <span class="log-damage">${rawDmg} damage</span>`, ''); updateCombatUI(); if(combatState.player.hp <= 0) { if(combatState.equipment.accessory?.effect === 'Rebirth') { combatState.player.hp = Math.floor(combatState.player.maxHp * 0.5); combatState.player.stamina = combatState.player.maxStamina; combatState.player.mana = combatState.player.maxMana; logMessage('🦅 <span class="log-critical">PHOENIX REBIRTH!</span>', ''); updateCombatUI(); return; } handleDeath(); } }
+  function enemyTurn() { 
+    if(combatState.enemy.hp <=0 || combatState.player.hp <=0) return; 
+    const dodgeChance = skillTree.dex.level * 0.03; 
+    if(Math.random() < dodgeChance && !combatState.player.counterActive) { logMessage('💨 Dodged!', 'log-info'); return; } 
+    const eRoll = Math.floor(Math.random()*20)+1; 
+    let rawDmg = Math.floor(combatState.enemy.power * (eRoll/12)); 
+    if(combatState.enemy.stance === 'furious') rawDmg = Math.floor(rawDmg * 1.3); 
+    if(combatState.player.counterActive) { rawDmg = Math.floor(rawDmg * 0.3); const counterDmg = Math.floor(rawDmg * 2); combatState.enemy.hp = Math.max(0, combatState.enemy.hp - counterDmg); combatState.player.counterActive = false; logMessage(`↩️ <span class="log-critical">Counter! ${counterDmg} reflected!</span>`, ''); } 
+    combatState.player.hp = Math.max(0, combatState.player.hp - rawDmg); 
+    logMessage(`💥 Dragon strikes for <span class="log-damage">${rawDmg} damage</span>`, ''); 
+    updateCombatUI(); 
+    
+    // Check if player is helpless after taking damage
+    checkHelplessState();
+    
+    if(combatState.player.hp <= 0) { 
+      if(combatState.equipment.accessory?.effect === 'Rebirth') { 
+        combatState.player.hp = Math.floor(combatState.player.maxHp * 0.5); 
+        combatState.player.stamina = combatState.player.maxStamina; 
+        combatState.player.mana = combatState.player.maxMana; 
+        logMessage('🦅 <span class="log-critical">PHOENIX REBIRTH!</span>', ''); 
+        updateCombatUI(); 
+        return; 
+      } 
+      handleDeath(); 
+    } 
+  }
 
   function resolveVictory() { logMessage('🏆 <span class="log-critical">FORTRESS CONQUERED!</span>', ''); availableSkillPoints += 3 + Math.floor(userStats.level / 4); userStats.score += 50 + (userStats.level * 8); dragonsSlain++; if(Math.random() < 0.15) { restoreStones++; logMessage('💎 <span class="log-heal">VOID STONE FOUND!</span>', ''); } const prefixes = ["Blazon","Standard","Insignia","Seal","Crown","Chalice","Crest","Emblem","Sigil","Mark"]; const cores = ["of the Dragon","of Ash","Elven Void","of Blood","Mystic Fief","Immortal","of the Abyss","of Shadows"]; const rarities = ["common","common","rare","rare","epic","epic","legendary","relic"]; let rarity = rarities[Math.floor(Math.random()*rarities.length)]; if(rarity==='relic' && Math.random()>0.15) rarity='legendary'; const medal = { name: prefixes[Math.floor(Math.random()*prefixes.length)] + " " + cores[Math.floor(Math.random()*cores.length)], rarity: rarity }; userStats.medalsList.push(medal); logMessage(`🏅 Medal: <span class="log-info">${medal.name} (${medal.rarity.toUpperCase()})</span>`, ''); if(Math.random() > 0.7) { const pool = itemPool.filter(i => !userStats.ownedItems.includes(i.id)); if(pool.length > 0) { const loot = pool[Math.floor(Math.random()*pool.length)]; userStats.ownedItems.push(loot.id); logMessage(`🎁 Loot: <span class="log-info">${loot.name}</span>`, ''); } } saveToCloud(); setTimeout(()=>{ document.getElementById('combat-screen').classList.add('hidden'); document.getElementById('main-menu').classList.remove('hidden'); combatState = null; renderUserData(); }, 4000); }
 
