@@ -133,7 +133,39 @@
       display: none !important;
     }
 
-    /* ========== SKILL TREE STYLES ========== */
+    /* Leaderboard */
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    .leaderboard-table th {
+      background: #1a1217;
+      color: #e6b13e;
+      padding: 12px;
+      border: 1px solid #4a3827;
+      font-family: 'Cinzel', serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .leaderboard-table td {
+      padding: 10px;
+      border: 1px solid #3a2c22;
+      text-align: center;
+      color: #dbcaaa;
+    }
+    .leaderboard-table tr:nth-child(even) {
+      background: rgba(10, 7, 9, 0.5);
+    }
+    .leaderboard-table tr:hover {
+      background: rgba(180, 148, 80, 0.1);
+    }
+    .rank-1 { color: #f1c40f; font-weight: bold; }
+    .rank-2 { color: #c0c0c0; font-weight: bold; }
+    .rank-3 { color: #cd7f32; font-weight: bold; }
+
+    /* Skill Tree */
     .skill-tree-container {
       background: #0a0709;
       border: 2px solid #4a3827;
@@ -141,14 +173,12 @@
       border-radius: 10px;
       margin-top: 15px;
     }
-
     .skill-tree-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 15px;
       text-align: center;
     }
-
     .skill-node {
       background: linear-gradient(135deg, #1a1217, #0d090e);
       border: 2px solid #3a2827;
@@ -165,41 +195,24 @@
       transition: all 0.3s;
       position: relative;
     }
-
     .skill-node:hover {
       border-color: #b49450;
       box-shadow: 0 0 20px rgba(180,148,80,0.4);
       transform: scale(1.1);
     }
-
     .skill-node.unlocked {
       border-color: #f1c40f;
       box-shadow: 0 0 15px rgba(241,196,15,0.5);
       background: linear-gradient(135deg, #1b2b18, #1a2a1a);
     }
-
     .skill-node.locked {
       opacity: 0.5;
       cursor: not-allowed;
       filter: grayscale(0.7);
     }
-
-    .skill-node-icon {
-      font-size: 1.8rem;
-    }
-
-    .skill-node-level {
-      font-size: 0.7rem;
-      color: #b49450;
-      margin-top: 2px;
-    }
-
-    .skill-node-name {
-      font-size: 0.6rem;
-      color: #dbcaaa;
-      margin-top: 2px;
-    }
-
+    .skill-node-icon { font-size: 1.8rem; }
+    .skill-node-level { font-size: 0.7rem; color: #b49450; margin-top: 2px; }
+    .skill-node-name { font-size: 0.6rem; color: #dbcaaa; margin-top: 2px; }
     .skill-points-display {
       text-align: center;
       font-size: 1.2rem;
@@ -211,7 +224,7 @@
       border-radius: 8px;
     }
 
-    /* ========== COMBAT CHAIN SYSTEM ========== */
+    /* Combat */
     .combo-chain {
       display: flex;
       gap: 5px;
@@ -223,7 +236,6 @@
       border-radius: 8px;
       min-height: 50px;
     }
-
     .chain-slot {
       width: 40px;
       height: 40px;
@@ -235,21 +247,14 @@
       font-size: 1.2rem;
       color: #5a432e;
     }
-
     .chain-slot.filled {
       border-color: #b49450;
       border-style: solid;
       color: #e6b13e;
       box-shadow: 0 0 10px rgba(180,148,80,0.3);
     }
+    .chain-bonus { font-size: 0.8rem; color: #b49450; margin-top: 5px; }
 
-    .chain-bonus {
-      font-size: 0.8rem;
-      color: #b49450;
-      margin-top: 5px;
-    }
-
-    /* ========== WEAKNESS WHEEL ========== */
     .weakness-wheel {
       display: flex;
       justify-content: center;
@@ -257,7 +262,6 @@
       margin: 15px 0;
       flex-wrap: wrap;
     }
-
     .weakness-indicator {
       padding: 8px 15px;
       border-radius: 20px;
@@ -265,20 +269,18 @@
       border: 2px solid #4a3827;
       transition: all 0.3s;
     }
-
     .weakness-indicator.revealed {
       border-color: #2ecc71;
       color: #2ecc71;
       box-shadow: 0 0 15px rgba(46,204,113,0.3);
       animation: revealPulse 1s infinite;
     }
-
     @keyframes revealPulse {
       0%, 100% { box-shadow: 0 0 15px rgba(46,204,113,0.3); }
       50% { box-shadow: 0 0 30px rgba(46,204,113,0.6); }
     }
 
-    /* ========== MEDAL REDESIGN ========== */
+    /* Medals */
     .medal-shelf {
       display: flex;
       flex-wrap: wrap;
@@ -291,7 +293,6 @@
       overflow-y: auto;
       border-radius: 10px;
     }
-
     .medal-badge {
       width: 100px;
       height: 130px;
@@ -309,7 +310,6 @@
       position: relative;
       overflow: hidden;
     }
-
     .medal-badge::before {
       content: '';
       position: absolute;
@@ -321,75 +321,29 @@
       opacity: 0;
       transition: opacity 0.3s;
     }
-
-    .medal-badge:hover::before {
-      opacity: 1;
-    }
-
-    .medal-badge:hover {
-      transform: translateY(-5px) scale(1.05);
-    }
-
-    .medal-shape {
-      width: 50px;
-      height: 50px;
-      margin-bottom: 8px;
-      position: relative;
-    }
-
-    .medal-shape svg {
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 0 5px rgba(255,215,0,0.5));
-    }
-
-    .medal-name {
-      font-weight: bold;
-      font-size: 0.7rem;
-      color: #c0a77b;
-      margin-bottom: 3px;
-    }
-
-    .medal-rarity {
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+    .medal-badge:hover::before { opacity: 1; }
+    .medal-badge:hover { transform: translateY(-5px) scale(1.05); }
+    .medal-shape { width: 50px; height: 50px; margin-bottom: 8px; position: relative; }
+    .medal-shape svg { width: 100%; height: 100%; filter: drop-shadow(0 0 5px rgba(255,215,0,0.5)); }
+    .medal-name { font-weight: bold; font-size: 0.7rem; color: #c0a77b; margin-bottom: 3px; }
+    .medal-rarity { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; }
 
     .rare-comun { border-color: #7e7e7e; }
-    .rare-comun .medal-shape svg { filter: drop-shadow(0 0 3px rgba(126,126,126,0.5)); }
-    
     .rare-rara { border-color: #0070dd; box-shadow: 0 0 10px rgba(0,112,221,0.3); }
-    .rare-rara .medal-shape svg { filter: drop-shadow(0 0 8px rgba(0,112,221,0.5)); }
-    
     .rare-epica { border-color: #a335ee; box-shadow: 0 0 15px rgba(163,53,238,0.5); }
-    .rare-epica .medal-shape svg { filter: drop-shadow(0 0 12px rgba(163,53,238,0.6)); }
-    
-    .rare-legendaria { 
-      border-color: #ff8000; 
-      box-shadow: 0 0 20px rgba(255,128,0,0.6); 
-      animation: legendaryPulse 2s infinite; 
-    }
-    .rare-legendaria .medal-shape svg { filter: drop-shadow(0 0 15px rgba(255,128,0,0.7)); }
-    
-    .rare-reliquia { 
-      border-color: #e63946; 
-      box-shadow: 0 0 25px rgba(230,57,70,0.7); 
-      animation: relicGlow 1.5s infinite; 
-    }
-    .rare-reliquia .medal-shape svg { filter: drop-shadow(0 0 20px rgba(230,57,70,0.8)); }
+    .rare-legendaria { border-color: #ff8000; box-shadow: 0 0 20px rgba(255,128,0,0.6); animation: legendaryPulse 2s infinite; }
+    .rare-reliquia { border-color: #e63946; box-shadow: 0 0 25px rgba(230,57,70,0.7); animation: relicGlow 1.5s infinite; }
 
     @keyframes legendaryPulse {
       0%, 100% { box-shadow: 0 0 20px rgba(255,128,0,0.6); }
       50% { box-shadow: 0 0 45px rgba(255,128,0,1); }
     }
-
     @keyframes relicGlow {
       0%, 100% { box-shadow: 0 0 25px rgba(230,57,70,0.7); transform: scale(1); }
       50% { box-shadow: 0 0 55px rgba(230,57,70,1); transform: scale(1.05); }
     }
 
-    /* ========== COMBAT LOG ========== */
+    /* Combat Log */
     #combat-log {
       background: linear-gradient(180deg, #010101, #060408);
       border: 2px solid #3a2c22;
@@ -403,26 +357,17 @@
       font-family: 'Cormorant Garamond', serif;
       line-height: 1.7;
     }
-
-    .log-entry {
-      padding: 4px 0;
-      border-bottom: 1px solid rgba(58, 44, 34, 0.3);
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateX(-10px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
+    .log-entry { padding: 4px 0; border-bottom: 1px solid rgba(58, 44, 34, 0.3); animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
     .log-damage { color: #e63946; font-weight: bold; }
     .log-heal { color: #2ecc71; font-weight: bold; }
     .log-magic { color: #5b5ef7; font-weight: bold; }
     .log-critical { color: #f1c40f; font-weight: bold; font-size: 1.1em; }
     .log-info { color: #b49450; font-style: italic; }
     .log-warning { color: #e67e22; }
+    .log-flee { color: #9b59b6; font-style: italic; }
 
-    /* Rest of the styles... */
+    /* General */
     .strategy-hint { color: #b49450; font-size: 0.9rem; margin-top: 8px; font-style: italic; background: rgba(180,148,80,0.1); padding: 8px; border-radius: 6px; }
     .dragon-image { width: 100%; height: 280px; object-fit: cover; border: 3px solid #5a432e; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     .bar-container { background: #12070a; width: 100%; height: 22px; border: 2px solid #6a2e2e; margin: 10px 0; border-radius: 11px; overflow: hidden; position: relative; }
@@ -439,12 +384,33 @@
     .action-icon { font-size: 1.8rem; width: 40px; text-align: center; }
     .action-info { flex: 1; }
     .action-cost { font-size: 0.7rem; color: #b49450; display: block; }
+    .flee-btn { background: linear-gradient(180deg, #2a1a2a, #1a0a1a) !important; border-color: #9b59b6 !important; }
+    .flee-btn:hover:not(:disabled) { background: linear-gradient(180deg, #4a1a4a, #2a0a2a) !important; border-color: #c27aff !important; box-shadow: 0 0 25px #9b59b6 !important; }
+    .restore-btn { background: linear-gradient(180deg, #1a2a1a, #0a1a0a) !important; border-color: #2ecc71 !important; }
+    .restore-btn:hover:not(:disabled) { background: linear-gradient(180deg, #2a4a2a, #1a2a1a) !important; border-color: #58d68d !important; box-shadow: 0 0 25px #2ecc71 !important; }
+
+    .restore-stone-indicator {
+      display: inline-block;
+      padding: 5px 10px;
+      background: #1a2a1a;
+      border: 2px solid #2ecc71;
+      border-radius: 20px;
+      color: #2ecc71;
+      font-size: 0.8rem;
+      margin: 5px;
+      animation: stoneGlow 2s infinite;
+    }
+    @keyframes stoneGlow {
+      0%, 100% { box-shadow: 0 0 10px rgba(46,204,113,0.3); }
+      50% { box-shadow: 0 0 25px rgba(46,204,113,0.7); }
+    }
 
     @media (max-width: 700px) {
       .flex-row { flex-direction: column; }
       h1 { font-size: 2.5rem; }
       .dragon-image { height: 180px; }
       .skill-tree-grid { grid-template-columns: repeat(3, 1fr); }
+      .leaderboard-table { font-size: 0.7rem; }
     }
   </style>
 </head>
@@ -460,22 +426,34 @@
     <input type="password" id="password" placeholder="Elder Rune"><br><br>
     <button onclick="login()">⚡ Awaken Elf</button>
     <button onclick="register()">🌑 New Lineage</button>
+    <button onclick="showLeaderboard()" style="margin-top:15px; background: linear-gradient(180deg, #1a1a2a, #0a0a1a); border-color: #5b5ef7;">🏆 View Leaderboard</button>
     <div id="loading-overlay" class="hidden" style="margin-top:15px; color:#b49450;">⚔️ CHANNELING SKILLS FROM THE ABYSS...</div>
     <div id="auth-error" style="color:#e63946; margin-top:10px; font-size:0.9rem;" class="hidden"></div>
+  </div>
+
+  <!-- LEADERBOARD SCREEN -->
+  <div id="leaderboard-screen" class="hidden panel">
+    <h2 style="text-align:center;">🏆 NEXUS LEADERBOARD 🏆</h2>
+    <div id="leaderboard-content"></div>
+    <div style="text-align:center; margin-top:20px;">
+      <button onclick="closeLeaderboard()">Return to Nexus</button>
+    </div>
   </div>
 
   <!-- MAIN MENU -->
   <div id="main-menu" class="hidden">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <h2 id="welcome-msg" style="color:#dbb45c;"></h2>
-      <button onclick="logout()">Leave</button>
+      <div>
+        <button onclick="showLeaderboard()" style="margin-right:10px;">🏆 Rankings</button>
+        <button onclick="logout()">Leave</button>
+      </div>
     </div>
     <div class="flex-row">
       <div class="flex-col panel">
         <h3>📜 Elf Attributes</h3>
         <p><strong>Total Level:</strong> <span id="stat-level">1</span> | 🏆 Glory: <span id="stat-score">0</span> | 🐉 Slain: <span id="stat-dragons">0</span></p>
-        
-        <!-- SKILL TREE -->
+        <p><span id="restore-stones-display" style="color:#2ecc71;">💎 Void Stones: 0</span></p>
         <div class="skill-points-display">
           ⭐ Available Skill Points: <span id="stat-points" style="font-size:1.5rem;">5</span>
         </div>
@@ -483,7 +461,7 @@
           <div class="skill-tree-grid" id="skill-tree"></div>
         </div>
         <div style="margin-top:15px; font-size:0.8rem; color:#b49450; text-align:center;">
-          💡 Skills cost increases with each level. Choose wisely!
+          💡 Each level costs more points. Choose your path wisely!
         </div>
       </div>
       <div class="flex-col panel">
@@ -494,7 +472,7 @@
           <div>🛡️ Shield: <span id="eq-shield" style="color:#f1c40f;"></span></div>
           <div>💍 Accessory: <span id="eq-accessory" style="color:#f1c40f;"></span></div>
         </div>
-        <div class="inventory-grid" id="inventory-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; max-height: 300px; overflow-y: auto; background: #020103; padding: 12px; border-radius: 8px;"></div>
+        <div id="inventory-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; max-height: 300px; overflow-y: auto; background: #020103; padding: 12px; border-radius: 8px;"></div>
       </div>
     </div>
     <h3 style="margin-top:15px;">🏅 Royal Medal Treasury</h3>
@@ -511,13 +489,10 @@
         <img id="dragon-img" class="dragon-image" src="" alt="Ancient Dragon" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%231a1118%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23b49450%22 x=%22300%22 y=%22180%22 text-anchor=%22middle%22 font-size=%2280%22%3E🐉%3C/text%3E%3C/svg%3E'">
         <h3 id="enemy-name" style="color:#e03a4e; font-size:1.4rem;"></h3>
         <div id="dragon-lore" style="font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #c2b59c; margin: 12px 0; padding: 15px; background: linear-gradient(135deg, #0a0708, #0d0a10); border-left: 4px solid #b49450; border-radius: 6px; line-height:1.6;"></div>
-        
-        <!-- WEAKNESS DISCOVERY SYSTEM -->
         <div style="margin:10px 0; font-size:0.85rem;">
           <strong>🔍 Discovered Weaknesses:</strong>
           <div class="weakness-wheel" id="weakness-wheel"></div>
         </div>
-        
         <div style="font-size:0.9rem; margin:8px 0;">
           <div>⚔️ Power: <span id="e-power">0</span> | 🛡️ Defense: <span id="e-defense">0</span> | 🔮 Resist: <span id="e-resist">0</span></div>
         </div>
@@ -529,6 +504,7 @@
       </div>
       <div class="flex-col panel">
         <h3>✨ Your Elf</h3>
+        <div id="restore-stone-combat" style="margin-bottom:10px;"></div>
         <div>❤️ Life: <span id="p-hp">0</span>/<span id="p-maxhp">0</span>
           <div class="bar-container"><div id="p-hp-bar" class="hp-fill"></div></div>
         </div>
@@ -538,8 +514,6 @@
         <div>🔮 Mana: <span id="p-mana">0</span>/<span id="p-maxmana">0</span>
           <div class="bar-container"><div id="p-mana-bar" class="mana-fill"></div></div>
         </div>
-        
-        <!-- COMBO CHAIN SYSTEM -->
         <div style="margin:10px 0; background:#0a0709; padding:10px; border-radius:8px;">
           <strong>⚡ Combo Chain:</strong>
           <div class="combo-chain" id="combo-chain">
@@ -549,7 +523,6 @@
           </div>
           <div class="chain-bonus" id="chain-bonus">Complete 3-action combos for bonuses!</div>
         </div>
-        
         <div style="margin: 15px 0; background:#0a0708; padding:12px; border-radius:8px;">
           <strong>🎯 Battle Tactic:</strong>
           <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top:8px;">
@@ -560,45 +533,51 @@
           </div>
           <div class="tactic-description" id="tactic-desc" style="font-size:0.7rem; color:#b49450; margin-top:5px;">Balanced approach: Moderate damage and defense.</div>
         </div>
-        
         <div class="dice-box" style="background: linear-gradient(135deg, #170c10, #0d060a); border: 3px dashed #b49450; padding: 25px; text-align: center; margin: 15px 0; border-radius: 10px;">
           <span style="color:#b49450;">ACTION DIE (d20)</span>
           <div id="dice-result" style="font-size:4rem; font-family:'Uncial Antiqua',cursive; color:#e63946; text-shadow:0 0 30px #e63946;">—</div>
           <div id="dice-modifier" style="font-size:0.85rem;">Choose your maneuver...</div>
         </div>
-        
-        <div style="display:flex; flex-direction: column; gap:8px;" id="action-buttons">
-          <!-- Actions will be rendered dynamically -->
+        <div style="display:flex; flex-direction: column; gap:8px;" id="action-buttons"></div>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button class="action-btn restore-btn" onclick="useRestoreStone()" id="restore-btn" disabled>
+            <span class="action-icon">💎</span>
+            <span class="action-info">Use Void Stone<span class="action-cost">Restore all resources</span></span>
+          </button>
+          <button class="action-btn flee-btn" onclick="fleeCombat()">
+            <span class="action-icon">🏃</span>
+            <span class="action-info">Flee Battle<span class="action-cost">Escape (lose progress)</span></span>
+          </button>
         </div>
       </div>
     </div>
-    <div id="combat-log">⚔️ The siege begins... Study the dragon's patterns carefully!</div>
+    <div id="combat-log">⚔️ The siege begins... Study the dragon's patterns!</div>
   </div>
 </div>
 
 <script>
-  // ========== ELDEN VOID - STRATEGIC COMBAT ENGINE ==========
+  // ========== ELDEN VOID - COMPLETE RPG ENGINE ==========
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYlHbPacdrNWQS5rVSxX72UJy71tGwMq-NDJftIVn4rChGv8VPoE8MkI6RYpFrzDsgFQ/exec";
 
-  // Item pool (simplified for this version)
+  // Item pool
   const itemPool = [
-    { id:"w1", name:"Steel Dagger", type:"weapon", effect:"None", bonus:6, rarity:"comun", scaling:"str" },
-    { id:"w2", name:"Fallen King Greatsword", type:"weapon", effect:"Fire", bonus:15, rarity:"epica", scaling:"str" },
-    { id:"w3", name:"Void Stormbreaker", type:"weapon", effect:"Lightning", bonus:27, rarity:"legendaria", scaling:"dex" },
-    { id:"w4", name:"CTHULHU MYTHIC EDGE", type:"weapon", effect:"Poison", bonus:54, rarity:"reliquia", scaling:"att" },
-    { id:"w5", name:"Elven Obsidian Blade", type:"weapon", effect:"Bleed", bonus:19, rarity:"rara", scaling:"dex" },
-    { id:"a1", name:"Forest Shortbow", type:"armor", effect:"None", bonus:7, rarity:"comun", scaling:"dex" },
-    { id:"a2", name:"Sinister Bone Bow", type:"armor", effect:"Heal", bonus:17, rarity:"epica", scaling:"dex" },
-    { id:"a3", name:"ARTEMIS DIVINE BOW", type:"armor", effect:"Heal", bonus:46, rarity:"reliquia", scaling:"dex" },
-    { id:"s1", name:"Corrupted Wood Shield", type:"shield", effect:"None", bonus:5, rarity:"comun", scaling:"end" },
-    { id:"s2", name:"Forged Obsidian Pavise", type:"shield", effect:"None", bonus:16, rarity:"epica", scaling:"end" },
-    { id:"s3", name:"IMMORTAL ANCESTRAL BULWARK", type:"shield", effect:"Heal", bonus:40, rarity:"reliquia", scaling:"end" },
-    { id:"acc1", name:"Ring of the Berserker", type:"accessory", effect:"Fury", bonus:15, rarity:"epica", scaling:"str" },
-    { id:"acc2", name:"Amulet of Mana Flow", type:"accessory", effect:"Regen", bonus:20, rarity:"rara", scaling:"att" },
-    { id:"acc3", name:"SOUL OF THE PHOENIX", type:"accessory", effect:"Rebirth", bonus:55, rarity:"reliquia", scaling:"vig" }
+    { id:"w1", name:"Steel Dagger", type:"weapon", effect:"None", bonus:6, rarity:"common", scaling:"str" },
+    { id:"w2", name:"Fallen King Greatsword", type:"weapon", effect:"Fire", bonus:15, rarity:"epic", scaling:"str" },
+    { id:"w3", name:"Void Stormbreaker", type:"weapon", effect:"Lightning", bonus:27, rarity:"legendary", scaling:"dex" },
+    { id:"w4", name:"CTHULHU MYTHIC EDGE", type:"weapon", effect:"Poison", bonus:54, rarity:"relic", scaling:"att" },
+    { id:"w5", name:"Elven Obsidian Blade", type:"weapon", effect:"Bleed", bonus:19, rarity:"rare", scaling:"dex" },
+    { id:"a1", name:"Forest Shortbow", type:"armor", effect:"None", bonus:7, rarity:"common", scaling:"dex" },
+    { id:"a2", name:"Sinister Bone Bow", type:"armor", effect:"Heal", bonus:17, rarity:"epic", scaling:"dex" },
+    { id:"a3", name:"ARTEMIS DIVINE BOW", type:"armor", effect:"Heal", bonus:46, rarity:"relic", scaling:"dex" },
+    { id:"s1", name:"Corrupted Wood Shield", type:"shield", effect:"None", bonus:5, rarity:"common", scaling:"end" },
+    { id:"s2", name:"Forged Obsidian Pavise", type:"shield", effect:"None", bonus:16, rarity:"epic", scaling:"end" },
+    { id:"s3", name:"IMMORTAL ANCESTRAL BULWARK", type:"shield", effect:"Heal", bonus:40, rarity:"relic", scaling:"end" },
+    { id:"acc1", name:"Ring of the Berserker", type:"accessory", effect:"Fury", bonus:15, rarity:"epic", scaling:"str" },
+    { id:"acc2", name:"Amulet of Mana Flow", type:"accessory", effect:"Regen", bonus:20, rarity:"rare", scaling:"att" },
+    { id:"acc3", name:"SOUL OF THE PHOENIX", type:"accessory", effect:"Rebirth", bonus:55, rarity:"relic", scaling:"vig" }
   ];
 
-  // Dragon archetypes with combat patterns
+  // Dragon archetypes
   const dragonArchetypes = [
     { type:"Fire Wyrm", element:"fire", strengths:["Immune to Fire","Berserk below 40%"], weaknesses:["Ice attacks","Water magic","Slow after breath"], pattern:["melee","melee","spell","melee","spell","melee"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"fire-dragon-volcano" },
     { type:"Frost Wyvern", element:"ice", strengths:["Freeze counter","High defense"], weaknesses:["Fire melts","Low stamina","Predictable"], pattern:["defend","counter","melee","defend","spell","melee"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"ice-dragon-frozen" },
@@ -609,24 +588,24 @@
   ];
 
   const dragonNames = [
-    "Tiamat Soul-Drinker", "Ancalagon Void-Terror", "Glaurung Rot-Wing",
-    "Smaug Rune-Blood", "Vermithrax Prime", "Nidhogg Root-Breaker",
-    "Fafnir Gold-Curse", "Ladon Twilight-Keeper", "Yamata-no-Orochi"
+    "Tiamat Soul-Drinker","Ancalagon Void-Terror","Glaurung Rot-Wing","Smaug Rune-Blood",
+    "Vermithrax Prime","Nidhogg Root-Breaker","Fafnir Gold-Curse","Ladon Twilight-Keeper","Yamata-no-Orochi"
   ];
 
-  // ========== SKILL TREE SYSTEM ==========
+  // Skill Tree
   const skillTree = {
-    str: { name:"Brutality", icon:"💪", desc:"Physical damage", level:1, maxLevel:10, cost:1, scaling:1.5 },
-    dex: { name:"Reflexes", icon:"⚡", desc:"Speed & dodge", level:1, maxLevel:10, cost:1, scaling:1.5 },
-    att: { name:"Void Magic", icon:"🔮", desc:"Spell power & mana", level:1, maxLevel:10, cost:1, scaling:1.5 },
-    vig: { name:"Vitality", icon:"❤️", desc:"HP & survival", level:1, maxLevel:10, cost:1, scaling:1.5 },
-    end: { name:"Endurance", icon:"🔋", desc:"Stamina & defense", level:1, maxLevel:10, cost:1, scaling:1.5 }
+    str: { name:"Brutality", icon:"💪", desc:"Physical damage", level:1, maxLevel:10, baseCost:1, costScaling:1.4 },
+    dex: { name:"Reflexes", icon:"⚡", desc:"Speed & dodge", level:1, maxLevel:10, baseCost:1, costScaling:1.4 },
+    att: { name:"Void Magic", icon:"🔮", desc:"Spell power & mana", level:1, maxLevel:10, baseCost:1, costScaling:1.4 },
+    vig: { name:"Vitality", icon:"❤️", desc:"HP & survival", level:1, maxLevel:10, baseCost:1, costScaling:1.4 },
+    end: { name:"Endurance", icon:"🔋", desc:"Stamina & defense", level:1, maxLevel:10, baseCost:1, costScaling:1.4 }
   };
 
   let currentUser = null;
   let currentTactic = 'balanced';
   let dragonsSlain = 0;
   let availableSkillPoints = 5;
+  let restoreStones = 0;
   let combatPattern = [];
   let patternPosition = 0;
   let discoveredWeaknesses = [];
@@ -640,28 +619,32 @@
   let combatState = null;
 
   function getSkillLevel(skill) { return skillTree[skill].level; }
-  function getSkillCost(skill) { return Math.ceil(skillTree[skill].cost * skillTree[skill].scaling); }
+  function getSkillCost(skill) { return Math.ceil(skillTree[skill].baseCost * Math.pow(skillTree[skill].costScaling, skillTree[skill].level - 1)); }
 
   function renderSkillTree() {
     const container = document.getElementById('skill-tree');
+    if(!container) return;
     container.innerHTML = '';
     document.getElementById('stat-points').innerText = availableSkillPoints;
     
     Object.keys(skillTree).forEach(skill => {
       const node = skillTree[skill];
-      const canLevel = availableSkillPoints >= getSkillCost(skill) && node.level < node.maxLevel;
+      const cost = getSkillCost(skill);
+      const canLevel = availableSkillPoints >= cost && node.level < node.maxLevel;
       container.innerHTML += `
         <div>
           <div class="skill-node ${node.level > 1 ? 'unlocked' : ''} ${!canLevel && node.level < node.maxLevel ? 'locked' : ''}" 
-               onclick="levelUpSkill('${skill}')" title="${node.desc}">
+               onclick="levelUpSkill('${skill}')" title="${node.desc}\nCost: ${cost} pts">
             <span class="skill-node-icon">${node.icon}</span>
             <span class="skill-node-level">Lv.${node.level}</span>
             <span class="skill-node-name">${node.name}</span>
           </div>
-          <div style="font-size:0.65rem; color:#b49450; margin-top:3px;">Cost: ${getSkillCost(skill)} pts</div>
+          <div style="font-size:0.65rem; color:#b49450; margin-top:3px;">Cost: ${cost} pts</div>
         </div>
       `;
     });
+    
+    document.getElementById('restore-stones-display').innerHTML = `💎 Void Stones: ${restoreStones}`;
   }
 
   function levelUpSkill(skill) {
@@ -670,14 +653,28 @@
     if(availableSkillPoints >= cost && node.level < node.maxLevel) {
       availableSkillPoints -= cost;
       node.level++;
-      node.cost++;
       userStats.level++;
       renderSkillTree();
       saveToCloud();
     }
   }
 
-  // ========== COMBAT PATTERN SYSTEM ==========
+  function penalizeDeath() {
+    const penaltyPoints = Math.min(availableSkillPoints, Math.ceil(userStats.level * 0.2));
+    availableSkillPoints -= penaltyPoints;
+    
+    const skills = Object.keys(skillTree).filter(s => skillTree[s].level > 1);
+    if(skills.length > 0) {
+      const randomSkill = skills[Math.floor(Math.random() * skills.length)];
+      skillTree[randomSkill].level--;
+      userStats.level = Math.max(1, userStats.level - 2);
+      logMessage(`💀 <span class="log-warning">DEATH PENALTY: Lost ${randomSkill.toUpperCase()} level and ${penaltyPoints} skill points!</span>`, '');
+    }
+    
+    if(availableSkillPoints < 0) availableSkillPoints = 0;
+    saveToCloud();
+  }
+
   function generateCombatPattern(archetype) {
     const patterns = {
       fire: [['melee','spell','melee'], ['spell','melee','spell'], ['melee','melee','spell']],
@@ -690,19 +687,14 @@
     return patterns[archetype.element] || patterns.fire;
   }
 
-  function getCorrectAction(pattern, position) {
-    const counters = {
-      'melee': 'defend',
-      'ranged': 'counter',
-      'spell': 'melee',
-      'defend': 'spell',
-      'counter': 'ranged'
-    };
+  function getCorrectAction(pattern) {
+    const counters = { melee:'defend', ranged:'counter', spell:'melee', defend:'spell', counter:'ranged' };
     return counters[pattern] || 'melee';
   }
 
   function renderWeaknessWheel() {
     const wheel = document.getElementById('weakness-wheel');
+    if(!wheel) return;
     const allWeaknesses = ['Ice', 'Fire', 'Light', 'Earth', 'Physical', 'Blunt', 'Water', 'Lightning', 'Void', 'Holy'];
     wheel.innerHTML = allWeaknesses.map(w => {
       const revealed = discoveredWeaknesses.includes(w.toLowerCase());
@@ -712,6 +704,7 @@
 
   function renderActionButtons() {
     const container = document.getElementById('action-buttons');
+    if(!container) return;
     const actions = [
       { id:'melee', icon:'⚔️', name:'Melee Strike', cost:'15⚡', desc:'Physical damage' },
       { id:'ranged', icon:'🏹', name:'Arcane Arrow', cost:'18⚡', desc:'Piercing damage' },
@@ -727,11 +720,23 @@
         <span class="action-info">${a.name}<span class="action-cost">${a.cost} | ${a.desc}</span></span>
       </button>
     `).join('');
+    
+    const restoreBtn = document.getElementById('restore-btn');
+    if(restoreBtn) {
+      restoreBtn.disabled = restoreStones <= 0;
+      restoreBtn.innerHTML = restoreStones > 0 
+        ? `<span class="action-icon">💎</span><span class="action-info">Use Void Stone<span class="action-cost">Restore all (${restoreStones} left)</span></span>`
+        : `<span class="action-icon">💎</span><span class="action-info">No Void Stones<span class="action-cost">Find in battle</span></span>`;
+    }
   }
 
   function updateComboChain(action) {
-    comboChain.push(action);
-    if(comboChain.length > 3) comboChain.shift();
+    if(action === 'reset') {
+      comboChain = [];
+    } else {
+      comboChain.push(action);
+      if(comboChain.length > 3) comboChain.shift();
+    }
     
     const slots = document.querySelectorAll('.chain-slot');
     slots.forEach((slot, i) => {
@@ -747,7 +752,6 @@
       }
     });
     
-    // Check combo bonuses
     const bonusDiv = document.getElementById('chain-bonus');
     if(comboChain.length === 3) {
       if(comboChain[0] === comboChain[1] && comboChain[1] === comboChain[2]) {
@@ -759,15 +763,17 @@
       } else {
         bonusDiv.innerHTML = 'Complete 3-action combos for bonuses!';
       }
+    } else {
+      bonusDiv.innerHTML = 'Complete 3-action combos for bonuses!';
     }
   }
 
-  // ========== CLOUD FUNCTIONS (UNCHANGED) ==========
+  // ========== CLOUD FUNCTIONS ==========
   async function cloudRequest(action, data = {}) {
     document.getElementById('loading-overlay').classList.remove('hidden');
     try {
-      if (action === 'login') {
-        let url = `${WEB_APP_URL}?action=login`;
+      if (action === 'login' || action === 'getRanking') {
+        let url = `${WEB_APP_URL}?action=${action}`;
         if (data.username) url += `&username=${encodeURIComponent(data.username)}&password=${encodeURIComponent(data.password)}`;
         let response = await fetch(url);
         let text = await response.text();
@@ -785,28 +791,32 @@
     }
   }
 
+  function showError(msg) {
+    const errDiv = document.getElementById('auth-error');
+    errDiv.textContent = msg;
+    errDiv.classList.remove('hidden');
+    setTimeout(() => errDiv.classList.add('hidden'), 4000);
+  }
+
   async function register() {
     const u = document.getElementById('username').value.trim();
     const p = document.getElementById('password').value;
     if(!u || !p || u.length < 3 || p.length < 3) {
-      document.getElementById('auth-error').classList.remove('hidden');
-      document.getElementById('auth-error').innerText = "Name and rune must be at least 3 characters.";
-      setTimeout(() => document.getElementById('auth-error').classList.add('hidden'), 4000);
+      showError("Name and rune must be at least 3 characters.");
       return;
     }
     let defaultStats = {
       level:1, score:0,
       weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2",
       ownedItems:["w1","a1","s1","acc2"], medalsList:[], dragonsSlain:0,
-      skillLevels:{str:1,dex:1,att:1,vig:1,end:1}, availablePoints:5
+      skillLevels:{str:1,dex:1,att:1,vig:1,end:1}, availablePoints:5, restoreStones:0
     };
     let result = await cloudRequest('register', { username: u, password: p, stats: defaultStats });
     if(result && result.success) {
       alert("Dark Elf lineage created. Awaken now.");
+      document.getElementById('password').value = '';
     } else {
-      document.getElementById('auth-error').classList.remove('hidden');
-      document.getElementById('auth-error').innerText = "Failed to create lineage.";
-      setTimeout(() => document.getElementById('auth-error').classList.add('hidden'), 4000);
+      showError("Failed to create lineage. Try another name.");
     }
   }
 
@@ -814,9 +824,7 @@
     const u = document.getElementById('username').value.trim();
     const p = document.getElementById('password').value;
     if(!u || !p) {
-      document.getElementById('auth-error').classList.remove('hidden');
-      document.getElementById('auth-error').innerText = "Fill the codex.";
-      setTimeout(() => document.getElementById('auth-error').classList.add('hidden'), 4000);
+      showError("Fill the codex.");
       return;
     }
     let res = await cloudRequest('login', { username: u, password: p });
@@ -827,8 +835,8 @@
       if(!userStats.medalsList) userStats.medalsList = [];
       if(!userStats.accessory) userStats.accessory = "acc2";
       dragonsSlain = userStats.dragonsSlain || 0;
+      restoreStones = userStats.restoreStones || 0;
       
-      // Load skill levels
       if(res.stats.skillLevels) {
         Object.keys(res.stats.skillLevels).forEach(s => {
           if(skillTree[s]) skillTree[s].level = res.stats.skillLevels[s];
@@ -841,9 +849,7 @@
       document.getElementById('auth-error').classList.add('hidden');
       renderUserData();
     } else {
-      document.getElementById('auth-error').classList.remove('hidden');
-      document.getElementById('auth-error').innerText = "Access denied. Check your runes.";
-      setTimeout(() => document.getElementById('auth-error').classList.add('hidden'), 4000);
+      showError("Access denied. Check your runes or create a new lineage.");
     }
   }
 
@@ -851,11 +857,13 @@
     currentUser = null;
     userStats = { level:1, score:0, weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2", ownedItems:["w1","a1","s1","acc2"], medalsList:[] };
     dragonsSlain = 0;
+    restoreStones = 0;
     availableSkillPoints = 5;
     Object.keys(skillTree).forEach(s => skillTree[s].level = 1);
     document.getElementById('auth-screen').classList.remove('hidden');
     document.getElementById('main-menu').classList.add('hidden');
     document.getElementById('combat-screen').classList.add('hidden');
+    document.getElementById('leaderboard-screen').classList.add('hidden');
     document.getElementById('username').value = '';
     document.getElementById('password').value = '';
   }
@@ -867,10 +875,55 @@
     userStats.dragonsSlain = dragonsSlain;
     userStats.skillLevels = skillLevels;
     userStats.availablePoints = availableSkillPoints;
+    userStats.restoreStones = restoreStones;
     await cloudRequest('save', { username: currentUser, stats: userStats });
   }
 
-  // ========== RENDER FUNCTIONS ==========
+  // ========== LEADERBOARD ==========
+  async function showLeaderboard() {
+    document.getElementById('leaderboard-screen').classList.remove('hidden');
+    if(currentUser) {
+      document.getElementById('main-menu').classList.add('hidden');
+    } else {
+      document.getElementById('auth-screen').classList.add('hidden');
+    }
+    
+    const content = document.getElementById('leaderboard-content');
+    content.innerHTML = '<p style="text-align:center; color:#b49450;">Loading rankings...</p>';
+    
+    let res = await cloudRequest('getRanking');
+    if(res && res.rankings) {
+      let html = `<table class="leaderboard-table">
+        <thead><tr><th>Rank</th><th>Dark Elf</th><th>Level</th><th>Glory</th><th>Dragons Slain</th></tr></thead><tbody>`;
+      
+      res.rankings.forEach((player, index) => {
+        const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
+        html += `<tr>
+          <td class="${rankClass}">#${index + 1}</td>
+          <td>${player.username}</td>
+          <td>${player.level || 1}</td>
+          <td>${player.score || 0}</td>
+          <td>${player.dragonsSlain || 0}</td>
+        </tr>`;
+      });
+      
+      html += '</tbody></table>';
+      content.innerHTML = html;
+    } else {
+      content.innerHTML = '<p style="text-align:center; color:#b49450;">No warriors in the rankings yet. Be the first!</p>';
+    }
+  }
+
+  function closeLeaderboard() {
+    document.getElementById('leaderboard-screen').classList.add('hidden');
+    if(currentUser) {
+      document.getElementById('main-menu').classList.remove('hidden');
+    } else {
+      document.getElementById('auth-screen').classList.remove('hidden');
+    }
+  }
+
+  // ========== RENDER ==========
   function renderUserData() {
     document.getElementById('welcome-msg').innerText = `⚔️ ${currentUser}`;
     document.getElementById('stat-level').innerText = userStats.level;
@@ -910,6 +963,7 @@
 
   function renderMedalShelf() {
     const shelf = document.getElementById('medal-shelf-container');
+    if(!shelf) return;
     shelf.innerHTML = '';
     if(!userStats.medalsList.length) {
       shelf.innerHTML = '<p style="color:#7a6a5c;">Conquer fortresses to forge legendary medals...</p>';
@@ -917,20 +971,18 @@
     }
     
     const shapes = {
-      comun: '<polygon points="25,5 45,15 45,35 25,45 5,35 5,15" fill="#7e7e7e" stroke="#cbd5e1" stroke-width="2"/>',
-      rara: '<circle cx="25" cy="25" r="20" fill="#0070dd" stroke="#4da6ff" stroke-width="2"/>',
-      epica: '<polygon points="25,5 35,15 45,25 35,35 25,45 15,35 5,25 15,15" fill="#a335ee" stroke="#c27aff" stroke-width="2"/>',
-      legendaria: '<polygon points="25,3 47,17 47,33 25,47 3,33 3,17" fill="#ff8000" stroke="#ffaa33" stroke-width="3"/>',
-      reliquia: '<path d="M25 5 L35 20 L50 25 L35 30 L25 45 L15 30 L0 25 L15 20 Z" fill="#e63946" stroke="#ff5566" stroke-width="3"/>'
+      common: '<polygon points="25,5 45,15 45,35 25,45 5,35 5,15" fill="#7e7e7e" stroke="#cbd5e1" stroke-width="2"/>',
+      rare: '<circle cx="25" cy="25" r="20" fill="#0070dd" stroke="#4da6ff" stroke-width="2"/>',
+      epic: '<polygon points="25,5 35,15 45,25 35,35 25,45 15,35 5,25 15,15" fill="#a335ee" stroke="#c27aff" stroke-width="2"/>',
+      legendary: '<polygon points="25,3 47,17 47,33 25,47 3,33 3,17" fill="#ff8000" stroke="#ffaa33" stroke-width="3"/>',
+      relic: '<path d="M25 5 L35 20 L50 25 L35 30 L25 45 L15 30 L0 25 L15 20 Z" fill="#e63946" stroke="#ff5566" stroke-width="3"/>'
     };
     
     userStats.medalsList.forEach(m => {
-      const shape = shapes[m.rarity] || shapes.comun;
+      const shape = shapes[m.rarity] || shapes.common;
       shelf.innerHTML += `
         <div class="medal-badge rare-${m.rarity}">
-          <div class="medal-shape">
-            <svg viewBox="0 0 50 50">${shape}</svg>
-          </div>
+          <div class="medal-shape"><svg viewBox="0 0 50 50">${shape}</svg></div>
           <span class="medal-name">${m.name}</span>
           <span class="medal-rarity">${m.rarity}</span>
         </div>
@@ -963,7 +1015,7 @@
     if(combatState) logMessage(`🎯 Tactic: ${tactic.toUpperCase()}`, 'log-info');
   }
 
-  // ========== ENHANCED COMBAT SYSTEM ==========
+  // ========== COMBAT ==========
   function lookForCastle() {
     const archetype = dragonArchetypes[Math.floor(Math.random() * dragonArchetypes.length)];
     const chosenName = dragonNames[Math.floor(Math.random() * dragonNames.length)] + " Lv." + (userStats.level + 3);
@@ -1020,10 +1072,14 @@
     updateComboChain('reset');
     updateCombatUI();
     
+    document.getElementById('restore-stone-combat').innerHTML = restoreStones > 0 
+      ? `<span class="restore-stone-indicator">💎 ${restoreStones} Void Stone${restoreStones > 1 ? 's' : ''} available</span>`
+      : '';
+    
     logMessage(`🐉 <span class="log-warning">${chosenName} emerges!</span>`, '');
     logMessage(`📖 <span class="log-info">"${combatState.dragonData.lore}"</span>`, '');
-    logMessage(`💡 <span class="log-info">Study the dragon's pattern. The lore contains clues to its weaknesses.</span>`, '');
-    logMessage(`⚡ <span class="log-info">Watch the enemy's stance to predict its next move!</span>`, '');
+    logMessage(`💡 <span class="log-info">Study the dragon's pattern. The lore contains clues.</span>`, '');
+    logMessage(`⚡ <span class="log-info">Your stamina and mana start FULL. Watch the enemy's stance!</span>`, '');
   }
 
   function updateCombatUI() {
@@ -1075,21 +1131,19 @@
     
     const cost = costs[type];
     if(combatState.player.stamina < cost.stamina) {
-      logMessage('⚠️ Not enough stamina!', 'log-warning');
+      logMessage(`⚠️ <span class="log-warning">Not enough stamina! Need ${cost.stamina}, have ${combatState.player.stamina}.</span>`, '');
       return;
     }
     if(combatState.player.mana < cost.mana) {
-      logMessage('⚠️ Not enough mana!', 'log-warning');
+      logMessage(`⚠️ <span class="log-warning">Not enough mana! Need ${cost.mana}, have ${combatState.player.mana}.</span>`, '');
       return;
     }
     
     combatState.player.stamina -= cost.stamina;
     combatState.player.mana -= cost.mana;
     
-    // Update combo chain
     updateComboChain(type);
     
-    // Check if this is the correct counter to enemy's next action
     const enemyAction = combatState.enemy.nextAction;
     const correctAction = getCorrectAction(enemyAction);
     let isCorrectCounter = (type === correctAction);
@@ -1107,13 +1161,11 @@
       case 'arcane': tacticMultiplier = type==='spell' ? 1.4 : 0.9; break;
     }
     
-    // Correct counter bonus
     if(isCorrectCounter) {
       tacticMultiplier *= 1.5;
       combatState.player.correctGuesses++;
       logMessage('🎯 <span class="log-critical">CORRECT COUNTER! +50% damage!</span>', '');
       
-      // Reveal weakness on correct guesses
       if(combatState.player.correctGuesses >= 2 && discoveredWeaknesses.length < 3) {
         const allWeaknesses = combatState.dragonData.archetype.weaknesses;
         const newWeakness = allWeaknesses[discoveredWeaknesses.length].split(' ')[0].toLowerCase();
@@ -1122,12 +1174,10 @@
         logMessage(`🔍 <span class="log-info">Weakness discovered: ${newWeakness.toUpperCase()}!</span>`, '');
       }
       
-      // Highlight correct button
       document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('correct-choice'));
       event.target.classList.add('correct-choice');
       setTimeout(() => event.target.classList.remove('correct-choice'), 500);
     } else if(type !== 'defend' && type !== 'counter' && type !== 'finisher') {
-      // Wrong choice feedback
       document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('wrong-choice'));
       event.target.classList.add('wrong-choice');
       setTimeout(() => event.target.classList.remove('wrong-choice'), 500);
@@ -1148,7 +1198,6 @@
     if(roll > 1) {
       const factor = 0.5 + (roll/15);
       
-      // Combo bonus
       if(comboChain.length === 3) {
         if(comboChain[0] === comboChain[1] && comboChain[1] === comboChain[2]) {
           tacticMultiplier += 0.5;
@@ -1193,7 +1242,6 @@
     updateEnemyStance();
     updateCombatUI();
     
-    // Accessory effects
     if(combatState.equipment.accessory?.effect === 'Regen') {
       combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + 3);
     }
@@ -1201,13 +1249,12 @@
     if(combatState.enemy.hp <= 0) {
       resolveVictory();
     } else {
-      // Advance pattern and regen
       patternPosition = (patternPosition + 1) % combatPattern.length;
       combatState.enemy.nextAction = combatPattern[patternPosition];
-      combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(skillTree.end.level * 1.5));
-      combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + Math.floor(skillTree.att.level * 1.2));
       
-      // Show hint about next action
+      combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(skillTree.end.level * 1.8));
+      combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + Math.floor(skillTree.att.level * 1.4));
+      
       const stanceHints = {
         melee: 'The dragon draws closer...',
         ranged: 'The dragon spreads its wings...',
@@ -1219,6 +1266,55 @@
       
       setTimeout(()=> enemyTurn(), 800);
     }
+  }
+
+  function useRestoreStone() {
+    if(!combatState || restoreStones <= 0) return;
+    restoreStones--;
+    combatState.player.stamina = combatState.player.maxStamina;
+    combatState.player.mana = combatState.player.maxMana;
+    combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + Math.floor(combatState.player.maxHp * 0.5));
+    logMessage('💎 <span class="log-heal">VOID STONE! All resources restored!</span>', '');
+    updateCombatUI();
+    renderActionButtons();
+    document.getElementById('restore-stone-combat').innerHTML = restoreStones > 0 
+      ? `<span class="restore-stone-indicator">💎 ${restoreStones} Void Stone${restoreStones > 1 ? 's' : ''} left</span>`
+      : '';
+    saveToCloud();
+  }
+
+  function fleeCombat() {
+    if(!combatState) return;
+    const fleeChance = 0.5 + (skillTree.dex.level * 0.03);
+    if(Math.random() < fleeChance) {
+      logMessage('🏃 <span class="log-flee">Successfully fled! You live to fight another day.</span>', '');
+      availableSkillPoints = Math.max(0, availableSkillPoints - 1);
+      saveToCloud();
+      setTimeout(()=>{
+        document.getElementById('combat-screen').classList.add('hidden');
+        document.getElementById('main-menu').classList.remove('hidden');
+        combatState = null;
+        renderUserData();
+      }, 2000);
+    } else {
+      logMessage('🚫 <span class="log-warning">Failed to flee! The dragon blocks your escape!</span>', '');
+      combatState.player.hp = Math.max(0, combatState.player.hp - 20);
+      updateCombatUI();
+      if(combatState.player.hp <= 0) handleDeath();
+    }
+  }
+
+  function handleDeath() {
+    logMessage('☠️ <span class="log-warning">Your elf has fallen...</span>', '');
+    penalizeDeath();
+    restoreStones = Math.max(0, restoreStones - 1);
+    saveToCloud();
+    setTimeout(()=>{
+      document.getElementById('combat-screen').classList.add('hidden');
+      document.getElementById('main-menu').classList.remove('hidden');
+      combatState = null;
+      renderUserData();
+    }, 3000);
   }
 
   function updateEnemyStance() {
@@ -1274,13 +1370,7 @@
         updateCombatUI();
         return;
       }
-      logMessage('☠️ <span class="log-warning">Defeated...</span>', '');
-      setTimeout(()=>{
-        document.getElementById('combat-screen').classList.add('hidden');
-        document.getElementById('main-menu').classList.remove('hidden');
-        combatState = null;
-        renderUserData();
-      }, 2500);
+      handleDeath();
     }
   }
 
@@ -1290,11 +1380,16 @@
     userStats.score += 100 + (userStats.level * 10);
     dragonsSlain++;
     
+    if(Math.random() < 0.15) {
+      restoreStones++;
+      logMessage('💎 <span class="log-heal">VOID STONE FOUND! Use it to restore all resources in battle.</span>', '');
+    }
+    
     const prefixes = ["Blazon","Standard","Insignia","Seal","Crown","Chalice","Crest","Emblem","Sigil","Mark"];
     const cores = ["of the Dragon","of Ash","Elven Void","of Blood","Mystic Fief","Immortal","of the Abyss","of Shadows"];
-    const rarities = ["comun","comun","rara","rara","epica","epica","legendaria","reliquia"];
+    const rarities = ["common","common","rare","rare","epic","epic","legendary","relic"];
     let rarity = rarities[Math.floor(Math.random()*rarities.length)];
-    if(rarity==='reliquia' && Math.random()>0.15) rarity='legendaria';
+    if(rarity==='relic' && Math.random()>0.15) rarity='legendary';
     
     const medal = {
       name: prefixes[Math.floor(Math.random()*prefixes.length)] + " " + cores[Math.floor(Math.random()*cores.length)],
@@ -1303,7 +1398,6 @@
     userStats.medalsList.push(medal);
     logMessage(`🏅 Medal: <span class="log-info">${medal.name} (${medal.rarity.toUpperCase()})</span>`, '');
     
-    // Loot
     if(Math.random() > 0.7) {
       const pool = itemPool.filter(i => !userStats.ownedItems.includes(i.id));
       if(pool.length > 0) {
