@@ -1232,4 +1232,110 @@
   }
 
   function enemyTurn() {
-    if(combatState.enemy.hp <=
+    if(combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
+    
+    // Dodge chance based on dex and tactic
+    let dodgeChance = userStats.dex * 0.02;
+    if(currentTactic === 'defensive') dodgeChance += 0.1;
+    
+    if(Math.random() < dodgeChance && !combatState.player.counterActive) {
+      logMessage('💨 Your agility evades the dragon attack!', 'log-info');
+      return;
+    }
+    
+    const eRoll = Math.floor(Math.random()*20)+1;
+    let rawDmg = Math.floor(combatState.enemy.power * (eRoll/10));
+    if(combatState.enemy.stance === 'furious') rawDmg = Math.floor(rawDmg * 1.3);
+    
+    // Counter mechanic
+    if(combatState.player.counterActive) {
+      rawDmg = Math.floor(rawDmg * 0.3);
+      const counterDmg = Math.floor(rawDmg * 1.5);
+      combatState.enemy.hp = Math.max(0, combatState.enemy.hp - counterDmg);
+      combatState.player.counterActive = false;
+      logMessage(`↩️ <span class="log-critical">Counter strike!</span> Reflected ${counterDmg} damage!`, '');
+    }
+    
+    combatState.player.hp = Math.max(0, combatState.player.hp - rawDmg);
+    logMessage(`💥 Dragon strikes for <span class="log-damage">${rawDmg} damage</span>.`, '');
+    
+    // Accessory: Fury effect
+    const accessory = combatState.equipment.accessory;
+    if(accessory && accessory.effect === 'Fury' && combatState.player.hp < combatState.player.maxHp * 0.3) {
+      logMessage('💢 Berserker rage! Damage increased!', 'log-warning');
+    }
+    
+    updateCombatUI();
+    
+    if(combatState.player.hp <= 0) {
+      // Phoenix accessory check
+      if(accessory && accessory.effect === 'Rebirth') {
+        combatState.player.hp = Math.floor(combatState.player.maxHp * 0.5);
+        combatState.player.stamina = combatState.player.maxStamina;
+        combatState.player.mana = combatState.player.maxMana;
+        logMessage('🦅 <span class="log-critical">PHOENIX REBIRTH!</span> You rise from the ashes!', '');
+        updateCombatUI();
+        return;
+      }
+      logMessage('☠️ <span class="log-warning">Your elf has fallen...</span>', '');
+      setTimeout(()=>{
+        document.getElementById('combat-screen').classList.add('hidden');
+        document.getElementById('main-menu').classList.remove('hidden');
+        combatState = null;
+        renderUserData();
+      }, 2500);
+    }
+  }
+
+  function resolveVictory() {
+    logMessage('🏆 <span class="log-critical">FORTRESS CONQUERED!</span>', '');
+    userStats.points += 6;
+    userStats.score += 100 + (userStats.level * 10);
+    dragonsSlain++;
+    
+    const prefixes = ["Blazon","Standard","Insignia","Seal","Crown","Chalice","Crest","Emblem","Sigil","Mark"];
+    const cores = ["of the Dragon","of Ash","Elven Void","of Blood","Mystic Fief","Immortal","of the Abyss","of Shadows","of Fire","of Ice"];
+    const rarities = ["comun","comun","rara","rara","epica","epica","legendaria","reliquia"];
+    const icons = ["👑","🦅","⚔️","🐉","🔮","⚜️","💀","🌟","🔥","❄️"];
+    
+    let rarity = rarities[Math.floor(Math.random()*rarities.length)];
+    if(rarity==='reliquia' && Math.random()>0.15) rarity='legendaria';
+    if(rarity==='legendaria' && Math.random()>0.3) rarity='epica';
+    
+    const medal = {
+      name: prefixes[Math.floor(Math.random()*prefixes.length)] + " " + cores[Math.floor(Math.random()*cores.length)],
+      rarity: rarity,
+      icon: icons[Math.floor(Math.random()*icons.length)]
+    };
+    userStats.medalsList.push(medal);
+    logMessage(`🏅 New medal: <span class="log-info">${medal.name} (${medal.rarity.toUpperCase()})</span>`, '');
+    
+    // Loot drops
+    const lootRoll = Math.random();
+    if(lootRoll > 0.85) {
+      const highTier = itemPool.filter(i=>i.rarity==='legendaria'||i.rarity==='reliquia');
+      const picked = highTier[Math.floor(Math.random()*highTier.length)];
+      if(!userStats.ownedItems.includes(picked.id)) {
+        userStats.ownedItems.push(picked.id);
+        logMessage(`🎁 <span class="log-critical">MYTHIC LOOT: ${picked.name}!</span>`, '');
+      }
+    } else if(lootRoll > 0.5) {
+      const midTier = itemPool.filter(i=>i.rarity==='rara'||i.rarity==='epica');
+      const picked = midTier[Math.floor(Math.random()*midTier.length)];
+      if(!userStats.ownedItems.includes(picked.id)) {
+        userStats.ownedItems.push(picked.id);
+        logMessage(`🎁 Loot acquired: <span class="log-info">${picked.name}</span>`, '');
+      }
+    }
+    
+    saveToCloud();
+    setTimeout(()=>{
+      document.getElementById('combat-screen').classList.add('hidden');
+      document.getElementById('main-menu').classList.remove('hidden');
+      combatState = null;
+      renderUserData();
+    }, 4000);
+  }
+</script>
+</body>
+</html>
