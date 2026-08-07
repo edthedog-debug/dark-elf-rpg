@@ -38,7 +38,6 @@
       gap: 28px;
       color: #e8dccf;
       border-radius: 12px;
-      backdrop-filter: blur(10px);
     }
 
     h1, h2, h3 {
@@ -72,7 +71,6 @@
       color: #b49450;
       letter-spacing: 6px;
       margin-bottom: 8px;
-      text-shadow: 0 0 20px rgba(180, 148, 80, 0.4);
     }
 
     button {
@@ -111,7 +109,7 @@
     button:hover:not(:disabled) {
       background: linear-gradient(180deg, #5c1e28 0%, #3a1018 100%);
       border-color: #e6b13e;
-      box-shadow: 0 0 25px #b94e4e, 0 0 50px rgba(185, 78, 78, 0.3);
+      box-shadow: 0 0 25px #b94e4e;
       transform: translateY(-3px);
       color: white;
     }
@@ -120,37 +118,6 @@
       opacity: 0.4;
       cursor: not-allowed;
       filter: grayscale(0.5);
-    }
-
-    .action-btn {
-      background: linear-gradient(180deg, #1a1218 0%, #0d090e 100%);
-      border: 2px solid #5a432e;
-      padding: 15px;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.9rem;
-    }
-
-    .action-btn:hover:not(:disabled) {
-      background: linear-gradient(180deg, #3a1a28 0%, #2a0a18 100%);
-      border-color: #b49450;
-    }
-
-    .action-btn .action-icon {
-      font-size: 1.8rem;
-      width: 40px;
-      text-align: center;
-    }
-
-    .action-btn .action-info {
-      flex: 1;
-    }
-
-    .action-btn .action-cost {
-      font-size: 0.7rem;
-      color: #b49450;
     }
 
     input {
@@ -202,7 +169,7 @@
     }
 
     .stat-btn {
-      padding: 4px 10px;
+      padding: 4px 12px;
       font-size: 0.7rem;
       border-radius: 20px;
       background: #2a1a14;
@@ -228,23 +195,11 @@
       position: relative;
     }
 
-    .dice-box::after {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      border-radius: 12px;
-      background: linear-gradient(45deg, transparent, rgba(230,177,62,0.1), transparent);
-      z-index: -1;
-    }
-
     .dice-val {
       font-size: 4rem;
       font-family: 'Uncial Antiqua', cursive;
       color: #e63946;
-      text-shadow: 0 0 30px #e63946, 0 0 60px rgba(230, 57, 70, 0.5);
+      text-shadow: 0 0 30px #e63946;
       animation: dicePulse 0.5s ease-out;
     }
 
@@ -388,7 +343,6 @@
       border-radius: 15px;
       transition: all 0.3s;
       cursor: pointer;
-      position: relative;
     }
 
     .medal-badge:hover {
@@ -415,36 +369,11 @@
       letter-spacing: 2px;
     }
 
-    .rare-comun { border-color: #7e7e7e; color: #cbd5e1; }
-    .rare-comun .medal-icon { color: #cbd5e1; }
-
-    .rare-rara { border-color: #0070dd; color: #4da6ff; box-shadow: 0 0 10px rgba(0,112,221,0.3); }
-    .rare-rara .medal-icon { color: #4da6ff; filter: drop-shadow(0 0 8px rgba(0,112,221,0.5)); }
-
-    .rare-epica { border-color: #a335ee; color: #c27aff; box-shadow: 0 0 15px rgba(163,53,238,0.5); }
-    .rare-epica .medal-icon { color: #c27aff; filter: drop-shadow(0 0 12px rgba(163,53,238,0.6)); }
-
-    .rare-legendaria { 
-      border-color: #ff8000; 
-      color: #ffaa33; 
-      box-shadow: 0 0 20px rgba(255,128,0,0.6); 
-      animation: legendaryPulse 2s infinite; 
-    }
-    .rare-legendaria .medal-icon { 
-      color: #ffaa33; 
-      filter: drop-shadow(0 0 15px rgba(255,128,0,0.7)); 
-    }
-
-    .rare-reliquia { 
-      border-color: #e63946; 
-      color: #ff5566; 
-      box-shadow: 0 0 25px rgba(230,57,70,0.7); 
-      animation: relicGlow 1.5s infinite; 
-    }
-    .rare-reliquia .medal-icon { 
-      color: #ff5566; 
-      filter: drop-shadow(0 0 20px rgba(230,57,70,0.8)); 
-    }
+    .rare-comun { border-color: #7e7e7e; }
+    .rare-rara { border-color: #0070dd; box-shadow: 0 0 10px rgba(0,112,221,0.3); }
+    .rare-epica { border-color: #a335ee; box-shadow: 0 0 15px rgba(163,53,238,0.5); }
+    .rare-legendaria { border-color: #ff8000; box-shadow: 0 0 20px rgba(255,128,0,0.6); animation: legendaryPulse 2s infinite; }
+    .rare-reliquia { border-color: #e63946; box-shadow: 0 0 25px rgba(230,57,70,0.7); animation: relicGlow 1.5s infinite; }
 
     @keyframes legendaryPulse {
       0%, 100% { box-shadow: 0 0 20px rgba(255,128,0,0.6); }
@@ -509,10 +438,6 @@
       transition: all 0.5s;
     }
 
-    .dragon-image:hover {
-      box-shadow: 0 10px 40px rgba(0,0,0,0.7), 0 0 70px rgba(230,57,70,0.3);
-    }
-
     .tactic-btn {
       background: #2a1a24;
       border: 2px solid #8b6b4a;
@@ -523,11 +448,6 @@
       border-radius: 20px;
       transition: all 0.3s;
       cursor: pointer;
-    }
-
-    .tactic-btn:hover {
-      background: #3a2a34;
-      border-color: #b49450;
     }
 
     .tactic-btn.active {
@@ -542,6 +462,46 @@
       color: #b49450;
       margin-top: 5px;
       font-style: italic;
+    }
+
+    .action-btn {
+      background: linear-gradient(180deg, #1a1218 0%, #0d090e 100%);
+      border: 2px solid #5a432e;
+      padding: 15px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 6px;
+      color: #e8dccf;
+      font-family: 'Cinzel', serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      background: linear-gradient(180deg, #3a1a28, #2a0a18);
+      border-color: #b49450;
+      box-shadow: 0 0 15px rgba(180,148,80,0.3);
+    }
+
+    .action-icon {
+      font-size: 1.8rem;
+      width: 40px;
+      text-align: center;
+    }
+
+    .action-info {
+      flex: 1;
+    }
+
+    .action-cost {
+      font-size: 0.7rem;
+      color: #b49450;
+      display: block;
     }
 
     .status-effect {
@@ -564,13 +524,10 @@
     .status-bleed { background: #4a1a2a; color: #ff5566; border: 1px solid #ff5566; }
     .status-regen { background: #1a3a1a; color: #2ecc71; border: 1px solid #2ecc71; }
 
-    .phase-transition {
-      animation: phaseFlash 1s ease-out;
-    }
-
-    @keyframes phaseFlash {
-      0% { background-color: rgba(255,255,255,0.3); }
-      100% { background-color: transparent; }
+    .error-msg {
+      color: #e63946;
+      margin-top: 10px;
+      font-size: 0.9rem;
     }
 
     @media (max-width: 700px) {
@@ -582,10 +539,6 @@
       }
       .dragon-image {
         height: 180px;
-      }
-      .action-btn {
-        font-size: 0.8rem;
-        padding: 10px;
       }
     }
   </style>
@@ -603,6 +556,7 @@
     <button onclick="login()">⚡ Awaken Elf</button>
     <button onclick="register()">🌑 New Lineage</button>
     <div id="loading-overlay" class="hidden" style="margin-top:15px; color:#b49450;">⚔️ CHANNELING SKILLS FROM THE ABYSS...</div>
+    <div id="auth-error" class="error-msg hidden"></div>
   </div>
 
   <!-- MAIN MENU -->
@@ -657,18 +611,14 @@
       </div>
       <div class="flex-col panel">
         <h3>✨ Your Elf</h3>
-        <div style="display:flex; gap:20px;">
-          <div style="flex:1;">
-            <div>❤️ Life: <span id="p-hp">0</span>/<span id="p-maxhp">0</span>
-              <div class="bar-container"><div id="p-hp-bar" class="hp-fill"></div></div>
-            </div>
-            <div>⚡ Stamina: <span id="p-stamina">0</span>/<span id="p-maxstamina">0</span>
-              <div class="bar-container"><div id="p-stamina-bar" class="stamina-fill"></div></div>
-            </div>
-            <div>🔮 Mana: <span id="p-mana">0</span>/<span id="p-maxmana">0</span>
-              <div class="bar-container"><div id="p-mana-bar" class="mana-fill"></div></div>
-            </div>
-          </div>
+        <div>❤️ Life: <span id="p-hp">0</span>/<span id="p-maxhp">0</span>
+          <div class="bar-container"><div id="p-hp-bar" class="hp-fill"></div></div>
+        </div>
+        <div>⚡ Stamina: <span id="p-stamina">0</span>/<span id="p-maxstamina">0</span>
+          <div class="bar-container"><div id="p-stamina-bar" class="stamina-fill"></div></div>
+        </div>
+        <div>🔮 Mana: <span id="p-mana">0</span>/<span id="p-maxmana">0</span>
+          <div class="bar-container"><div id="p-mana-bar" class="mana-fill"></div></div>
         </div>
         <div id="status-effects-player" style="margin:8px 0; display:flex; flex-wrap:wrap; gap:4px;"></div>
         <div style="margin: 15px 0; background:#0a0708; padding:12px; border-radius:8px;">
@@ -679,7 +629,7 @@
             <button class="tactic-btn" onclick="setTactic('defensive')">🛡️ Defensive</button>
             <button class="tactic-btn" onclick="setTactic('arcane')">🔮 Arcane</button>
           </div>
-          <div class="tactic-description" id="tactic-desc">Balanced approach: Moderate damage and defense. Good for learning enemy patterns.</div>
+          <div class="tactic-description" id="tactic-desc">Balanced approach: Moderate damage and defense.</div>
         </div>
         <div class="dice-box">
           <span style="color:#b49450;">ACTION DIE (d20)</span>
@@ -689,27 +639,27 @@
         <div style="display:flex; flex-direction: column; gap:8px;">
           <button class="action-btn" onclick="executeAction('melee')">
             <span class="action-icon">⚔️</span>
-            <span class="action-info">Melee Strike<span class="action-cost"><br>15 Stamina | Physical Damage</span></span>
+            <span class="action-info">Melee Strike<span class="action-cost">15⚡ | Physical</span></span>
           </button>
           <button class="action-btn" onclick="executeAction('ranged')">
             <span class="action-icon">🏹</span>
-            <span class="action-info">Arcane Arrow<span class="action-cost"><br>18 Stamina | Piercing Damage</span></span>
+            <span class="action-info">Arcane Arrow<span class="action-cost">18⚡ | Piercing</span></span>
           </button>
           <button class="action-btn" onclick="executeAction('spell')">
             <span class="action-icon">🔮</span>
-            <span class="action-info">Void Spell<span class="action-cost"><br>25 Stamina + 20 Mana | Magic Damage</span></span>
+            <span class="action-info">Void Spell<span class="action-cost">25⚡ 20🔮 | Magic</span></span>
           </button>
           <button class="action-btn" onclick="executeAction('defend')">
             <span class="action-icon">🛡️</span>
-            <span class="action-info">Tactical Cover<span class="action-cost"><br>10 Stamina | Defense + Heal</span></span>
+            <span class="action-info">Tactical Cover<span class="action-cost">10⚡ | Defense+Heal</span></span>
           </button>
           <button class="action-btn" onclick="executeAction('counter')">
             <span class="action-icon">↩️</span>
-            <span class="action-info">Counter Stance<span class="action-cost"><br>12 Stamina | Counter Next Attack</span></span>
+            <span class="action-info">Counter Stance<span class="action-cost">12⚡ | Counter</span></span>
           </button>
           <button class="action-btn" onclick="executeAction('finisher')">
             <span class="action-icon">💀</span>
-            <span class="action-info">Execution<span class="action-cost"><br>30 Stamina + 30 Mana | Massive Damage</span></span>
+            <span class="action-info">Execution<span class="action-cost">30⚡ 30🔮 | Massive</span></span>
           </button>
         </div>
       </div>
@@ -722,9 +672,23 @@
   // ========== ELDEN VOID - ULTIMATE RPG ENGINE ==========
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwYlHbPacdrNWQS5rVSxX72UJy71tGwMq-NDJftIVn4rChGv8VPoE8MkI6RYpFrzDsgFQ/exec";
 
-  // Expanded item pool with unique effects and descriptions
+  // Expanded item pool
   const itemPool = [
-    { id:"w1", name:"Steel Dagger", type:"weapon", effect:"None", bonus:6, rarity:"comun", scaling:"str", desc:"A simple but reliable blade." },
-    { id:"w2", name:"Fallen King Greatsword", type:"weapon", effect:"Fire", bonus:15, rarity:"epica", scaling:"str", desc:"Burns with the fury of fallen monarchs." },
-    { id:"w3", name:"Void Stormbreaker", type:"weapon", effect:"Lightning", bonus:27, rarity:"legendaria", scaling:"dex", desc:"Channels the storm of the void." },
-    { id:"w4", name:"CTHULHU MYTHIC EDGE", type
+    { id:"w1", name:"Steel Dagger", type:"weapon", effect:"None", bonus:6, rarity:"comun", scaling:"str" },
+    { id:"w2", name:"Fallen King Greatsword", type:"weapon", effect:"Fire", bonus:15, rarity:"epica", scaling:"str" },
+    { id:"w3", name:"Void Stormbreaker", type:"weapon", effect:"Lightning", bonus:27, rarity:"legendaria", scaling:"dex" },
+    { id:"w4", name:"CTHULHU MYTHIC EDGE", type:"weapon", effect:"Poison", bonus:54, rarity:"reliquia", scaling:"att" },
+    { id:"w5", name:"Elven Obsidian Blade", type:"weapon", effect:"Bleed", bonus:19, rarity:"rara", scaling:"dex" },
+    { id:"w6", name:"Crystal Fang Rapier", type:"weapon", effect:"Ice", bonus:25, rarity:"epica", scaling:"dex" },
+    { id:"a1", name:"Forest Shortbow", type:"armor", effect:"None", bonus:7, rarity:"comun", scaling:"dex" },
+    { id:"a2", name:"Sinister Bone Bow", type:"armor", effect:"Heal", bonus:17, rarity:"epica", scaling:"dex" },
+    { id:"a3", name:"ARTEMIS DIVINE BOW", type:"armor", effect:"Heal", bonus:46, rarity:"reliquia", scaling:"dex" },
+    { id:"a4", name:"Shadow Recurve", type:"armor", effect:"Poison", bonus:21, rarity:"rara", scaling:"att" },
+    { id:"a5", name:"Stormcaller Longbow", type:"armor", effect:"Lightning", bonus:28, rarity:"legendaria", scaling:"dex" },
+    { id:"s1", name:"Corrupted Wood Shield", type:"shield", effect:"None", bonus:5, rarity:"comun", scaling:"end" },
+    { id:"s2", name:"Forged Obsidian Pavise", type:"shield", effect:"None", bonus:16, rarity:"epica", scaling:"end" },
+    { id:"s3", name:"IMMORTAL ANCESTRAL BULWARK", type:"shield", effect:"Heal", bonus:40, rarity:"reliquia", scaling:"end" },
+    { id:"s4", name:"Dragonbone Guard", type:"shield", effect:"Fire", bonus:22, rarity:"rara", scaling:"vig" },
+    { id:"s5", name:"Mirror Shield of Echoes", type:"shield", effect:"Reflect", bonus:32, rarity:"legendaria", scaling:"att" },
+    { id:"acc1", name:"Ring of the Berserker", type:"accessory", effect:"Fury", bonus:15, rarity:"epica", scaling:"str" },
+    { id:"acc2", name:"Amulet of Man
