@@ -691,4 +691,545 @@
     { id:"s4", name:"Dragonbone Guard", type:"shield", effect:"Fire", bonus:22, rarity:"rara", scaling:"vig" },
     { id:"s5", name:"Mirror Shield of Echoes", type:"shield", effect:"Reflect", bonus:32, rarity:"legendaria", scaling:"att" },
     { id:"acc1", name:"Ring of the Berserker", type:"accessory", effect:"Fury", bonus:15, rarity:"epica", scaling:"str" },
-    { id:"acc2", name:"Amulet of Man
+    { id:"acc2", name:"Amulet of Mana Flow", type:"accessory", effect:"Regen", bonus:20, rarity:"rara", scaling:"att" },
+    { id:"acc3", name:"SOUL OF THE PHOENIX", type:"accessory", effect:"Rebirth", bonus:55, rarity:"reliquia", scaling:"vig" },
+    { id:"acc4", name:"Assassin's Pendant", type:"accessory", effect:"Crit", bonus:25, rarity:"legendaria", scaling:"dex" }
+  ];
+
+  // DRAGON ARCHETYPES - MASSIVELY EXPANDED
+  const dragonArchetypes = [
+    // ELEMENTAL DRAGONS
+    { type:"Fire Wyrm", strengths:["Immune to Fire","Berserk rage below 40% HP","Devastating area attacks"], weaknesses:["Vulnerable to Ice magic","Slow after breathing fire","Low magic resistance"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"fire-dragon-volcano-castle", element:"fire" },
+    { type:"Frost Wyvern", strengths:["Freezes on contact","High defense when guarding","Deadly counter-attacks"], weaknesses:["Melts against Fire","Low stamina pool","Predictable attack patterns"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"ice-dragon-frozen-mountain", element:"ice" },
+    { type:"Storm Dragon", strengths:["Lightning-fast strikes","Chain lightning attacks","Flight advantage"], weaknesses:["Grounded by Earth magic","Exhausted after combos","Low defense while attacking"], tactics:{best:"balanced",worst:"defensive"}, imageSeed:"storm-dragon-thunder-sky", element:"lightning" },
+    { type:"Earth Wyrm", strengths:["Impenetrable scales","Earthquake attacks","Regenerates in soil"], weaknesses:["Slow movement","Vulnerable to air magic","Blind underground"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"earth-dragon-mountain-cave", element:"earth" },
+    { type:"Water Serpent", strengths:["Heals in water","Drowning attacks","Slippery and evasive"], weaknesses:["Vulnerable to lightning","Weak on land","Slow without water"], tactics:{best:"aggressive",worst:"defensive"}, imageSeed:"water-dragon-ocean-depths", element:"water" },
+    { type:"Wind Drake", strengths:["Invisible in air","Sonic boom attacks","Untouchable speed"], weaknesses:["Fragile body","Vulnerable when grounded","Exhausted quickly"], tactics:{best:"defensive",worst:"arcane"}, imageSeed:"wind-dragon-storm-clouds", element:"air" },
+    
+    // DARK DRAGONS
+    { type:"Shadow Drake", strengths:["Drains life force","Turns invisible at low HP","Toxic poison aura"], weaknesses:["Blinded by Light magic","Slow initial attacks","Vulnerable when visible"], tactics:{best:"defensive",worst:"balanced"}, imageSeed:"shadow-dragon-dark-cave", element:"shadow" },
+    { type:"Ancient Void Wyrm", strengths:["Absorbs magic attacks","Teleports around battlefield","Mind control abilities"], weaknesses:["Weak to physical damage","Depends on mana","Slow recovery time"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"void-dragon-cosmic-abyss", element:"void" },
+    { type:"Plague Wyrm", strengths:["Disease aura damages over time","Summons plague minions","Regenerates from decay"], weaknesses:["Purified by healing magic","Weak to fire cleansing","Slow attack speed"], tactics:{best:"aggressive",worst:"defensive"}, imageSeed:"plague-dragon-toxic-swamp", element:"plague" },
+    { type:"Blood Dragon", strengths:["Heals from your wounds","Bleeding attacks","Frenzy when bloodied"], weaknesses:["Cannot heal without blood","Weak to holy magic","Reckless when frenzied"], tactics:{best:"defensive",worst:"aggressive"}, imageSeed:"blood-dragon-crimson-lair", element:"blood" },
+    { type:"Soul Reaper Drake", strengths:["Steals soul fragments","Instant death below 10%","Invisible soul attacks"], weaknesses:["No physical defense","Destroyed by pure light","Slow soul collection"], tactics:{best:"arcane",worst:"defensive"}, imageSeed:"soul-dragon-spirit-realm", element:"soul" },
+    
+    // MYTHIC DRAGONS
+    { type:"Crystal Guardian", strengths:["Reflects damage back","Extremely high defense","Healing crystal minions"], weaknesses:["Shatters under pressure","Very slow movement","Weak to blunt weapons"], tactics:{best:"arcane",worst:"aggressive"}, imageSeed:"crystal-dragon-gem-cavern", element:"crystal" },
+    { type:"Celestial Dragon", strengths:["Divine magic attacks","Heals itself with starlight","Immune to dark magic"], weaknesses:["Vulnerable to void magic","Low physical defense","Long casting times"], tactics:{best:"arcane",worst:"balanced"}, imageSeed:"celestial-dragon-star-temple", element:"celestial" },
+    { type:"Time Wyrm", strengths:["Slows time around it","Rewinds damage taken","Ages enemies rapidly"], weaknesses:["Temporal paradox if countered","Weak when time is stable","Predictable time loops"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"time-dragon-clockwork-realm", element:"time" },
+    { type:"Dream Drake", strengths:["Puts enemies to sleep","Nightmare damage over time","Creates illusion copies"], weaknesses:["Waking up breaks illusions","Weak to loud sounds","Vulnerable when awake"], tactics:{best:"balanced",worst:"defensive"}, imageSeed:"dream-dragon-nightmare-realm", element:"dream" },
+    
+    // LEGENDARY DRAGONS
+    { type:"Titan World Serpent", strengths:["Massive HP pool","Crushing constriction","Swallows enemies whole"], weaknesses:["Very slow","Cannot turn quickly","Vulnerable eyes"], tactics:{best:"aggressive",worst:"defensive"}, imageSeed:"titan-dragon-world-serpent", element:"titan" },
+    { type:"Chaos Dragon", strengths:["Random powerful effects","Unpredictable attacks","Reality warping"], weaknesses:["Sometimes hurts itself","Unstable power","Can be confused"], tactics:{best:"balanced",worst:"arcane"}, imageSeed:"chaos-dragon-madness-realm", element:"chaos" },
+    { type:"Phoenix Dragon", strengths:["Rebirth from ashes","Fire heals it","Explosive death"], weaknesses:["Dies permanently if frozen","Weak during rebirth","Vulnerable to water"], tactics:{best:"aggressive",worst:"defensive"}, imageSeed:"phoenix-dragon-sacred-flame", element:"phoenix" },
+    { type:"Necro Dragon", strengths:["Raises dead minions","Fear aura","Bone armor"], weaknesses:["Holy magic destroys bones","Fire burns corpses","Slow minion summoning"], tactics:{best:"arcane",worst:"balanced"}, imageSeed:"necro-dragon-bone-graveyard", element:"necro" },
+    { type:"Void Emperor Dragon", strengths:["Absolute magic immunity","Reality rift attacks","Existence erasure"], weaknesses:["Cannot be healed","Takes self damage","Slow and methodical"], tactics:{best:"aggressive",worst:"arcane"}, imageSeed:"void-emperor-dragon-final-abyss", element:"void-emperor" }
+  ];
+
+  const dragonNames = [
+    "Tiamat the Soul-Drinker", "Ancalagon Void-Terror", "Glaurung Rot-Wing",
+    "Smaug Rune-Blood", "Vermithrax Prime", "Nidhogg Root-Breaker",
+    "Fafnir Gold-Curse", "Ladon Twilight-Keeper", "Yamata-no-Orochi Storm-Serpent",
+    "Drogon Shadow-Flame", "Viseryon Ice-Heart", "Rhaegal Storm-Born",
+    "Bahamut Star-Wing", "Leviathan Deep-Terror", "Jormungandr World-Coil",
+    "Quetzalcoatl Sky-Feather", "Ryujin Tide-Lord", "Shenlong Wish-Granter",
+    "Hydra Venom-Head", "Typhon Storm-Father", "Zirnitra Dark-Scale",
+    "Apep Chaos-Bringer", "Illuyanka Mountain-Crusher", "Vritra Drought-Bringer"
+  ];
+
+  let currentUser = null;
+  let currentTactic = 'balanced';
+  let dragonsSlain = 0;
+  let userStats = {
+    level:1, score:0, points:5,
+    str:10, dex:10, att:10, vig:10, end:10,
+    weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2",
+    ownedItems:["w1","a1","s1","acc2"],
+    medalsList:[]
+  };
+  let combatState = null;
+
+  function generateDragonLore(archetype, level) {
+    const chosenName = dragonNames[Math.floor(Math.random() * dragonNames.length)] + " Lv." + (level + 3);
+    const dragon = archetype;
+    
+    const loreTemplates = [
+      `The ${dragon.type} ${chosenName} emerged from the ${dragon.imageSeed.replace(/-/g, ' ')}. Its scales shimmer with ancient malice. ${dragon.strengths[0]}, but whispers among the dark elves say ${dragon.weaknesses[0]}.`,
+      `Born of ${dragon.imageSeed.split('-')[0]} and hatred, ${chosenName} terrorized the elven kingdoms for centuries. ${dragon.strengths[1]} makes it almost invincible. Yet, ancient texts reveal ${dragon.weaknesses[1]}.`,
+      `${chosenName} guards secrets of the ${dragon.imageSeed.replace(/-/g, ' ')}. Its ${dragon.strengths[2]} will test your mettle. The wise warrior knows to exploit its ${dragon.weaknesses[2]} to survive this encounter.`
+    ];
+    
+    return {
+      name: chosenName,
+      lore: loreTemplates[Math.floor(Math.random() * loreTemplates.length)],
+      archetype: dragon
+    };
+  }
+
+  function generateDragonImage(seed) {
+    const randomSeed = Math.floor(Math.random() * 99999);
+    return `https://image.pollinations.ai/prompt/epic%20dark%20fantasy%20${seed.replace(/-/g, '%20')}%20dragon%20digital%20painting%20detailed%20scales%20wings%20fire%20smoke?width=600&height=400&nologo=true&seed=${randomSeed}`;
+  }
+
+  // ========== CLOUD FUNCTIONS (ORIGINAL SYSTEM - FIXED) ==========
+  function showError(msg) {
+    const errorDiv = document.getElementById('auth-error');
+    errorDiv.textContent = msg;
+    errorDiv.classList.remove('hidden');
+    setTimeout(() => errorDiv.classList.add('hidden'), 4000);
+  }
+
+  async function cloudRequest(action, data = {}) {
+    document.getElementById('loading-overlay').classList.remove('hidden');
+    try {
+      if (action === 'login') {
+        let url = `${WEB_APP_URL}?action=login`;
+        if (data.username) url += `&username=${encodeURIComponent(data.username)}&password=${encodeURIComponent(data.password)}`;
+        let response = await fetch(url);
+        let text = await response.text();
+        document.getElementById('loading-overlay').classList.add('hidden');
+        try {
+          return JSON.parse(text);
+        } catch(e) {
+          console.error('JSON parse error:', text);
+          return { success: false, error: 'Invalid server response' };
+        }
+      } else {
+        data.action = action;
+        await fetch(WEB_APP_URL, { 
+          method: 'POST', 
+          mode: 'no-cors', 
+          headers: { 'Content-Type': 'application/json' }, 
+          body: JSON.stringify(data) 
+        });
+        document.getElementById('loading-overlay').classList.add('hidden');
+        return { success: true };
+      }
+    } catch (e) {
+      document.getElementById('loading-overlay').classList.add('hidden');
+      console.error('Cloud error:', e);
+      return { success: false, error: e.message };
+    }
+  }
+
+  async function register() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    if(!u || !p) {
+      showError("Fill the codex, dark elf.");
+      return;
+    }
+    if(u.length < 3) {
+      showError("Name must be at least 3 characters.");
+      return;
+    }
+    if(p.length < 3) {
+      showError("Rune must be at least 3 characters.");
+      return;
+    }
+    
+    let defaultStats = {
+      level:1, score:0, points:5, str:10, dex:10, att:10, vig:10, end:10,
+      weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2",
+      ownedItems:["w1","a1","s1","acc2"], medalsList:[], dragonsSlain:0
+    };
+    
+    let result = await cloudRequest('register', { username: u, password: p, stats: defaultStats });
+    if(result && result.success) {
+      alert("Dark Elf lineage created. The Nexus accepts your offering. Now awaken.");
+      document.getElementById('password').value = '';
+    } else {
+      showError("Failed to create lineage. Try another name.");
+    }
+  }
+
+  async function login() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    if(!u || !p) {
+      showError("Fill the codex, dark elf.");
+      return;
+    }
+    
+    let res = await cloudRequest('login', { username: u, password: p });
+    
+    if(res && res.success) {
+      currentUser = u;
+      userStats = res.stats;
+      if(!userStats.ownedItems) userStats.ownedItems = ["w1","a1","s1","acc2"];
+      if(!userStats.medalsList) userStats.medalsList = [];
+      if(!userStats.accessory) userStats.accessory = "acc2";
+      if(!userStats.dragonsSlain) userStats.dragonsSlain = 0;
+      dragonsSlain = userStats.dragonsSlain || 0;
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('main-menu').classList.remove('hidden');
+      document.getElementById('auth-error').classList.add('hidden');
+      renderUserData();
+    } else {
+      showError("Access denied by the Nexus. Check your runes or create a new lineage.");
+    }
+  }
+
+  function logout() { 
+    currentUser = null;
+    userStats = {
+      level:1, score:0, points:5,
+      str:10, dex:10, att:10, vig:10, end:10,
+      weapon:"w1", armor:"a1", shield:"s1", accessory:"acc2",
+      ownedItems:["w1","a1","s1","acc2"],
+      medalsList:[]
+    };
+    dragonsSlain = 0;
+    document.getElementById('auth-screen').classList.remove('hidden');
+    document.getElementById('main-menu').classList.add('hidden');
+    document.getElementById('combat-screen').classList.add('hidden');
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('auth-error').classList.add('hidden');
+  }
+
+  async function saveToCloud() {
+    if(!currentUser) return;
+    userStats.dragonsSlain = dragonsSlain;
+    await cloudRequest('save', { username: currentUser, stats: userStats });
+  }
+
+  // ========== RENDER MAIN MENU ==========
+  function renderUserData() {
+    document.getElementById('welcome-msg').innerText = `⚔️ Elf Lineage: ${currentUser}`;
+    document.getElementById('stat-level').innerText = userStats.level;
+    document.getElementById('stat-points').innerText = userStats.points;
+    document.getElementById('stat-score').innerText = userStats.score;
+    document.getElementById('stat-dragons').innerText = dragonsSlain;
+
+    const skillsContainer = document.getElementById('skills-container');
+    skillsContainer.innerHTML = `
+      <div>💪 Brutality (Str): ${userStats.str} <button class="stat-btn" onclick="levelUpSkill('str')">+</button></div>
+      <div>⚡ Reflexes (Dex): ${userStats.dex} <button class="stat-btn" onclick="levelUpSkill('dex')">+</button></div>
+      <div>🔮 Void Magic (Att): ${userStats.att} <button class="stat-btn" onclick="levelUpSkill('att')">+</button></div>
+      <div>❤️ Vitality (Vig): ${userStats.vig} <button class="stat-btn" onclick="levelUpSkill('vig')">+</button></div>
+      <div>🔋 Endurance (End): ${userStats.end} <button class="stat-btn" onclick="levelUpSkill('end')">+</button></div>
+    `;
+
+    const weaponItem = itemPool.find(i=>i.id===userStats.weapon) || itemPool[0];
+    const armorItem = itemPool.find(i=>i.id===userStats.armor) || itemPool[4];
+    const shieldItem = itemPool.find(i=>i.id===userStats.shield) || itemPool[7];
+    const accessoryItem = itemPool.find(i=>i.id===userStats.accessory) || itemPool[16];
+    
+    document.getElementById('eq-weapon').innerText = `${weaponItem.name} (+${weaponItem.bonus})`;
+    document.getElementById('eq-armor').innerText = `${armorItem.name} (+${armorItem.bonus})`;
+    document.getElementById('eq-shield').innerText = `${shieldItem.name} (+${shieldItem.bonus})`;
+    document.getElementById('eq-accessory').innerText = accessoryItem ? `${accessoryItem.name} (+${accessoryItem.bonus})` : 'None';
+
+    const invContainer = document.getElementById('inventory-container');
+    invContainer.innerHTML = '';
+    userStats.ownedItems.forEach(id => {
+      const item = itemPool.find(i=>i.id===id);
+      if(!item) return;
+      const equipped = (userStats.weapon===id || userStats.armor===id || userStats.shield===id || userStats.accessory===id);
+      invContainer.innerHTML += `
+        <div class="item-card rare-${item.rarity} ${equipped?'equipped-item':''}" onclick="equipItem('${item.id}')">
+          <strong>${item.name}</strong>
+          <span>+${item.bonus} (${item.scaling})</span>
+          <small style="color:#b49450;">${item.effect}</small>
+          ${equipped ? '<small style="color:#f1c40f;">[Equipped]</small>' : '<small>Click to equip</small>'}
+        </div>
+      `;
+    });
+
+    const shelf = document.getElementById('medal-shelf-container');
+    shelf.innerHTML = '';
+    if(!userStats.medalsList.length) {
+      shelf.innerHTML = '<p style="color:#7a6a5c;">Conquer fortresses to forge legendary medals...</p>';
+    } else {
+      userStats.medalsList.forEach(m => {
+        shelf.innerHTML += `
+          <div class="medal-badge rare-${m.rarity}">
+            <span class="medal-icon">${m.icon}</span>
+            <span class="medal-name">${m.name}</span>
+            <span class="medal-rarity">${m.rarity}</span>
+          </div>`;
+      });
+    }
+  }
+
+  function levelUpSkill(skill) {
+    if(userStats.points > 0) {
+      userStats[skill]++;
+      userStats.points--;
+      userStats.level++;
+      renderUserData();
+      saveToCloud();
+    }
+  }
+
+  function equipItem(id) {
+    const item = itemPool.find(i=>i.id===id);
+    if(!item) return;
+    if(item.type==='weapon') userStats.weapon = id;
+    if(item.type==='armor') userStats.armor = id;
+    if(item.type==='shield') userStats.shield = id;
+    if(item.type==='accessory') userStats.accessory = id;
+    renderUserData();
+    saveToCloud();
+  }
+
+  function setTactic(tactic) {
+    currentTactic = tactic;
+    document.querySelectorAll('.tactic-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    const descriptions = {
+      'balanced': 'Balanced approach: Moderate damage and defense. Good for learning enemy patterns.',
+      'aggressive': 'Aggressive stance: +30% damage, -20% defense. Overwhelm enemies quickly!',
+      'defensive': 'Defensive stance: +30% defense, counter-attacks enabled. Weather the storm.',
+      'arcane': 'Arcane focus: +40% magic damage, +20 mana regen. Unleash void power!'
+    };
+    document.getElementById('tactic-desc').innerText = descriptions[tactic];
+    if(combatState) {
+      logMessage(`🎯 Tactic changed to ${tactic.toUpperCase()}.`, 'log-info');
+    }
+  }
+
+  // ========== COMBAT SYSTEM ==========
+  function lookForCastle() {
+    const archetype = dragonArchetypes[Math.floor(Math.random() * dragonArchetypes.length)];
+    const dragonData = generateDragonLore(archetype, userStats.level);
+    const weapon = itemPool.find(i=>i.id===userStats.weapon) || itemPool[0];
+    const armor = itemPool.find(i=>i.id===userStats.armor) || itemPool[4];
+    const shield = itemPool.find(i=>i.id===userStats.shield) || itemPool[7];
+    const accessory = itemPool.find(i=>i.id===userStats.accessory) || itemPool[16];
+
+    combatState = {
+      dragonData: dragonData,
+      enemy: {
+        name: dragonData.name,
+        hp: 100 + (userStats.level * 20),
+        maxHp: 100 + (userStats.level * 20),
+        power: 14 + userStats.level,
+        defense: 8 + Math.floor(userStats.level/2),
+        magicResist: 8 + Math.floor(userStats.level/3),
+        stance: 'neutral',
+        specialCharged: false,
+        statusEffects: []
+      },
+      player: {
+        hp: userStats.vig * 12,
+        maxHp: userStats.vig * 12,
+        stamina: userStats.end * 7,
+        maxStamina: userStats.end * 7,
+        mana: userStats.att * 5,
+        maxMana: userStats.att * 5,
+        counterActive: false,
+        statusEffects: []
+      },
+      equipment: { weapon, armor, shield, accessory },
+      turn: 0
+    };
+
+    document.getElementById('main-menu').classList.add('hidden');
+    document.getElementById('combat-screen').classList.remove('hidden');
+    document.getElementById('combat-log').innerHTML = '';
+    document.getElementById('enemy-name').innerText = combatState.enemy.name;
+    document.getElementById('dragon-lore').innerText = dragonData.lore;
+    document.getElementById('dragon-img').src = generateDragonImage(archetype.imageSeed);
+    document.getElementById('dragon-weakness').innerHTML = `<strong>💡 Weaknesses:</strong> ${archetype.weaknesses.join('; ')}<br><strong>⚠️ Strengths:</strong> ${archetype.strengths.join('; ')}<br><strong>🎯 Best Tactic:</strong> ${archetype.tactics.best.toUpperCase()}`;
+    document.getElementById('status-effects-enemy').innerHTML = '';
+    document.getElementById('status-effects-player').innerHTML = '';
+    
+    updateCombatUI();
+    logMessage(`🐉 <span class="log-warning">${dragonData.name} emerges from the void!</span>`, '');
+    logMessage(`📖 <span class="log-info">"${dragonData.lore}"</span>`, '');
+    logMessage(`💡 Best tactic: <span class="log-info">${archetype.tactics.best.toUpperCase()}</span> | Avoid: <span class="log-warning">${archetype.tactics.worst.toUpperCase()}</span>`, '');
+  }
+
+  function updateCombatUI() {
+    if(!combatState) return;
+    const p = combatState.player;
+    const e = combatState.enemy;
+    
+    document.getElementById('p-hp').innerText = Math.max(0, p.hp);
+    document.getElementById('p-maxhp').innerText = p.maxHp;
+    document.getElementById('p-stamina').innerText = Math.max(0, p.stamina);
+    document.getElementById('p-maxstamina').innerText = p.maxStamina;
+    document.getElementById('p-mana').innerText = Math.max(0, p.mana);
+    document.getElementById('p-maxmana').innerText = p.maxMana;
+    
+    document.getElementById('e-hp').innerText = Math.max(0, e.hp);
+    document.getElementById('e-maxhp').innerText = e.maxHp;
+    document.getElementById('e-power').innerText = e.power;
+    document.getElementById('e-defense').innerText = e.defense;
+    document.getElementById('e-resist').innerText = e.magicResist;
+    
+    document.getElementById('p-hp-bar').style.width = Math.max(0, (p.hp/p.maxHp)*100)+'%';
+    document.getElementById('p-stamina-bar').style.width = Math.max(0, (p.stamina/p.maxStamina)*100)+'%';
+    document.getElementById('p-mana-bar').style.width = Math.max(0, (p.mana/p.maxMana)*100)+'%';
+    document.getElementById('e-hp-bar').style.width = Math.max(0, (e.hp/e.maxHp)*100)+'%';
+    
+    document.getElementById('enemy-stance').innerText = `🌀 Stance: ${e.stance.toUpperCase()}`;
+  }
+
+  function logMessage(msg, className) {
+    const log = document.getElementById('combat-log');
+    log.innerHTML += `<div class="log-entry ${className}">${msg}</div>`;
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function getScalingValue(item) {
+    if(!item) return 10;
+    const scaleMap = { str: userStats.str, dex: userStats.dex, att: userStats.att, vig: userStats.vig, end: userStats.end };
+    return scaleMap[item.scaling] || 10;
+  }
+
+  function executeAction(type) {
+    if(!combatState || combatState.enemy.hp <=0 || combatState.player.hp <=0) return;
+    
+    const costs = {
+      melee: {stamina:15, mana:0},
+      ranged: {stamina:18, mana:0},
+      spell: {stamina:25, mana:20},
+      defend: {stamina:10, mana:0},
+      counter: {stamina:12, mana:0},
+      finisher: {stamina:30, mana:30}
+    };
+    
+    const cost = costs[type];
+    if(combatState.player.stamina < cost.stamina) {
+      logMessage('⚠️ Not enough stamina!', 'log-warning');
+      return;
+    }
+    if(combatState.player.mana < cost.mana) {
+      logMessage('⚠️ Not enough mana!', 'log-warning');
+      return;
+    }
+    
+    combatState.player.stamina -= cost.stamina;
+    combatState.player.mana -= cost.mana;
+    combatState.turn++;
+    
+    // Tactic modifiers
+    let tacticMultiplier = 1;
+    let defenseMultiplier = 1;
+    switch(currentTactic) {
+      case 'aggressive': tacticMultiplier = 1.3; defenseMultiplier = 0.8; break;
+      case 'defensive': tacticMultiplier = 0.8; defenseMultiplier = 1.3; break;
+      case 'arcane': tacticMultiplier = type==='spell' ? 1.4 : 0.9; break;
+    }
+    
+    const roll = Math.floor(Math.random()*20)+1;
+    document.getElementById('dice-result').innerText = roll;
+    document.getElementById('dice-result').style.animation = 'none';
+    setTimeout(() => document.getElementById('dice-result').style.animation = 'dicePulse 0.5s ease-out', 10);
+    
+    let damage = 0;
+    let isCritical = false;
+    
+    // Accessory effect: Crit chance
+    const accessory = combatState.equipment.accessory;
+    const critChance = (accessory && accessory.effect === 'Crit') ? 0.25 : 0.1;
+    
+    if(roll === 1) {
+      document.getElementById('dice-modifier').innerText = "Critical Failure!";
+      logMessage('🎲 Critical failure! Attack misses completely.', 'log-warning');
+      damage = 0;
+    } else if(roll === 20 || Math.random() < critChance) {
+      document.getElementById('dice-modifier').innerText = "ANCESTRAL CRITICAL!";
+      isCritical = true;
+      logMessage('🎲 <span class="log-critical">PERFECT STRIKE! Critical hit!</span>', '');
+      tacticMultiplier *= 2.5;
+    } else {
+      document.getElementById('dice-modifier').innerText = `Roll: ${roll} | Multiplier: x${(0.5 + roll/15).toFixed(1)}`;
+    }
+    
+    if(roll > 1 || isCritical) {
+      const factor = 0.5 + (roll/15);
+      
+      if(type === 'melee') {
+        const base = getScalingValue(combatState.equipment.weapon) + combatState.equipment.weapon.bonus;
+        damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.defense/50));
+        logMessage(`⚔️ Melee slash deals <span class="log-damage">${damage} damage</span>.`, '');
+        applyWeaponEffect(combatState.equipment.weapon.effect);
+      } else if(type === 'ranged') {
+        const base = getScalingValue(combatState.equipment.armor) + combatState.equipment.armor.bonus;
+        damage = Math.floor(base * factor * tacticMultiplier * 0.9);
+        logMessage(`🏹 Arrow pierces for <span class="log-damage">${damage} damage</span>.`, '');
+        applyWeaponEffect(combatState.equipment.armor.effect);
+      } else if(type === 'spell') {
+        const base = userStats.att * 3;
+        damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.magicResist/40));
+        logMessage(`🔮 Void magic erupts: <span class="log-magic">${damage} damage</span>.`, '');
+      } else if(type === 'defend') {
+        const shieldBase = getScalingValue(combatState.equipment.shield) + combatState.equipment.shield.bonus;
+        const heal = Math.floor(shieldBase * factor * 0.6 * defenseMultiplier);
+        combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal);
+        combatState.enemy.defense = Math.max(4, combatState.enemy.defense - 3);
+        logMessage(`🛡️ <span class="log-heal">Shield wall restores ${heal} life</span>, lowers enemy defense.`, '');
+        applyWeaponEffect(combatState.equipment.shield.effect);
+      } else if(type === 'counter') {
+        combatState.player.counterActive = true;
+        logMessage('↩️ Counter stance ready! Next enemy attack will be countered.', 'log-info');
+      } else if(type === 'finisher') {
+        const base = (getScalingValue(combatState.equipment.weapon) + userStats.att) * 2;
+        damage = Math.floor(base * factor * tacticMultiplier);
+        logMessage(`💀 <span class="log-critical">EXECUTION! Massive ${damage} damage!</span>`, '');
+      }
+      
+      combatState.enemy.hp = Math.max(0, combatState.enemy.hp - damage);
+    }
+    
+    updateEnemyStance();
+    updateCombatUI();
+    
+    // Check for accessory effects
+    if(accessory && accessory.effect === 'Regen') {
+      combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + 3);
+    }
+    
+    if(combatState.enemy.hp <= 0) {
+      resolveVictory();
+    } else {
+      // Stamina and mana regen
+      combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + Math.floor(userStats.end * 1.2));
+      combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + Math.floor(userStats.att * 0.8));
+      setTimeout(()=> enemyTurn(), 700);
+    }
+  }
+
+  function applyWeaponEffect(effect) {
+    if(!effect || effect==='None') return;
+    const e = combatState.enemy;
+    if(effect==='Fire') { e.hp = Math.max(0, e.hp-15); logMessage('🔥 Burn! -15 HP', 'log-damage'); }
+    if(effect==='Poison') { e.hp = Math.max(0, e.hp-12); e.statusEffects.push('poison'); logMessage('☠️ Poison -12 HP', 'log-damage'); }
+    if(effect==='Lightning') { e.hp = Math.max(0, e.hp-18); logMessage('⚡ Lightning -18 HP', 'log-damage'); }
+    if(effect==='Bleed') { e.hp = Math.max(0, e.hp-14); e.statusEffects.push('bleed'); logMessage('🩸 Hemorrhage -14 HP', 'log-damage'); }
+    if(effect==='Ice') { e.defense = Math.max(2, e.defense-4); e.statusEffects.push('freeze'); logMessage('❄️ Frozen! Defense reduced.', 'log-info'); }
+    if(effect==='Heal') { combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp+18); logMessage('✨ <span class="log-heal">Vital absorption +18 HP</span>', ''); }
+  }
+
+  function updateEnemyStance() {
+    const e = combatState.enemy;
+    const prevStance = e.stance;
+    if(e.hp < e.maxHp*0.4) e.stance = 'furious';
+    else if(e.hp < e.maxHp*0.7) e.stance = 'guarded';
+    else e.stance = 'neutral';
+    
+    if(prevStance !== e.stance) {
+      logMessage(`🌀 Dragon enters <span class="log-warning">${e.stance.toUpperCase()}</span> phase!`, '');
+      document.getElementById('combat-screen').classList.add('phase-transition');
+      setTimeout(() => document.getElementById('combat-screen').classList.remove('phase-transition'), 1000);
+    }
+    
+    if(e.stance === 'furious') {
+      e.power = Math.floor((14 + userStats.level) * 1.4);
+      e.defense = Math.max(2, (8 + Math.floor(userStats.level/2)) - 4);
+    } else if(e.stance === 'guarded') {
+      e.power = 14 + userStats.level;
+      e.defense = Math.floor((8 + Math.floor(userStats.level/2)) * 1.5);
+    } else {
+      e.power = 14 + userStats.level;
+      e.defense = 8 + Math.floor(userStats.level/2);
+    }
+  }
+
+  function enemyTurn() {
+    if(combatState.enemy.hp <=
