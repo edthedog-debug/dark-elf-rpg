@@ -478,7 +478,7 @@
       { id:'melee', icon:'⚔️', name:'Melee Strike', cost:`${costs.melee.stamina}⚡`, desc:'Physical damage' },
       { id:'ranged', icon:'🏹', name:'Arcane Arrow', cost:`${costs.ranged.stamina}⚡`, desc:'Piercing damage' },
       { id:'spell', icon:'🔮', name:'Void Spell', cost:`${costs.spell.stamina}⚡ ${costs.spell.mana}🔮`, desc:'Magic damage' },
-      { id:'defend', icon:'🛡️', name:'Tactical Cover', cost:`${costs.defend.stamina}⚡`, desc:'Defense + Heal' },
+      { id:'defend', icon:'🛡️', name:'Tactical Cover', cost:`${costs.defend.stamina}⚡`, desc:'Defense + Heal + Recover' },
       { id:'counter', icon:'↩️', name:'Counter Stance', cost:`${costs.counter.stamina}⚡`, desc:'Counter next attack' },
       { id:'finisher', icon:'💀', name:'Execution', cost:`${costs.finisher.stamina}⚡ ${costs.finisher.mana}🔮`, desc:'Massive damage' }
     ];
@@ -806,7 +806,20 @@
       if(type === 'melee') { const base = getScalingValue(combatState.equipment.weapon) + combatState.equipment.weapon.bonus + baseDamage; damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.defense/60)); logMessage(`⚔️ Melee: <span class="log-damage">${damage} damage</span>`, ''); }
       else if(type === 'ranged') { const base = getScalingValue(combatState.equipment.armor) + combatState.equipment.armor.bonus + baseDamage; damage = Math.floor(base * factor * tacticMultiplier * 0.9); logMessage(`🏹 Arrow: <span class="log-damage">${damage} damage</span>`, ''); }
       else if(type === 'spell') { const base = skillTree.att.level * 3 + baseDamage; damage = Math.floor(base * factor * tacticMultiplier * (1 - combatState.enemy.magicResist/50)); logMessage(`🔮 Magic: <span class="log-magic">${damage} damage</span>`, ''); }
-      else if(type === 'defend') { const shieldBase = getScalingValue(combatState.equipment.shield) + combatState.equipment.shield.bonus; const heal = Math.floor(shieldBase * factor * 0.5); combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal); combatState.enemy.defense = Math.max(2, combatState.enemy.defense - 2); logMessage(`🛡️ <span class="log-heal">Healed ${heal} HP</span>`, ''); }
+      else if(type === 'defend') { 
+        const shieldBase = getScalingValue(combatState.equipment.shield) + combatState.equipment.shield.bonus; 
+        const heal = Math.floor(shieldBase * factor * 0.5); 
+        combatState.player.hp = Math.min(combatState.player.maxHp, combatState.player.hp + heal); 
+        combatState.enemy.defense = Math.max(2, combatState.enemy.defense - 2); 
+        
+        // NEW: Tactical Cover now also recovers Stamina and Mana
+        const staminaRecovery = Math.floor(Math.random() * 5) + 3 + Math.floor(skillTree.end.level * 0.6);
+        const manaRecovery = Math.floor(Math.random() * 4) + 2 + Math.floor(skillTree.att.level * 0.5);
+        combatState.player.stamina = Math.min(combatState.player.maxStamina, combatState.player.stamina + staminaRecovery);
+        combatState.player.mana = Math.min(combatState.player.maxMana, combatState.player.mana + manaRecovery);
+        
+        logMessage(`🛡️ <span class="log-heal">Tactical Cover! Healed ${heal} HP, +${staminaRecovery}⚡ stamina, +${manaRecovery}🔮 mana</span>`, ''); 
+      }
       else if(type === 'counter') { combatState.player.counterActive = true; logMessage('↩️ Counter stance ready!', 'log-info'); }
       else if(type === 'finisher') { const base = (getScalingValue(combatState.equipment.weapon) + skillTree.att.level) * 1.5 + baseDamage; damage = Math.floor(base * factor * tacticMultiplier * 1.5); logMessage(`💀 <span class="log-critical">EXECUTION! ${damage} damage!</span>`, ''); }
       combatState.enemy.hp = Math.max(0, combatState.enemy.hp - damage);
